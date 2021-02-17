@@ -1,0 +1,117 @@
+package com.songdan.system.model.Entity.wildhorse;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+public class YMpaper {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    private String productid;
+
+    private String productname;
+
+    private String productname2;
+
+    private String neijing;
+
+    private String waijing;
+
+    private String banpian;
+
+    private String yaxian;
+    //图纸计算方法
+    private String type;
+    //图纸保存位置
+    private String postion;
+
+    public YMpaper(){
+    }
+
+    public YMpaper(String productid, String productname, String neijing, String waijing, String banpian, String yaxian, String type) {
+        this.productid = productid;
+        this.productname = productname;
+        this.neijing = neijing;
+        this.waijing = waijing;
+        this.banpian = banpian;
+        this.yaxian = yaxian;
+        this.type = type;
+    }
+
+    public String getProductid() {
+        return productid;
+    }
+
+    public void setProductid(String productid) {
+        this.productid = productid;
+    }
+
+    public String getProductname() {
+        return productname;
+    }
+
+    public void setProductname(String productname) {
+        this.productname = productname;
+    }
+
+    public String getProductname2() {
+        return productname2;
+    }
+
+    public void setProductname2(String productname2) {
+        this.productname2 = productname2;
+    }
+
+    public String getNeijing() {
+        return neijing;
+    }
+
+    public void setNeijing(String neijing) {
+        this.neijing = neijing;
+    }
+
+    public String getWaijing() {
+        return waijing;
+    }
+
+    public void setWaijing(String waijing) {
+        this.waijing = waijing;
+    }
+
+    public String getBanpian() {
+        return banpian;
+    }
+
+    public void setBanpian(String banpian) {
+        this.banpian = banpian;
+    }
+
+    public String getYaxian() {
+        return yaxian;
+    }
+
+    public void setYaxian(String yaxian) {
+        this.yaxian = yaxian;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getPostion() {
+        return postion;
+    }
+
+    public void setPostion(String postion) {
+        this.postion = postion;
+    }
+}
