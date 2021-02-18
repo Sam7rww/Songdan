@@ -50,7 +50,8 @@ public class ComputeNeiJing {
 
     public String getBanPian(){
         double l = (WJlength + WJwide)*2+4.5;
-        double temp = (WJwide + WJheight) * 10;
+        //double temp = (WJwide + WJheight) * 10;
+        double temp = (WJwide) * 10;
         double w = WJwide + WJheight;
         if(temp %2 != 0){
             w += 0.1;//奇数

@@ -178,7 +178,7 @@
 
         table.render({
             elem: '#orders'
-            ,url:'/wildhorse/getAllOrder'
+            ,url:'getAllOrder'
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             ,defaultToolbar: ['filter',  { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
                 title: '提示'
@@ -232,7 +232,7 @@
                         //导出选中行
                         $.ajax({
                             type: 'post',
-                            url: '/wildhorse/exportPurchaseOrders',
+                            url: 'exportPurchaseOrders',
                             data: JSON.stringify(datas),
                             contentType : "application/json",
                             success: function (res) {
@@ -259,7 +259,7 @@
                         //导出选中行
                         $.ajax({
                             type: 'post',
-                            url: '/wildhorse/exportProduceOrders',
+                            url: 'exportProduceOrders',
                             data: JSON.stringify(datas),
                             contentType : "application/json",
                             success: function (res) {
@@ -344,7 +344,7 @@
                         parent.layer.msg('打印中...', {icon: 16,shade: 0.3,time:5000});
 
                         frame.style.display ="none";
-                        frame.src = "/wildhorse/printPurchaseOrders?nums="+nums;//controller层的url
+                        frame.src = "printPurchaseOrders?nums="+nums;//controller层的url
                         document.body.appendChild(frame);
                         frame.contentWindow.focus();
                         frame.contentWindow.print();
@@ -367,7 +367,7 @@
                         layer.confirm('确定完成吗？',function (index){
                             $.ajax({
                                 type: 'post',
-                                url: '/wildhorse/completeOrders',
+                                url: 'completeOrders',
                                 data: JSON.stringify(idJSON),
                                 contentType : "application/json",
                                 success:function (res){
@@ -422,7 +422,7 @@
             var productname = $('#productname').val();
             var outputdate = $('#date').val();
             table.reload('testReload',{
-                url:"/wildhorse/getSearchOrder"
+                url:"getSearchOrder"
                 ,method:'post'
                 ,where: {
                     'id':waterid,

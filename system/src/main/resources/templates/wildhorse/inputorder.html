@@ -247,7 +247,7 @@
         //监听提交
         form.on('submit(demo1)', function(data){
             layer.msg(JSON.stringify(data.field));
-            var url = "/wildhorse/saveOrderInfo";
+            var url = "saveOrderInfo";
             $.ajax({
                 url:url,
                 type:"POST",
@@ -279,17 +279,17 @@
                 excel.importExcel(files, {
                     fields: {
                         'waterid': 'B'
-                        ,'ordernum': 'C'
+                        ,'ordernum': 'J'
                         ,'productid': 'D'
                         ,'productname': 'E'
-                        ,'productname2': 'F'
-                        ,'unit': 'G'
-                        ,'num': 'H'
+                        ,'productname2': 'O'
+                        ,'unit': 'H'
+                        ,'num': 'G'
                         ,'outputdate': 'I'
-                        ,'demand': 'J'
-                        ,'price':'K'
-                        ,'neijing':'L'
-                        ,'calculate':'M'
+                        ,'demand': 'L'
+                        ,'price':'M'
+                        ,'neijing':'P'
+                        ,'calculate':'Q'
                     }
                 }, function(data) {
                     //console.log(data);
@@ -315,7 +315,7 @@
                     $.ajax({
                         type: 'post',
                         dataType: "json",
-                        url: '/wildhorse/importYMOrders',
+                        url: 'importYMOrders',
                         data: JSON.stringify(arr),
                         contentType : "application/json",
                         success: function (res) {
