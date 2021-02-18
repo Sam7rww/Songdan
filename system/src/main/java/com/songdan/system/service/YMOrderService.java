@@ -1,6 +1,7 @@
 package com.songdan.system.service;
 
 import com.songdan.system.model.Entity.wildhorse.YMUnprintOrder;
+import com.songdan.system.model.vo.YMOrder;
 
 import java.util.List;
 
@@ -11,6 +12,13 @@ public interface YMOrderService {
      * @return
      */
     public String saveYMOrder(String waterid, String ordernum, String productid, String productname, String productname2, int num, String unit, String date, String demand, String price,String neijing);
+
+    /**
+     * 存储上传的Excel订单信息
+     * @param
+     * @return
+     */
+    public String saveImportExcel(List<YMOrder> orders);
 
     /**
      * 获得全部未处理的野马订单信息

@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class YMpaper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String productid;
@@ -113,5 +113,13 @@ public class YMpaper {
 
     public void setPostion(String postion) {
         this.postion = postion;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

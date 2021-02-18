@@ -144,7 +144,7 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">交货日期</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                                            <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy/MM/dd" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -241,6 +241,7 @@
         //日期
         laydate.render({
             elem: '#date'
+            ,format: 'yyyy/MM/dd'
         });
 
         //监听提交
@@ -260,9 +261,7 @@
                     }
                 },
                 error:function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest.status);
-                    alert(XMLHttpRequest.readyState);
-                    alert(textStatus);
+                    alert('无法上传，请联系管理员!!!');
                 }
             })
 
@@ -276,37 +275,62 @@
             var files = e.target.files;
             var excel = layui.excel;
             try {
-                // 方式一：先读取数据，后梳理数据
-                excel.importExcel(files, {}, function(data) {
-                    console.log(data);
-                    data = excel.filterImportData(data, {
-                        'id': 'A'
-                        ,'username': 'B'
-                        ,'experience': 'C'
-                        ,'sex': 'D'
-                        ,'score': 'E'
-                        ,'city': 'F'
-                        ,'classify': 'G'
-                        ,'wealth': 'H'
-                        ,'sign': 'I'
-                    })
-                    console.log(data);
-                });
-                // 方式二：可以在读取过程中梳理数据
+                // 可以在读取过程中梳理数据
                 excel.importExcel(files, {
                     fields: {
-                        'id': 'A'
-                        ,'username': 'B'
-                        ,'experience': 'C'
-                        ,'sex': 'D'
-                        ,'score': 'E'
-                        ,'city': 'F'
-                        ,'classify': 'G'
-                        ,'wealth': 'H'
-                        ,'sign': 'I'
+                        'waterid': 'B'
+                        ,'ordernum': 'C'
+                        ,'productid': 'D'
+                        ,'productname': 'E'
+                        ,'productname2': 'F'
+                        ,'unit': 'G'
+                        ,'num': 'H'
+                        ,'outputdate': 'I'
+                        ,'demand': 'J'
+                        ,'price':'K'
+                        ,'neijing':'L'
+                        ,'calculate':'M'
                     }
                 }, function(data) {
-                    console.log(data);
+                    //console.log(data);
+                    var arr = new Array();
+                    for(i = 1; i < data[0].Sheet1.length; i++){
+                        var tt = {
+                            waterid : data[0].Sheet1[i].waterid,
+                            ordernum : data[0].Sheet1[i].ordernum,
+                            productid: data[0].Sheet1[i].productid,
+                            productname: data[0].Sheet1[i].productname,
+                            productname2: data[0].Sheet1[i].productname2,
+                            unit: data[0].Sheet1[i].unit,
+                            num: data[0].Sheet1[i].num,
+                            outputdate: data[0].Sheet1[i].outputdate,
+                            demand: data[0].Sheet1[i].demand,
+                            price: data[0].Sheet1[i].price,
+                            neijing: data[0].Sheet1[i].neijing,
+                            calculate: data[0].Sheet1[i].calculate,
+                        };
+                        arr.push(tt);
+                    }
+
+                    $.ajax({
+                        type: 'post',
+                        dataType: "json",
+                        url: '/wildhorse/importYMOrders',
+                        data: JSON.stringify(arr),
+                        contentType : "application/json",
+                        success: function (res) {
+                            if(res.success == "true"){
+                                layer.msg(res.message);
+                            }else{
+                                //表格导入失败后，重载文件上传
+                                layer.alert(res.error+"请重新上传",{icon : 2});
+                            }
+                        },
+                        error:function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert('无法上传，请联系管理员!!!');
+                        }
+                    })
+
                 });
             } catch (e) {
                 layer.alert(e.message);

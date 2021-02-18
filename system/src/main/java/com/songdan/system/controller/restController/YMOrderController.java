@@ -2,6 +2,7 @@ package com.songdan.system.controller.restController;
 
 
 import com.songdan.system.model.Entity.wildhorse.YMUnprintOrder;
+import com.songdan.system.model.vo.YMOrder;
 import com.songdan.system.model.vo.YMProduceOrder;
 import com.songdan.system.model.vo.YMPurchaseOrder;
 import com.songdan.system.service.YMOrderService;
@@ -50,6 +51,25 @@ public class YMOrderController {
             message.put("result",result);
         }
 
+        return message;
+    }
+
+    //导入Excel
+    @RequestMapping(value = "/importYMOrders")
+    public Map<String,String> importYMOrders(@RequestBody List<YMOrder> orders){
+
+        //System.out.println("Enter Excel import!");
+        //System.out.println("waterid NO.0:"+orders.get(0).getWaterid());
+
+        String result = ymOrderService.saveImportExcel(orders);
+        Map<String,String> message = new HashMap<String, String>();
+        if(result.equals("")){
+            message.put("success","true");
+            message.put("message","订单全部保存完成，输入订单数量:"+orders.size());
+        }else{
+            message.put("success","false");
+            message.put("error",result);
+        }
         return message;
     }
 
@@ -113,4 +133,5 @@ public class YMOrderController {
         boolean res = ymOrderService.completeOrder(ids);
         return res;
     }
+
 }

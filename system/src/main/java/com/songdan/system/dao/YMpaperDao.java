@@ -11,6 +11,8 @@ public interface YMpaperDao extends JpaRepository<YMpaper,String> {
     public YMpaper save(YMpaper paper);
 
     //查询是否存在
-    @Query(nativeQuery = true,value = "select * from ympaper p where p.productid = ?2 and p.productname = ?1")
-    public boolean exists(String name,String id);
+    //@Query(nativeQuery = true,value = "select * from ympaper p where p.productid = ?2 and p.productname = ?1")
+    public boolean existsByProductid(String productid);
+
+    public YMpaper findByProductid(String productid);
 }

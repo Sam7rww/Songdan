@@ -9,7 +9,7 @@ import java.sql.Date;
 public class YMUnprintOrder {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     //采购流水号
 
@@ -208,5 +208,13 @@ public class YMUnprintOrder {
 
     public void setState(int over) {
         this.state = over;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

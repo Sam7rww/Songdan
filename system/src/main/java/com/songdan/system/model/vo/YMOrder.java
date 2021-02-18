@@ -1,17 +1,10 @@
-package com.songdan.system.model.Entity.wildhorse;
+package com.songdan.system.model.vo;
 
-import javax.persistence.*;
-import java.sql.Date;
+import java.io.Serializable;
 
+public class YMOrder implements Serializable {
 
-@Entity
-public class YMprintOrder {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     //采购流水号
-    @Column(unique = true, nullable = false)
     private String waterid;
 
     //作业单号
@@ -39,26 +32,15 @@ public class YMprintOrder {
     private String demand;
 
     //含税单价
-    private double price;
+    private String price;
 
-    public YMprintOrder(){
-    }
+    //内径
+    private String neijing;
 
-    public YMprintOrder(String waterid, String ordernum, String productid, String productname, String productname2, int num, String unit, String outputdate, String demand, double price) {
-        this.waterid = waterid;
-        this.ordernum = ordernum;
-        this.productid = productid;
-        this.productname = productname;
-        this.productname2 = productname2;
-        this.num = num;
-        this.unit = unit;
-        this.outputdate = outputdate;
-        this.demand = demand;
-        this.price = price;
-    }
+    //计算方式
+    private String calculate;
 
-    public YMprintOrder(String id){
-        this.waterid = id;
+    public YMOrder() {
     }
 
     public String getWaterid() {
@@ -117,22 +99,6 @@ public class YMprintOrder {
         this.unit = unit;
     }
 
-    public String getDemand() {
-        return demand;
-    }
-
-    public void setDemand(String demand) {
-        this.demand = demand;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public String getOutputdate() {
         return outputdate;
     }
@@ -141,11 +107,35 @@ public class YMprintOrder {
         this.outputdate = outputdate;
     }
 
-    public int getId() {
-        return id;
+    public String getDemand() {
+        return demand;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDemand(String demand) {
+        this.demand = demand;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getNeijing() {
+        return neijing;
+    }
+
+    public void setNeijing(String neijing) {
+        this.neijing = neijing;
+    }
+
+    public String getCalculate() {
+        return calculate;
+    }
+
+    public void setCalculate(String calculate) {
+        this.calculate = calculate;
     }
 }
