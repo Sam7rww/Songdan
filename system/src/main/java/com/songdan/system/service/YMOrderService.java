@@ -11,7 +11,9 @@ public interface YMOrderService {
      * @param
      * @return
      */
-    public String saveYMOrder(String waterid, String ordernum, String productid, String productname, String productname2, int num, String unit, String date, String demand, String price,String neijing,String gecengban);
+    public String saveYMOrder(String waterid, String ordernum, String productid,
+                              String productname, String productname2, int num, String unit,
+                              String date, String demand, String price,String neijing,String gecengban);
 
     /**
      * 存储上传的Excel订单信息
@@ -19,6 +21,21 @@ public interface YMOrderService {
      * @return
      */
     public String saveImportExcel(List<YMOrder> orders);
+
+    /**
+     * 更新野马订单信息
+     * @param
+     * @return
+     */
+    public String updateYMOrder(String waterid, int num, String date, String demand,
+                                String price,int state);
+
+    /**
+     * 更新野马订单信息
+     * @param
+     * @return
+     */
+    public String deleteYMOrder(String waterid, int state);
 
     /**
      * 获得全部未处理的野马订单信息

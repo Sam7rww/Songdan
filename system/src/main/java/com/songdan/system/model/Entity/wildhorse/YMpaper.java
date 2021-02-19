@@ -1,9 +1,6 @@
 package com.songdan.system.model.Entity.wildhorse;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class YMpaper {
@@ -12,8 +9,10 @@ public class YMpaper {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(unique = true, nullable = false)
     private String productid;
 
+    @Column(unique = true, nullable = false)
     private String productname;
 
     private String productname2;

@@ -15,7 +15,7 @@ public class YMInputController {
 
     @RequestMapping(value = "/changeorder")
     public String changeOrder(){
-        return "wildhorse/";
+        return "wildhorse/changeorder";
     }
 
     @RequestMapping(value = "/printorder")

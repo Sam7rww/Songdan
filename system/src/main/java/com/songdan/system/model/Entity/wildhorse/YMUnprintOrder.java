@@ -12,7 +12,7 @@ public class YMUnprintOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     //采购流水号
-
+    @Column(unique = true, nullable = false)
     private String waterid;
 
     //作业单号

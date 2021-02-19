@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,24 @@ public class YMOrderController {
     @Autowired
     private YMPrintService ymPrintService;
 
+    private static Map<String,String> matchUnit = new HashMap<String,String>(){
+        {
+            put("只","0");
+            put("张","1");
+            put("套","2");
+            put("0","只");
+            put("1","张");
+            put("2","套");
+        }
+    };
+
+//    private static Map<String,String> matchState = new HashMap<String,String>(){
+//        {
+//            put("0","未打印");
+//            put("0","已打印");
+//        }
+//    };
+
     //保存订单
     @RequestMapping(value = "/saveOrderInfo")
     public Map<String,String> saveOrderInfo(HttpServletRequest request){
@@ -39,7 +58,7 @@ public class YMOrderController {
         String productname2 = request.getParameter("name2");
         String neijing = request.getParameter("neijing");
         int num = Integer.parseInt(request.getParameter("number").trim());
-        String unit = request.getParameter("unit").equals("0") ?"只":"套";
+        String unit = matchUnit.get(request.getParameter("unit").trim());
         String date = request.getParameter("date");
         String price = request.getParameter("price").trim();
         String desc = request.getParameter("desc");
@@ -55,7 +74,7 @@ public class YMOrderController {
         return message;
     }
 
-    //导入Excel
+    //导入Excel订单信息
     @RequestMapping(value = "/importYMOrders")
     public Map<String,String> importYMOrders(@RequestBody List<YMOrder> orders){
 
@@ -91,9 +110,78 @@ public class YMOrderController {
         String productname = request.getParameter("name");
         String date = request.getParameter("date");
         List<YMUnprintOrder> orders = ymOrderService.getSearchYMOrder(waterid,ordernum,productname,date);
-//        System.out.println("orders长度："+orders.size());
-//        System.out.println("orders[0]:"+orders.get(0).getWaterid());
         return orders;
+    }
+
+    //查询订单
+    @RequestMapping(value = "/findOrder")
+    public Map<String,Object> findOrder(@RequestParam("waterid") String waterid){
+//        System.out.println("Enter findOrder!!");
+        List<String> orders = new ArrayList<>();
+        orders.add(waterid);
+        List<YMUnprintOrder> res = ymOrderService.findEachByWaterid(orders);
+        Map<String,Object> message = new HashMap<String, Object>();
+        if(res.size() == 0){
+            message.put("result","fail");
+            message.put("result","查询不到该订单。请确认输入");
+        }else{
+            message.put("result","pass");
+            YMUnprintOrder temp = res.get(0);
+            message.put("ordernum",temp.getOrdernum());
+            message.put("productid",temp.getProductid());
+            message.put("productname",temp.getProductname());
+            message.put("productname2",temp.getProductname2());
+            message.put("unit",matchUnit.get(temp.getUnit()));
+            message.put("num",temp.getNum());
+            message.put("outputdate",temp.getOutputdate());
+            message.put("demand",temp.getDemand());
+            message.put("price",temp.getPrice());
+            message.put("neijing",temp.getNeijing());
+            message.put("waijing",temp.getWaijing());
+            message.put("yaxian",temp.getYaxian());
+            message.put("banpian",temp.getBanpian());
+            message.put("gecengban",temp.getGecengban());
+            message.put("state",temp.getState());
+        }
+
+        return message;
+    }
+
+    //更新订单
+    @RequestMapping(value = "/updateOrder")
+    public Map<String,String> updateOrder(HttpServletRequest request){
+        String waterid = request.getParameter("id");
+        int num = Integer.parseInt(request.getParameter("number").trim());
+        String date = request.getParameter("date");
+        String price = request.getParameter("price").trim();
+        String desc = request.getParameter("desc");
+        int state = Integer.parseInt(request.getParameter("state").trim());
+        String result = ymOrderService.updateYMOrder(waterid,num,date,desc,price,state);
+
+        Map<String,String> message = new HashMap<String, String>();
+        if(result.equals("")){
+            message.put("result","pass");
+        }else{
+            message.put("result",result);
+        }
+
+        return message;
+    }
+
+    //删除订单
+    @RequestMapping(value = "/deleteOrder")
+    public Map<String,String> deleteOrder(@RequestParam("waterid") String waterid,@RequestParam("state") String state){
+
+        String result = ymOrderService.deleteYMOrder(waterid,Integer.parseInt(state));
+
+        Map<String,String> message = new HashMap<String, String>();
+        if(result.equals("")){
+            message.put("result","pass");
+        }else{
+            message.put("result",result);
+        }
+
+        return message;
     }
 
     //获取今日输入订单

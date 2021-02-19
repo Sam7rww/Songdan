@@ -99,9 +99,52 @@ public class YMOrderServiceImpl implements YMOrderService {
     }
 
     @Override
+    public String updateYMOrder(String waterid, int num, String date, String demand, String price, int state) {
+        YMUnprintOrder formerorder = ymunprint.findByWaterid(waterid);
+        if(formerorder == null){
+            return "不可修改流水号或该流水号订单不存在！！";
+        }
+        if(formerorder.getState()!=state && state==1){//未打印->打印
+            ymunprint.updateInfo(waterid,num,date,Double.parseDouble(price.trim()),state,demand);
+            YMprintOrder printorder = new YMprintOrder(waterid,formerorder.getOrdernum(),
+                    formerorder.getProductid(),formerorder.getProductname(),formerorder.getProductname2(),
+                    num,formerorder.getUnit(),date,demand,Double.parseDouble(price.trim()));
+            ymprint.save(printorder);
+        }else if(formerorder.getState()!=state && state==0){//打印->未打印
+            ymunprint.updateInfo(waterid,num,date,Double.parseDouble(price.trim()),state,demand);
+            ymprint.deleteByWaterid(waterid);
+        }else{
+            ymunprint.updateInfo(waterid,num,date,Double.parseDouble(price.trim()),state,demand);
+        }
+
+        return "";
+    }
+
+    @Override
+    public String deleteYMOrder(String waterid, int state) {
+        boolean exists = ymunprint.existsByWaterid(waterid);
+        if(!exists){
+            return "不可修改流水号或该流水号订单不存在！！";
+        }
+        if(state == 0){
+            ymunprint.deleteByWaterid(waterid);
+        }else{
+            ymunprint.deleteByWaterid(waterid);
+            boolean exists2 = ymprint.existsByWaterid(waterid);
+            if(exists2){
+                ymprint.deleteByWaterid(waterid);
+            }else{
+                return "删除订单请不要修改订单状态。";
+            }
+        }
+        return "";
+    }
+
+
+    @Override
     public List<YMUnprintOrder> getAllYMOrder() {
         List<YMUnprintOrder> ymorderlist = ymunprint.findAll();
-        this.cutOrdernum(ymorderlist);
+        //this.cutOrdernum(ymorderlist);
         return ymorderlist;
     }
 
@@ -115,7 +158,7 @@ public class YMOrderServiceImpl implements YMOrderService {
                 return ymorderlist;
             }
             ymorderlist.add(order);
-            this.cutOrdernum(ymorderlist);
+            //this.cutOrdernum(ymorderlist);
             return ymorderlist;
         }else{
             //方法1，通过EntityManager，自己append sql
@@ -145,7 +188,7 @@ public class YMOrderServiceImpl implements YMOrderService {
                 return query.getRestriction();
             };
             List<YMUnprintOrder> ymorderlist = ymunprint.findAll(sf);
-            this.cutOrdernum(ymorderlist);
+            //this.cutOrdernum(ymorderlist);
             return ymorderlist;
         }
     }

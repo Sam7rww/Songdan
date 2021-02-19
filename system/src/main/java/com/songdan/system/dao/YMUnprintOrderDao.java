@@ -33,6 +33,7 @@ public interface YMUnprintOrderDao extends JpaRepository<YMUnprintOrder,String>,
     public YMUnprintOrder findByWaterid(String waterid);
 
     //删去一条
+    @Transactional
     public void deleteByWaterid(String waterid);
 
     //查询存在
@@ -47,5 +48,12 @@ public interface YMUnprintOrderDao extends JpaRepository<YMUnprintOrder,String>,
     @Query("update YMUnprintOrder a set a.state = ?2 where a.waterid = ?1")
     //@Query("update YMUnprintOrder set state =:state where waterid =:waterid")
     public void updateState(@Param("waterid") String waterid, @Param("state") int state);
+
+    @Modifying
+    @Transactional
+    @Query("update YMUnprintOrder a set a.num=?2, a.outputdate=?3, a.price=?4, a.state=?5, a.demand=?6 where a.waterid = ?1")
+    public void updateInfo(@Param("waterid") String waterid, @Param("num") int num,
+                           @Param("outputdate") String outputdate,@Param("price") double price,
+                           @Param("state") int state,@Param("demand") String demand);
 
 }

@@ -14,30 +14,35 @@
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item">
-                <a href="javascript:;">订单录入</a>
+                <a href="javascript:;">野马订单录入</a>
                 <dl class="layui-nav-child">
                     <dd><a th:href="@{/wildhorse/inputorder}">野马订单添加</a></dd>
-                    <dd><a href="">中银订单添加</a></dd>
-                    <dd><a href="">野马订单修改</a></dd>
-                    <dd><a href="">中银订单修改</a></dd>
+                    <dd><a th:href="@{/wildhorse/changeorder}">野马订单修改</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">双鹿订单录入</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">双鹿订单添加</a></dd>
+                    <dd><a href="">双鹿订单修改</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
                 <a href="javascript:;">订单打印</a>
                 <dl class="layui-nav-child">
                     <dd><a th:href="@{/wildhorse/printorder}">野马订单打印</a></dd>
-                    <dd><a href="">中银订单打印</a></dd>
+                    <dd><a href="">双鹿订单打印</a></dd>
                 </dl>
             </li>
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    贤心
+                    <img th:src="@{/images/navimg/wildhorse.jpg}" class="layui-nav-img">
+                    野马订单
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">厂长</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item"><a href="">退出</a></li>
@@ -49,7 +54,7 @@
         <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">
             <div class="layui-col-md12">
                 <div class="layui-card">
-                    <div class="layui-card-header">采购订单输入</div>
+                    <div class="layui-card-header">野马采购订单输入</div>
                     <div class="layui-card-body">
                         <form class="layui-form layui-form-pane" action="">
                             <div class="layui-row layui-col-space15">
@@ -143,7 +148,8 @@
                                             <select name="unit" lay-verify="required">
                                                 <option value=""></option>
                                                 <option value="0">只</option>
-                                                <option value="1">套</option>
+                                                <option value="1">张</option>
+                                                <option value="2">套</option>
                                             </select>
                                         </div>
                                     </div>
@@ -194,7 +200,7 @@
         <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">
             <div class="layui-col-md12">
                 <div class="layui-card">
-                    <div class="layui-card-header">Excel批量导入订单,格式为野马网站。ps:请先下载模板。Excel需按照格式排版，否则会报错。</div>
+                    <div class="layui-card-header">Excel批量导入订单,格式为浙江野马网站。ps:请先下载模板。Excel需按照格式排版，否则会报错。</div>
                     <div class="layui-card-body">
                         <div class="layui-row layui-col-space15">
                             <div class="layui-col-md12">
@@ -220,13 +226,39 @@
         <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">
             <div class="layui-col-md12">
                 <div class="layui-card">
+                    <div class="layui-card-header">Excel批量导入订单,格式为宁波野马网站。ps:请先下载模板。Excel需按照格式排版，否则会报错。</div>
+                    <div class="layui-card-body">
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-md12">
+                                <div class="layui-form-label">导出模板</div>
+                                <div class="layui-form-block">
+                                    <a class="layui-btn layui-btn-primary" th:href="@{/demo/nbweb_excel.xlsx}" id="template2">Excel模板格式</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-md12">
+                                <div class="layui-form-label">导入操作</div>
+                                <div class="layui-form-block">
+                                    <input type="file" class="layui-btn layui-btn-primary" id="LAY-excel-import-excel3" multiple="multiple">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">
+            <div class="layui-col-md12">
+                <div class="layui-card">
                     <div class="layui-card-header">Excel批量导入订单,格式为邮箱采购订单。ps:请先下载模板。Excel需按照格式排版，否则会报错。</div>
                     <div class="layui-card-body">
                         <div class="layui-row layui-col-space15">
                             <div class="layui-col-md12">
                                 <div class="layui-form-label">导出模板</div>
                                 <div class="layui-form-block">
-                                    <a class="layui-btn layui-btn-primary" th:href="@{/demo/mail_excel.xlsx}" id="template2">Excel模板格式</a>
+                                    <a class="layui-btn layui-btn-primary" th:href="@{/demo/mail_excel.xlsx}" id="template3">Excel模板格式</a>
                                 </div>
                             </div>
                         </div>
@@ -329,6 +361,74 @@
                         ,'num': 'G'
                         ,'outputdate': 'I'
                         ,'demand': 'L'
+                        ,'price':'M'
+                        ,'neijing':'P'
+                        ,'calculate':'Q'
+                        ,'gecengban':'R'
+                    }
+                }, function(data) {
+                    console.log(data);
+                    var arr = new Array();
+                    for(i = 1; i < data[0].Sheet1.length; i++){
+                        var tt = {
+                            waterid : data[0].Sheet1[i].waterid,
+                            ordernum : data[0].Sheet1[i].ordernum,
+                            productid: data[0].Sheet1[i].productid,
+                            productname: data[0].Sheet1[i].productname,
+                            productname2: data[0].Sheet1[i].productname2,
+                            unit: data[0].Sheet1[i].unit,
+                            num: data[0].Sheet1[i].num,
+                            outputdate: excel.dateCodeFormat(data[0].Sheet1[i].outputdate,'YYYY/MM/DD'),
+                            demand: data[0].Sheet1[i].demand,
+                            price: data[0].Sheet1[i].price,
+                            neijing: data[0].Sheet1[i].neijing,
+                            calculate: data[0].Sheet1[i].calculate,
+                            gecengban: data[0].Sheet1[i].gecengban,
+                        };
+                        arr.push(tt);
+                    }
+
+                    $.ajax({
+                        type: 'post',
+                        dataType: "json",
+                        url: 'importYMOrders',
+                        data: JSON.stringify(arr),
+                        contentType : "application/json",
+                        success: function (res) {
+                            if(res.success == "true"){
+                                layer.msg(res.message);
+                            }else{
+                                //表格导入失败后，重载文件上传
+                                layer.alert(res.error+"请重新上传",{icon : 2});
+                            }
+                        },
+                        error:function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert('无法上传，请联系管理员!!!');
+                        }
+                    })
+
+                });
+            } catch (e) {
+                layer.alert(e.message);
+            }
+        });
+
+        $('#LAY-excel-import-excel3').change(function(e) {
+            var files = e.target.files;
+            var excel = layui.excel;
+            try {
+                // 可以在读取过程中梳理数据
+                excel.importExcel(files, {
+                    fields: {
+                        'waterid': 'B'
+                        ,'ordernum': 'J'
+                        ,'productid': 'D'
+                        ,'productname': 'E'
+                        ,'productname2': 'L'
+                        ,'unit': 'H'
+                        ,'num': 'G'
+                        ,'outputdate': 'O'
+                        ,'demand': 'I'
                         ,'price':'M'
                         ,'neijing':'P'
                         ,'calculate':'Q'
