@@ -30,10 +30,12 @@ public class YMpaper {
     //图纸保存位置
     private String postion;
 
+    private String gecengban;
+
     public YMpaper(){
     }
 
-    public YMpaper(String productid, String productname, String neijing, String waijing, String banpian, String yaxian, String type) {
+    public YMpaper(String productid, String productname, String neijing, String waijing, String banpian, String yaxian, String type, String gecengban) {
         this.productid = productid;
         this.productname = productname;
         this.neijing = neijing;
@@ -41,6 +43,7 @@ public class YMpaper {
         this.banpian = banpian;
         this.yaxian = yaxian;
         this.type = type;
+        this.gecengban = gecengban;
     }
 
     public String getProductid() {
@@ -121,5 +124,13 @@ public class YMpaper {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getGecengban() {
+        return gecengban;
+    }
+
+    public void setGecengban(String gecengban) {
+        this.gecengban = gecengban;
     }
 }

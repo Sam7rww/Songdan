@@ -11,7 +11,7 @@ public interface YMOrderService {
      * @param
      * @return
      */
-    public String saveYMOrder(String waterid, String ordernum, String productid, String productname, String productname2, int num, String unit, String date, String demand, String price,String neijing);
+    public String saveYMOrder(String waterid, String ordernum, String productid, String productname, String productname2, int num, String unit, String date, String demand, String price,String neijing,String gecengban);
 
     /**
      * 存储上传的Excel订单信息

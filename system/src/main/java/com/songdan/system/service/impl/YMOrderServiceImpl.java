@@ -34,7 +34,7 @@ public class YMOrderServiceImpl implements YMOrderService {
     private YMprintOrderDao ymprint;
 
     @Override
-    public String saveYMOrder(String waterid, String ordernum, String productid, String productname, String productname2, int num, String unit, String outputdate, String demand, String price, String neijing) {
+    public String saveYMOrder(String waterid, String ordernum, String productid, String productname, String productname2, int num, String unit, String outputdate, String demand, String price, String neijing,String gecengban) {
         java.util.Date date = new java.util.Date();
         java.sql.Date sDate = new java.sql.Date(date.getTime());//年月日
         ComputeNeiJing com = new ComputeNeiJing(neijing);
@@ -42,7 +42,7 @@ public class YMOrderServiceImpl implements YMOrderService {
         if(temp){
             return "采购流水号不可重复";
         }
-        YMUnprintOrder ymorder = new YMUnprintOrder(waterid,ordernum,productid,productname,productname2,num,unit,sDate,outputdate,demand,Double.parseDouble(price),neijing,com.getWaiJing(),com.getBanPian(),com.getYaXian());
+        YMUnprintOrder ymorder = new YMUnprintOrder(waterid,ordernum,productid,productname,productname2,num,unit,sDate,outputdate,demand,Double.parseDouble(price),neijing,com.getWaiJing(),com.getBanPian(),com.getYaXian(),gecengban);
         YMUnprintOrder ym = ymunprint.save(ymorder);
         if(ym != null){
             return "";
@@ -62,15 +62,17 @@ public class YMOrderServiceImpl implements YMOrderService {
             if(exists){
                 continue;
             }
-            YMUnprintOrder ymorder = new YMUnprintOrder(order.getWaterid(),order.getOrdernum(),order.getProductid(),order.getProductname(),order.getProductname2(),order.getNum(),order.getUnit(),sDate,order.getOutputdate(),order.getDemand(),Double.parseDouble(order.getPrice().trim()),"","","","");
-            System.out.println("ymunprintorder key id:"+ymorder.getId());
+            YMUnprintOrder ymorder = new YMUnprintOrder(order.getWaterid(),order.getOrdernum(),order.getProductid(),order.getProductname(),order.getProductname2(),order.getNum(),order.getUnit(),sDate,order.getOutputdate(),order.getDemand(),Double.parseDouble(order.getPrice().trim()),"","","","",order.getGecengban());
+            //System.out.println("ymunprintorder outputdate :"+ymorder.getOutputdate());
             YMpaper targetPaper = paper.findByProductid(order.getProductid());
             if(targetPaper!=null){//找的到图纸
+                //System.out.println("find paper");
                 ymorder.setNeijing(targetPaper.getNeijing());
                 ymorder.setWaijing(targetPaper.getWaijing());
                 ymorder.setBanpian(targetPaper.getBanpian());
                 ymorder.setYaxian(targetPaper.getYaxian());
             }else{//找不到图纸
+                //System.out.println("can't find paper");
                 if(order.getNeijing().equals("")){
                     return "采购流水号："+order.getWaterid()+"，图纸不存在，内径不可为空！";
                 }
@@ -80,16 +82,16 @@ public class YMOrderServiceImpl implements YMOrderService {
                     ymorder.setWaijing(com.getWaiJing());
                     ymorder.setBanpian(com.getBanPian());
                     ymorder.setYaxian(com.getYaXian());
-                    YMpaper p = new YMpaper(order.getProductid(),order.getProductname(),order.getNeijing(),com.getWaiJing(),com.getBanPian(),com.getYaXian(),order.getCalculate());
+                    YMpaper p = new YMpaper(order.getProductid(),order.getProductname(),order.getNeijing(),com.getWaiJing(),com.getBanPian(),com.getYaXian(),order.getCalculate(),order.getGecengban());
                     YMpaper paperRes = paper.save(p);
                     if(paperRes == null){
                         return "图纸保存失败，请检查图纸相关输入";
                     }
                 }else{return "暂不支持非默认计算方式";}
-                YMUnprintOrder ym = ymunprint.save(ymorder);
-                if(ym == null){
-                    return "采购流水号："+order.getWaterid()+"保存失败，请检查输入！必须项不可为空";
-                }
+            }
+            YMUnprintOrder ym = ymunprint.save(ymorder);
+            if(ym == null){
+                return "采购流水号："+order.getWaterid()+"保存失败，请检查输入！必须项不可为空";
             }
         }
 
@@ -99,6 +101,7 @@ public class YMOrderServiceImpl implements YMOrderService {
     @Override
     public List<YMUnprintOrder> getAllYMOrder() {
         List<YMUnprintOrder> ymorderlist = ymunprint.findAll();
+        this.cutOrdernum(ymorderlist);
         return ymorderlist;
     }
 
@@ -112,6 +115,7 @@ public class YMOrderServiceImpl implements YMOrderService {
                 return ymorderlist;
             }
             ymorderlist.add(order);
+            this.cutOrdernum(ymorderlist);
             return ymorderlist;
         }else{
             //方法1，通过EntityManager，自己append sql
@@ -141,6 +145,7 @@ public class YMOrderServiceImpl implements YMOrderService {
                 return query.getRestriction();
             };
             List<YMUnprintOrder> ymorderlist = ymunprint.findAll(sf);
+            this.cutOrdernum(ymorderlist);
             return ymorderlist;
         }
     }
@@ -175,5 +180,14 @@ public class YMOrderServiceImpl implements YMOrderService {
             ymprint.save(printorder);
         }
         return true;
+    }
+
+    public void cutOrdernum(List<YMUnprintOrder> orders){
+        for(int i=0;i<orders.size();i++){
+            String ordernum = orders.get(i).getOrdernum();
+            String cut = ordernum.substring(ordernum.length()-5);
+            orders.get(i).setOrdernum(cut);
+        }
+        return ;
     }
 }

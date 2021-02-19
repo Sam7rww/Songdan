@@ -40,6 +40,9 @@ public class YMOrder implements Serializable {
     //计算方式
     private String calculate;
 
+    //隔层板
+    private String gecengban;
+
     public YMOrder() {
     }
 
@@ -137,5 +140,13 @@ public class YMOrder implements Serializable {
 
     public void setCalculate(String calculate) {
         this.calculate = calculate;
+    }
+
+    public String getGecengban() {
+        return gecengban;
+    }
+
+    public void setGecengban(String gecengban) {
+        this.gecengban = gecengban;
     }
 }

@@ -43,7 +43,8 @@ public class YMOrderController {
         String date = request.getParameter("date");
         String price = request.getParameter("price").trim();
         String desc = request.getParameter("desc");
-        String result = ymOrderService.saveYMOrder(waterid,ordernum,productid,productname,productname2,num,unit,date,desc,price,neijing);
+        String gecengban = request.getParameter("gecengban").trim();
+        String result = ymOrderService.saveYMOrder(waterid,ordernum,productid,productname,productname2,num,unit,date,desc,price,neijing,gecengban);
         Map<String,String> message = new HashMap<String, String>();
         if(result.equals("")){
             message.put("result","pass");
@@ -118,7 +119,7 @@ public class YMOrderController {
         return produceOrders;
     }
 
-    //print采购订单
+    //print瓦楞纸板采购订单
     @RequestMapping(value = "/printPurchaseOrders")
     public void printPurchaseOrders(@RequestParam("nums") Object nums, HttpServletResponse response) throws Exception{
         ymPrintService.printPurchaseOrder(nums,response);

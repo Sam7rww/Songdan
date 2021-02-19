@@ -112,8 +112,8 @@
             <script type="text/html" id="toolbarDemo">
                 <div class="layui-btn-container">
                     <button class="layui-btn layui-btn-sm" lay-event="printData">自选列打印</button>
-                    <button class="layui-btn layui-btn-sm" lay-event="printPurchaseData">打印采购订单</button>
-                    <button class="layui-btn layui-btn-sm" lay-event="printProduceData">打印生产通知单</button>
+                    <button class="layui-btn layui-btn-sm" lay-event="printPurchaseData">打印瓦楞纸板采购订单</button>
+<!--                    <button class="layui-btn layui-btn-sm" lay-event="printProduceData">打印生产通知单</button>-->
                     <button class="layui-btn layui-btn-sm" lay-event="exportPurchaseData">导出采购订单EXCEL</button>
                     <button class="layui-btn layui-btn-sm" lay-event="exportProduceData">导出生产通知单EXCEL</button>
                     <button class="layui-btn layui-btn-sm" lay-event="completeCheckData">完成选中订单</button>
@@ -150,6 +150,7 @@
         //日期
         laydate.render({
             elem: '#date'
+            ,format: 'yyyy/MM/dd'
         });
 
         //监听提交
@@ -212,6 +213,7 @@
                 ,{field:'banpian', width:170, title: '板片'}
                 ,{field:'yaxian', width:170, title: '压线'}
                 ,{field:'demand', width:500, title: '生产要求及噱头'}
+                ,{field: 'gecengban',width: 350,title: '隔层板要求'}
             ]
             ]
             ,id: 'testReload'
@@ -329,7 +331,7 @@
                         alert('请先选中要打印的数据！');
                     }
                     break;
-                case 'printPurchaseData': //打印采购订单
+                case 'printPurchaseData': //打印瓦楞纸板采购订单
 
                     //获取选中的行
                     var datas = checkStatus.data;

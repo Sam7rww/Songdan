@@ -60,10 +60,12 @@ public class YMUnprintOrder {
     //0:未打印
     private int state;
 
+    private String gecengban;
+
     public YMUnprintOrder(){
     }
 
-    public YMUnprintOrder(String waterid, String ordernum, String productid, String productname, String productname2, int num, String unit, Date inputdate, String outputdate, String demand, double price, String neijing, String waijing, String banpian, String yaxian) {
+    public YMUnprintOrder(String waterid, String ordernum, String productid, String productname, String productname2, int num, String unit, Date inputdate, String outputdate, String demand, double price, String neijing, String waijing, String banpian, String yaxian, String gecengban) {
         this.waterid = waterid;
         this.ordernum = ordernum;
         this.productid = productid;
@@ -80,6 +82,7 @@ public class YMUnprintOrder {
         this.banpian = banpian;
         this.yaxian = yaxian;
         this.state = 0;
+        this.gecengban = gecengban;
     }
 
     public String getWaterid() {
@@ -216,5 +219,13 @@ public class YMUnprintOrder {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getGecengban() {
+        return gecengban;
+    }
+
+    public void setGecengban(String gecengban) {
+        this.gecengban = gecengban;
     }
 }

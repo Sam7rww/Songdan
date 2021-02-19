@@ -102,7 +102,7 @@ public class YMPrintServiceImpl implements YMPrintService {
         //查询选中的订单信息
         List<YMUnprintOrder> ymorders = ymOrderService.findEachByWaterid(data);
         for (YMUnprintOrder temp:ymorders) {
-            String[] arr = {temp.getWaterid(),temp.getOrdernum(),temp.getProductid(),temp.getProductname(),temp.getProductname2(),String.valueOf(temp.getNum()),temp.getUnit(),temp.getOutputdate(),temp.getDemand(),String.valueOf(temp.getPrice())};
+            String[] arr = {"","",temp.getBanpian(),temp.getYaxian(),temp.getNum()+"",temp.getOutputdate(),""};
             list.add(arr);
         }
         try {
@@ -124,24 +124,28 @@ public class YMPrintServiceImpl implements YMPrintService {
             document.open();
 
             //标题
-            Paragraph paragraphOne = new Paragraph("野马电池采购订单",titleFont);
+            Paragraph paragraphOne = new Paragraph("松旦包装瓦楞纸板采购订单",titleFont);
             paragraphOne.setAlignment(Element.ALIGN_CENTER);
+            paragraphOne.setSpacingAfter(50);
+            paragraphOne.setSpacingBefore(50);
             document.add(paragraphOne);
             //标题下附注
-            Paragraph paragraph1 = new Paragraph("供应商:松旦包装印刷有限公司",nomalFont);
-            paragraph1.setAlignment(Element.ALIGN_LEFT);
-            document.add(paragraph1);
+//            Paragraph paragraph1 = new Paragraph("供应商:松旦包装印刷有限公司",nomalFont);
+//            paragraph1.setAlignment(Element.ALIGN_LEFT);
+//            document.add(paragraph1);
 
 
             // table1
-            PdfPTable table1 = new PdfPTable(10);
+            PdfPTable table1 = new PdfPTable(7);
             table1.setWidthPercentage(100); // Width 100%
-            String[] ths = {"采购流水号", "作业单号", "物料代码","物料名称", "别名", "数量","单位","交货日期","生产要求及噱头","含税单价"};
-            for (int i = 0; i < ths.length; i++) {
-                Paragraph para = new Paragraph(ths[i], thFont);
+            float[] columnWidths = {0.15f, 0.15f,0.20f,0.20f,0.10f,0.10f,0.10f};
+            table1.setWidths(columnWidths);
+            String[] ths = {"材质代号","楞型","板片尺寸","压线尺寸","数量","交货日期","备注"};
+            for (String th : ths) {
+                Paragraph para = new Paragraph(th, thFont);
                 para.setAlignment(Element.ALIGN_CENTER);
                 PdfPCell cell = new PdfPCell(para);
-                cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table1.addCell(cell);
             }
@@ -150,14 +154,15 @@ public class YMPrintServiceImpl implements YMPrintService {
             // table2
 
             for (int i = 0; i < list.size(); i++) {
-                PdfPTable table2 = new PdfPTable(10);
+                PdfPTable table2 = new PdfPTable(7);
                 table2.setWidthPercentage(100); // Width 100%
+                table2.setWidths(columnWidths);
                 String[] arr = (String[]) list.get(i);
                 for (int j = 0; j < arr.length; j++) {
                     Paragraph para = new Paragraph(arr[j], nomalFont);
                     para.setAlignment(Element.ALIGN_CENTER);
                     PdfPCell cell = new PdfPCell(para);
-                    cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                     table2.addCell(cell);
                 }
