@@ -9,7 +9,7 @@ import com.songdan.system.model.Entity.wildhorse.YMpaper;
 import com.songdan.system.model.Entity.wildhorse.YMprintOrder;
 import com.songdan.system.model.vo.YMOrder;
 import com.songdan.system.service.YMOrderService;
-import com.songdan.system.service.util.ComputeNeiJing;
+import com.songdan.system.service.util.ComputeNeiJingYM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -37,17 +37,20 @@ public class YMOrderServiceImpl implements YMOrderService {
     public String saveYMOrder(String waterid, String ordernum, String productid, String productname, String productname2, int num, String unit, String outputdate, String demand, String price, String neijing,String gecengban) {
         java.util.Date date = new java.util.Date();
         java.sql.Date sDate = new java.sql.Date(date.getTime());//年月日
-        ComputeNeiJing com = new ComputeNeiJing(neijing);
+        ComputeNeiJingYM com = new ComputeNeiJingYM(neijing);
+        if(!com.assertInput()){
+            return "内径输入有误，请检查。";
+        }
         boolean temp = ymunprint.existsByWaterid(waterid);
         if(temp){
-            return "采购流水号不可重复";
+            return "采购流水号不可重复。";
         }
         YMUnprintOrder ymorder = new YMUnprintOrder(waterid,ordernum,productid,productname,productname2,num,unit,sDate,outputdate,demand,Double.parseDouble(price),neijing,com.getWaiJing(),com.getBanPian(),com.getYaXian(),gecengban);
         YMUnprintOrder ym = ymunprint.save(ymorder);
         if(ym != null){
             return "";
         }else{
-            return "保存失败，检查输入";
+            return "保存失败，检查输入。";
         }
     }
 
@@ -77,7 +80,10 @@ public class YMOrderServiceImpl implements YMOrderService {
                     return "采购流水号："+order.getWaterid()+"，图纸不存在，内径不可为空！";
                 }
                 if(order.getCalculate().equals("default")){//计算外径，并保存图纸
-                    ComputeNeiJing com = new ComputeNeiJing(order.getNeijing());
+                    ComputeNeiJingYM com = new ComputeNeiJingYM(order.getNeijing());
+                    if(!com.assertInput()){
+                        return "采购流水号："+order.getWaterid()+",内径输入格式有误";
+                    }
                     ymorder.setNeijing(order.getNeijing());
                     ymorder.setWaijing(com.getWaiJing());
                     ymorder.setBanpian(com.getBanPian());

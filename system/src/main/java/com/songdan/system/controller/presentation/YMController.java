@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/wildhorse")
-public class YMInputController {
+public class YMController {
 
+    //野马页面
     @RequestMapping(value = "/inputorder")
     public String inputOrder(){
         return "wildhorse/inputorder";
