@@ -31,7 +31,7 @@ public interface YMOrderService {
                                 String price,int state);
 
     /**
-     * 更新野马订单信息
+     * 删除野马订单信息
      * @param
      * @return
      */
