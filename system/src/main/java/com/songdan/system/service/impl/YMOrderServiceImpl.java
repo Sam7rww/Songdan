@@ -97,7 +97,7 @@ public class YMOrderServiceImpl implements YMOrderService {
             }
             YMUnprintOrder ym = ymunprint.save(ymorder);
             if(ym == null){
-                return "采购流水号："+order.getWaterid()+"保存失败，请检查输入！必须项不可为空";
+                return "采购流水号："+order.getWaterid()+"保存失败，请检查输入！必填项不可为空";
             }
         }
 

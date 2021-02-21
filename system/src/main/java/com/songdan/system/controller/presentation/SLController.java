@@ -12,4 +12,7 @@ public class SLController {
     public String slinput(){
         return "/doubledear/slinput";
     }
+
+    @RequestMapping(value = "/slprint")
+    public String printOrder(){return "/doubledear/slprint"; }
 }

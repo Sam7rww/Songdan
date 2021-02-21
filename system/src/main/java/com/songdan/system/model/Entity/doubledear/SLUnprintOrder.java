@@ -33,11 +33,26 @@ public class SLUnprintOrder {
     //物料名称
     private String productname;
 
-    //物料名称
-    private String productname2;
+    //备注
+    private String backup;
 
     //数量
     private int num;
+
+    //单位
+    private String unit;
+
+    //内径
+    private String neijing;
+
+    //外径
+    private String waijing;
+
+    //板片
+    private String banpian;
+
+    //压线
+    private String yaxian;
 
     //状态
     private int state;
@@ -45,7 +60,9 @@ public class SLUnprintOrder {
     public SLUnprintOrder() {
     }
 
-    public SLUnprintOrder(String ordernum, String line, String orderline, String inputdate, String outputdate, String productid, String productname, String productname2, int num) {
+    public SLUnprintOrder(String ordernum, String line, String orderline, String inputdate, String outputdate,
+                          String productid, String productname, String backup, int num,String unit,
+                          String neijing, String waijing, String banpian, String yaxian) {
         this.ordernum = ordernum;
         this.line = line;
         this.orderline = orderline;
@@ -53,8 +70,13 @@ public class SLUnprintOrder {
         this.outputdate = outputdate;
         this.productid = productid;
         this.productname = productname;
-        this.productname2 = productname2;
+        this.backup = backup;
         this.num = num;
+        this.unit = unit;
+        this.neijing = neijing;
+        this.waijing = waijing;
+        this.banpian = banpian;
+        this.yaxian = yaxian;
         this.state = 0;
     }
 
@@ -138,11 +160,51 @@ public class SLUnprintOrder {
         this.state = state;
     }
 
-    public String getProductname2() {
-        return productname2;
+    public String getBackup() {
+        return backup;
     }
 
-    public void setProductname2(String productname2) {
-        this.productname2 = productname2;
+    public void setBackup(String backup) {
+        this.backup = backup;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getNeijing() {
+        return neijing;
+    }
+
+    public void setNeijing(String neijing) {
+        this.neijing = neijing;
+    }
+
+    public String getWaijing() {
+        return waijing;
+    }
+
+    public void setWaijing(String waijing) {
+        this.waijing = waijing;
+    }
+
+    public String getBanpian() {
+        return banpian;
+    }
+
+    public void setBanpian(String banpian) {
+        this.banpian = banpian;
+    }
+
+    public String getYaxian() {
+        return yaxian;
+    }
+
+    public void setYaxian(String yaxian) {
+        this.yaxian = yaxian;
     }
 }

@@ -65,7 +65,9 @@ public class YMUnprintOrder {
     public YMUnprintOrder(){
     }
 
-    public YMUnprintOrder(String waterid, String ordernum, String productid, String productname, String productname2, int num, String unit, Date inputdate, String outputdate, String demand, double price, String neijing, String waijing, String banpian, String yaxian, String gecengban) {
+    public YMUnprintOrder(String waterid, String ordernum, String productid, String productname, String productname2,
+                          int num, String unit, Date inputdate, String outputdate, String demand, double price,
+                          String neijing, String waijing, String banpian, String yaxian, String gecengban) {
         this.waterid = waterid;
         this.ordernum = ordernum;
         this.productid = productid;

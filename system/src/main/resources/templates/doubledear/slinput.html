@@ -31,14 +31,14 @@
                 <a href="javascript:;">订单打印</a>
                 <dl class="layui-nav-child">
                     <dd><a th:href="@{/wildhorse/printorder}">野马订单打印</a></dd>
-                    <dd><a href="">双鹿订单打印</a></dd>
+                    <dd><a th:href="@{/doubledear/slprint}">双鹿订单打印</a></dd>
                 </dl>
             </li>
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img th:src="@{/images/navimg/doubledear.jpg}" class="layui-nav-img">
+                    <img th:src="@{/images/navimg/doubledear.jpeg}" class="layui-nav-img">
                     双鹿订单
                 </a>
                 <dl class="layui-nav-child">
@@ -58,11 +58,19 @@
                     <div class="layui-card-body">
                         <form class="layui-form layui-form-pane" action="">
                             <div class="layui-row layui-col-space15">
-                                <div class="layui-col-md12">
+                                <div class="layui-col-md9">
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">作业单号</label>
                                         <div class="layui-input-block">
                                             <input type="text" name="serial" required  lay-verify="required" placeholder="请输入作业单号" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md3">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">行号</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="line" required  lay-verify="required" placeholder="请输入作业单行号" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -107,7 +115,7 @@
                                 </div>
                             </div>
                             <div class="layui-row layui-col-space15">
-                                <div class="layui-col-md3">
+                                <div class="layui-col-md2">
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">数量</label>
                                         <div class="layui-input-block">
@@ -119,7 +127,15 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">单位</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="unit" required  lay-verify="required" placeholder="请输入数量" autocomplete="off" class="layui-input">
+                                            <input type="text" name="unit" required  lay-verify="required" placeholder="请输入单位" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">录入日期</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="indate" id="indate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -127,7 +143,7 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">交货日期</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy/MM/dd" autocomplete="off" class="layui-input">
+                                            <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -157,7 +173,7 @@
                             <div class="layui-col-md12">
                                 <div class="layui-form-label">导出模板</div>
                                 <div class="layui-form-block">
-                                    <a class="layui-btn layui-btn-primary" th:href="@{/demo/web_excel.xlsx}" id="template1">Excel模板格式</a>
+                                    <a class="layui-btn layui-btn-primary" th:href="@{/demo/sl_excel.xlsx}" id="template1">Excel模板格式</a>
                                 </div>
                             </div>
                         </div>
@@ -214,32 +230,37 @@
         //日期
         laydate.render({
             elem: '#date'
-            ,format: 'yyyy/MM/dd'
+            ,format: 'yyyy-MM-dd'
+        });
+        //日期
+        laydate.render({
+            elem: '#indate'
+            ,format: 'yyyy-MM-dd'
         });
 
         //监听提交
-        form.on('submit(demo1)', function(data){
-            layer.msg(JSON.stringify(data.field));
-            var url = "saveOrderInfo";
-            $.ajax({
-                url:url,
-                type:"POST",
-                dateType:"json",
-                data:data.field,
-                success:function (Message){
-                    if(Message.result == "pass"){
-                        layer.msg("保存成功");
-                    }else{
-                        layer.msg(Message.result);
-                    }
-                },
-                error:function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert('无法上传，请联系管理员!!!');
-                }
-            })
-
-            return false;
-        });
+        // form.on('submit(demo1)', function(data){
+        //     layer.msg(JSON.stringify(data.field));
+        //     var url = "saveOrderInfo";
+        //     $.ajax({
+        //         url:url,
+        //         type:"POST",
+        //         dateType:"json",
+        //         data:data.field,
+        //         success:function (Message){
+        //             if(Message.result == "pass"){
+        //                 layer.msg("保存成功");
+        //             }else{
+        //                 layer.msg(Message.result);
+        //             }
+        //         },
+        //         error:function(XMLHttpRequest, textStatus, errorThrown) {
+        //             alert('无法上传，请联系管理员!!!');
+        //         }
+        //     })
+        //
+        //     return false;
+        // });
     });
 
     $(function(){
@@ -251,38 +272,34 @@
                 // 可以在读取过程中梳理数据
                 excel.importExcel(files, {
                     fields: {
-                        'waterid': 'B'
-                        ,'ordernum': 'J'
-                        ,'productid': 'D'
-                        ,'productname': 'E'
-                        ,'productname2': 'O'
-                        ,'unit': 'H'
-                        ,'num': 'G'
-                        ,'outputdate': 'I'
-                        ,'demand': 'L'
-                        ,'price':'M'
-                        ,'neijing':'P'
-                        ,'calculate':'Q'
-                        ,'gecengban':'R'
+                        'ordernum': 'E'
+                        ,'line':'F'
+                        ,'inputdate':'H'
+                        ,'outputdate':'Q'
+                        ,'productid': 'I'
+                        ,'productname': 'J'
+                        ,'backup':'P'
+                        ,'num':'K'
+                        ,'unit':'V'
+                        ,'neijing':'Z'
+                        ,'type':'AA'
                     }
                 }, function(data) {
                     console.log(data);
                     var arr = new Array();
                     for(i = 1; i < data[0].Sheet1.length; i++){
                         var tt = {
-                            waterid : data[0].Sheet1[i].waterid,
                             ordernum : data[0].Sheet1[i].ordernum,
                             productid: data[0].Sheet1[i].productid,
                             productname: data[0].Sheet1[i].productname,
-                            productname2: data[0].Sheet1[i].productname2,
+                            line: data[0].Sheet1[i].line,
                             unit: data[0].Sheet1[i].unit,
                             num: data[0].Sheet1[i].num,
-                            outputdate: excel.dateCodeFormat(data[0].Sheet1[i].outputdate,'YYYY/MM/DD'),
-                            demand: data[0].Sheet1[i].demand,
-                            price: data[0].Sheet1[i].price,
+                            inputdate: excel.dateCodeFormat(data[0].Sheet1[i].inputdate,'YYYY-MM-DD'),
+                            outputdate: excel.dateCodeFormat(data[0].Sheet1[i].outputdate,'YYYY-MM-DD'),
+                            backup: data[0].Sheet1[i].backup,
                             neijing: data[0].Sheet1[i].neijing,
-                            calculate: data[0].Sheet1[i].calculate,
-                            gecengban: data[0].Sheet1[i].gecengban,
+                            type: data[0].Sheet1[i].type,
                         };
                         arr.push(tt);
                     }
@@ -290,7 +307,7 @@
                     $.ajax({
                         type: 'post',
                         dataType: "json",
-                        url: 'importYMOrders',
+                        url: 'importSLOrders',
                         data: JSON.stringify(arr),
                         contentType : "application/json",
                         success: function (res) {

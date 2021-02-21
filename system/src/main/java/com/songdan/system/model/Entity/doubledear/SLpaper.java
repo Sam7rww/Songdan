@@ -15,8 +15,6 @@ public class SLpaper {
     @Column(unique = true, nullable = false)
     private String productname;
 
-    private String productname2;
-
     private String neijing;
 
     private String waijing;
@@ -32,10 +30,9 @@ public class SLpaper {
     public SLpaper() {
     }
 
-    public SLpaper(String productid, String productname, String productname2, String neijing, String waijing, String banpian, String yaxian, String type) {
+    public SLpaper(String productid, String productname, String neijing, String waijing, String banpian, String yaxian, String type) {
         this.productid = productid;
         this.productname = productname;
-        this.productname2 = productname2;
         this.neijing = neijing;
         this.waijing = waijing;
         this.banpian = banpian;
@@ -65,14 +62,6 @@ public class SLpaper {
 
     public void setProductname(String productname) {
         this.productname = productname;
-    }
-
-    public String getProductname2() {
-        return productname2;
-    }
-
-    public void setProductname2(String productname2) {
-        this.productname2 = productname2;
     }
 
     public String getNeijing() {

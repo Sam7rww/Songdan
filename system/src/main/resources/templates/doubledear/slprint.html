@@ -45,8 +45,8 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img th:src="@{/images/navimg/wildhorse.jpg}" class="layui-nav-img">
-                    野马订单
+                    <img th:src="@{/images/navimg/doubledear.jpeg}" class="layui-nav-img">
+                    双鹿订单
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">厂长</a></dd>
@@ -61,23 +61,23 @@
         <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">
             <div class="layui-col-md12">
                 <div class="layui-card">
-                    <div class="layui-card-header">野马采购订单搜索</div>
+                    <div class="layui-card-header">双鹿采购订单搜索</div>
                     <div class="layui-card-body">
                         <form class="layui-form layui-form-pane" action="">
                             <div class="layui-row layui-col-space15">
                                 <div class="layui-col-md3">
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label">流水号</label>
+                                        <label class="layui-form-label">作业单号</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="id" placeholder="请输入流水号" autocomplete="off" class="layui-input" id="waterid">
+                                            <input type="text" name="serial" placeholder="请输入作业单号" autocomplete="off" class="layui-input" id="ordernum">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-col-md3">
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label">作业单号</label>
+                                        <label class="layui-form-label">作业单行号</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="serial" placeholder="请输入作业单号" autocomplete="off" class="layui-input" id="ordernum">
+                                            <input type="text" name="line" placeholder="请输入作业单行号" autocomplete="off" class="layui-input" id="line">
                                         </div>
                                     </div>
                                 </div>
@@ -95,7 +95,7 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">交货日期</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="date" id="date" placeholder="yyyy/MM/dd" autocomplete="off" class="layui-input">
+                                            <input type="text" name="date" id="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -119,10 +119,10 @@
                 <script type="text/html" id="toolbarDemo">
                     <div class="layui-btn-container">
                         <button class="layui-btn layui-btn-sm" lay-event="printData">自选列打印</button>
-                        <button class="layui-btn layui-btn-sm" lay-event="printPurchaseData">打印瓦楞纸板采购订单</button>
-                        <!--                    <button class="layui-btn layui-btn-sm" lay-event="printProduceData">打印生产通知单</button>-->
-                        <button class="layui-btn layui-btn-sm" lay-event="exportPurchaseData">导出采购订单EXCEL</button>
-                        <button class="layui-btn layui-btn-sm" lay-event="exportProduceData">导出生产通知单EXCEL</button>
+<!--                        <button class="layui-btn layui-btn-sm" lay-event="printPurchaseData">打印瓦楞纸板采购订单</button>-->
+<!--                        &lt;!&ndash;                    <button class="layui-btn layui-btn-sm" lay-event="printProduceData">打印生产通知单</button>&ndash;&gt;-->
+<!--                        <button class="layui-btn layui-btn-sm" lay-event="exportPurchaseData">导出采购订单EXCEL</button>-->
+<!--                        <button class="layui-btn layui-btn-sm" lay-event="exportProduceData">导出生产通知单EXCEL</button>-->
                         <button class="layui-btn layui-btn-sm" lay-event="completeCheckData">完成选中订单</button>
                     </div>
                 </script>
@@ -158,28 +158,8 @@
         //日期
         laydate.render({
             elem: '#date'
-            ,format: 'yyyy/MM/dd'
+            ,format: 'yyyy-MM-dd'
         });
-
-        //监听提交
-        // form.on('button(demo1)', function(data){
-        //     //将搜索的表单数据封装进去result
-        //     var result = data.field;
-        //     layer.msg(JSON.stringify(data.field));
-        //     var url = "/wildhorse/getSearchOrder";
-        //
-        //     table.reload(('testReload'),{
-        //         //url:url
-        //         where: result
-        //         ,done: function () {
-        //             this.where={};
-        //         }
-        //     });
-        //     // table.render();
-        //
-        //     return false;
-        // });
-
     });
 
     layui.use(['table','excel'], function(){
@@ -187,14 +167,14 @@
 
         table.render({
             elem: '#orders'
-            ,url:'getAllOrder'
+            ,url:'getAllOrders'
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             ,defaultToolbar: ['filter',  { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
                 title: '提示'
                 ,layEvent: 'LAYTABLE_TIPS'
                 ,icon: 'layui-icon-tips'
             }]
-            ,title: '野马订单'
+            ,title: '双鹿订单'
             ,parseData:function (res){
                 //console.log(res);
                 return {
@@ -206,23 +186,23 @@
             }
             ,cols: [
                 [
-                {type:'checkbox', fixed: 'left'}
-                ,{field:'waterid', width:100, title: '采购流水号', sort: true}
-                ,{field:'ordernum', width:100, title: '作业单号', sort: true}
-                ,{field:'productid', width:200, title: '物料代码'}
-                ,{field:'productname', width:200, title: '物料名称', sort: true}
-                ,{field:'productname2', width:60, title: '别名'}
-                ,{field:'num', width:80, title: '数量', sort: true}
-                ,{field:'unit', width:60, title: '单位'}
-                ,{field:'outputdate', width:120, title: '交货日期', sort: true}
-                ,{field:'price', width:100, title: '含税单价'}
-                ,{field:'neijing', width:170, title: '内径'}
-                ,{field:'waijing', width:170, title: '外径'}
-                ,{field:'banpian', width:170, title: '板片'}
-                ,{field:'yaxian', width:170, title: '压线'}
-                ,{field:'demand', width:500, title: '生产要求及噱头'}
-                ,{field: 'gecengban',width: 350,title: '隔层板要求'}
-            ]
+                    {type:'checkbox', fixed: 'left'}
+                    ,{field:'id', width:65, title: '序号', sort: true}
+                    ,{field:'ordernum', width:100, title: '作业单号'}
+                    ,{field:'line', width:100, title: '行号'}
+                    ,{field:'orderline', width:100, title: '作业单号/行号'}
+                    ,{field:'productid', width:200, title: '物料代码'}
+                    ,{field:'productname', width:200, title: '物料名称', sort: true}
+                    ,{field:'num', width:80, title: '数量', sort: true}
+                    ,{field:'unit', width:50, title: '单位'}
+                    ,{field:'inputdate', width:120, title: '录入日期', sort: true}
+                    ,{field:'outputdate', width:120, title: '交货日期', sort: true}
+                    ,{field:'neijing', width:170, title: '内径'}
+                    ,{field:'waijing', width:170, title: '外径'}
+                    ,{field:'banpian', width:170, title: '板片'}
+                    ,{field:'yaxian', width:170, title: '压线'}
+                    ,{field:'backup', width:500, title: '备注'}
+                ]
             ]
             ,id: 'testReload'
         });
@@ -232,61 +212,61 @@
         table.on('toolbar(test)', function (obj) {
             var checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
-                case 'exportPurchaseData': //导出采购订单
-                    layer.alert('导出采购订单！！！');
-
-                    //获取选中的行
-                    var datas = checkStatus.data;
-                    console.log(datas);
-                    if (datas.length>0) {
-                        //导出选中行
-                        $.ajax({
-                            type: 'post',
-                            url: 'exportPurchaseOrders',
-                            data: JSON.stringify(datas),
-                            contentType : "application/json",
-                            success: function (res) {
-                                res.unshift({waterid:'采购流水号',ordernum: '作业单号',productid: '物料代码', productname: '物料名称',productname2:'别名',num:'数量',unit:'单位',outputdate:'交货日期',demand:'生产要求及噱头',price:'含税单价'});
-                                LAY_EXCEL.exportExcel(res, '野马电池采购订单.xlsx', 'xlsx')
-                            },
-                            error:function(XMLHttpRequest, textStatus, errorThrown) {
-                                alert(XMLHttpRequest.status);
-                                alert(XMLHttpRequest.readyState);
-                                alert(textStatus);
-                            }
-                        });
-                        // table.exportFile(obj.config.id, datas, 'xls');
-                    } else {
-                        layer.alert('请先选择需要导出数据。');
-                    }
-                    break;
-                case 'exportProduceData': //导出生产通知单
-                    layer.alert('导出生产通知单！！！');
-
-                    //获取选中的行
-                    var datas = checkStatus.data;
-                    if (datas.length>0) {
-                        //导出选中行
-                        $.ajax({
-                            type: 'post',
-                            url: 'exportProduceOrders',
-                            data: JSON.stringify(datas),
-                            contentType : "application/json",
-                            success: function (res) {
-                                res.unshift({ordernum: '作业单号',productid: '物料代码', productname: '物料名称',neijing:'内径',waijing:'外径',banpian:'板片',yaxian:'压线',num:'数量',unit:'单位'});
-                                LAY_EXCEL.exportExcel(res, '宁波市松旦包装印刷有限公司生产通知单.xlsx', 'xlsx')
-                            },
-                            error:function(XMLHttpRequest, textStatus, errorThrown) {
-                                alert(XMLHttpRequest.status);
-                                alert(XMLHttpRequest.readyState);
-                                alert(textStatus);
-                            }
-                        });
-                        // table.exportFile(obj.config.id, datas, 'xls');
-                    } else {
-                        layer.alert('请先选择需要导出数据。');
-                    }
-                    break;
+                // case 'exportPurchaseData': //导出采购订单
+                //     layer.alert('导出采购订单！！！');
+                //
+                //     //获取选中的行
+                //     var datas = checkStatus.data;
+                //     console.log(datas);
+                //     if (datas.length>0) {
+                //         //导出选中行
+                //         $.ajax({
+                //             type: 'post',
+                //             url: 'exportPurchaseOrders',
+                //             data: JSON.stringify(datas),
+                //             contentType : "application/json",
+                //             success: function (res) {
+                //                 res.unshift({waterid:'采购流水号',ordernum: '作业单号',productid: '物料代码', productname: '物料名称',productname2:'别名',num:'数量',unit:'单位',outputdate:'交货日期',demand:'生产要求及噱头',price:'含税单价'});
+                //                 LAY_EXCEL.exportExcel(res, '野马电池采购订单.xlsx', 'xlsx')
+                //             },
+                //             error:function(XMLHttpRequest, textStatus, errorThrown) {
+                //                 alert(XMLHttpRequest.status);
+                //                 alert(XMLHttpRequest.readyState);
+                //                 alert(textStatus);
+                //             }
+                //         });
+                //         // table.exportFile(obj.config.id, datas, 'xls');
+                //     } else {
+                //         layer.alert('请先选择需要导出数据。');
+                //     }
+                //     break;
+                // case 'exportProduceData': //导出生产通知单
+                //     layer.alert('导出生产通知单！！！');
+                //
+                //     //获取选中的行
+                //     var datas = checkStatus.data;
+                //     if (datas.length>0) {
+                //         //导出选中行
+                //         $.ajax({
+                //             type: 'post',
+                //             url: 'exportProduceOrders',
+                //             data: JSON.stringify(datas),
+                //             contentType : "application/json",
+                //             success: function (res) {
+                //                 res.unshift({ordernum: '作业单号',productid: '物料代码', productname: '物料名称',neijing:'内径',waijing:'外径',banpian:'板片',yaxian:'压线',num:'数量',unit:'单位'});
+                //                 LAY_EXCEL.exportExcel(res, '宁波市松旦包装印刷有限公司生产通知单.xlsx', 'xlsx')
+                //             },
+                //             error:function(XMLHttpRequest, textStatus, errorThrown) {
+                //                 alert(XMLHttpRequest.status);
+                //                 alert(XMLHttpRequest.readyState);
+                //                 alert(textStatus);
+                //             }
+                //         });
+                //         // table.exportFile(obj.config.id, datas, 'xls');
+                //     } else {
+                //         layer.alert('请先选择需要导出数据。');
+                //     }
+                //     break;
                 case 'printData': //打印自选列
                     //选中数据
                     var datas = checkStatus.data;
@@ -339,29 +319,29 @@
                         alert('请先选中要打印的数据！');
                     }
                     break;
-                case 'printPurchaseData': //打印瓦楞纸板采购订单
-
-                    //获取选中的行
-                    var datas = checkStatus.data;
-                    var frame = document.createElement("IFRAME");
-                    console.log(datas);
-                    if (datas.length>0) {
-                        //导出选中行
-                        var nums = "";
-                        for(var i=0;i<checkStatus.data.length;i++){
-                            nums += checkStatus.data[i].waterid+",";
-                        }
-                        parent.layer.msg('打印中...', {icon: 16,shade: 0.3,time:5000});
-
-                        frame.style.display ="none";
-                        frame.src = "printPurchaseOrders?nums="+nums;//controller层的url
-                        document.body.appendChild(frame);
-                        frame.contentWindow.focus();
-                        frame.contentWindow.print();
-                    } else {
-                        layer.alert('请先选择需要导出数据。');
-                    }
-                    break;
+                // case 'printPurchaseData': //打印瓦楞纸板采购订单
+                //
+                //     //获取选中的行
+                //     var datas = checkStatus.data;
+                //     var frame = document.createElement("IFRAME");
+                //     console.log(datas);
+                //     if (datas.length>0) {
+                //         //导出选中行
+                //         var nums = "";
+                //         for(var i=0;i<checkStatus.data.length;i++){
+                //             nums += checkStatus.data[i].waterid+",";
+                //         }
+                //         parent.layer.msg('打印中...', {icon: 16,shade: 0.3,time:5000});
+                //
+                //         frame.style.display ="none";
+                //         frame.src = "printPurchaseOrders?nums="+nums;//controller层的url
+                //         document.body.appendChild(frame);
+                //         frame.contentWindow.focus();
+                //         frame.contentWindow.print();
+                //     } else {
+                //         layer.alert('请先选择需要导出数据。');
+                //     }
+                //     break;
                 case 'completeCheckData': //完成选中数据
                     //获取选中的行
                     var datas = checkStatus.data;
@@ -371,13 +351,13 @@
                         var idItem = {};
                         for(var i=0;i<datas.length;i++){
                             //idItem.waterid = datas[i].waterid;
-                            idJSON.push(datas[i].waterid);
+                            idJSON.push(datas[i].id);
                             //idItem={};
                         }
                         layer.confirm('确定完成吗？',function (index){
                             $.ajax({
                                 type: 'post',
-                                url: 'completeOrders',
+                                url: 'completeSLOrders',
                                 data: JSON.stringify(idJSON),
                                 contentType : "application/json",
                                 success:function (res){
@@ -403,39 +383,16 @@
             }
         });
 
-        //头工具栏事件
-        // table.on('toolbar(test)', function(obj){
-        //     var checkStatus = table.checkStatus(obj.config.id);
-        //     switch(obj.event){
-        //         case 'printCheckData':
-        //             var data = checkStatus.data;
-        //             layer.alert(JSON.stringify(data));
-        //             break;
-        //         case 'exportCheckData':
-        //             var data = checkStatus.data;
-        //             layer.msg('选中了：'+ data.length + ' 个');
-        //             break;
-        //         case 'completeCheckData':
-        //             layer.msg(checkStatus.isAll ? '全选': '未全选');
-        //             break;
-        //
-        //         //自定义头工具栏右侧图标 - 提示
-        //         case 'LAYTABLE_TIPS':
-        //             layer.alert('这是工具栏右侧自定义的一个图标按钮');
-        //             break;
-        //     };
-        // });
-
         $('#searchbtn').on('click',function (){
-            var waterid = $('#waterid').val();
+            var line = $('#line').val();
             var ordernum = $('#ordernum').val();
             var productname = $('#productname').val();
             var outputdate = $('#date').val();
             table.reload('testReload',{
-                url:"getSearchOrder"
+                url:"getSearchOrders"
                 ,method:'post'
                 ,where: {
-                    'id':waterid,
+                    'line':line,
                     'serial':ordernum,
                     'name':productname,
                     'date':outputdate,
