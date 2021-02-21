@@ -102,15 +102,23 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="layui-col-md5">
+                                <div class="layui-col-md3">
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">计算方法</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="calculate" required  lay-verify="required" placeholder="default" autocomplete="off" class="layui-input">
+                                            <input type="text" name="calculate"  placeholder="默认+5" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="layui-col-md2">
+                                <div class="layui-col-md3">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">变压</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="press" placeholder="输入图纸变压" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md1">
                                     <button type="button" class="layui-btn layui-btn-primary" id="research">查询图纸</button>
                                 </div>
                             </div>
@@ -183,7 +191,7 @@
                             <div class="layui-col-md12">
                                 <div class="layui-form-label">导出模板</div>
                                 <div class="layui-form-block">
-                                    <a class="layui-btn layui-btn-primary" th:href="@{/demo/sl_excel.xlsx}" id="template1">Excel模板格式</a>
+                                    <a class="layui-btn layui-btn-primary" th:href="@{/demo/sl_excel_less.xlsx}" id="template1">Excel模板格式</a>
                                 </div>
                             </div>
                         </div>
@@ -282,17 +290,18 @@
                 // 可以在读取过程中梳理数据
                 excel.importExcel(files, {
                     fields: {
-                        'ordernum': 'E'
-                        ,'line':'F'
-                        ,'inputdate':'H'
-                        ,'outputdate':'Q'
-                        ,'productid': 'I'
-                        ,'productname': 'J'
-                        ,'backup':'P'
-                        ,'num':'K'
-                        ,'unit':'V'
-                        ,'neijing':'Z'
-                        ,'type':'AA'
+                        'ordernum': 'A'
+                        ,'line':'B'
+                        ,'inputdate':'D'
+                        ,'outputdate':'M'
+                        ,'productid': 'E'
+                        ,'productname': 'F'
+                        ,'backup':'L'
+                        ,'num':'G'
+                        ,'unit':'R'
+                        ,'neijing':'V'
+                        ,'type':'W'
+                        ,'press':'X'
                     }
                 }, function(data) {
                     console.log(data);
@@ -310,6 +319,7 @@
                             backup: data[0].Sheet1[i].backup,
                             neijing: data[0].Sheet1[i].neijing,
                             type: data[0].Sheet1[i].type,
+                            press: data[0].Sheet1[i].press,
                         };
                         arr.push(tt);
                     }

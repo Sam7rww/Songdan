@@ -3,12 +3,15 @@ package com.songdan.system.controller.restController;
 import com.songdan.system.model.Entity.doubledear.SLUnprintOrder;
 import com.songdan.system.model.vo.SLOrder;
 import com.songdan.system.service.SLOrderService;
+import com.songdan.system.service.SLPrintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +22,9 @@ public class SLOrderController {
 
     @Autowired
     private SLOrderService slOrderService;
+
+    @Autowired
+    private SLPrintService slPrintService;
 
     //保存订单
     @RequestMapping(value = "/saveSLOrderInfo")
@@ -34,8 +40,9 @@ public class SLOrderController {
         String indate = request.getParameter("indate");
         String date = request.getParameter("date");
         String backup = request.getParameter("backup");
+        String press = request.getParameter("press");
         String result = slOrderService.saveSLOrder(ordernum,line,productid,productname,type,num,unit,
-                backup,indate,date,neijing);
+                backup,indate,date,neijing,press);
         Map<String,String> message = new HashMap<String, String>();
         if(result.equals("")){
             message.put("result","pass");
@@ -80,9 +87,22 @@ public class SLOrderController {
         String ordernum = request.getParameter("serial");
         String line = request.getParameter("line");
         String productname = request.getParameter("name");
+        String inputdate = request.getParameter("inputdate");
         String date = request.getParameter("date");
-        List<SLUnprintOrder> orders = slOrderService.getSearchSLOrder(ordernum,line,productname,date);
+        List<SLUnprintOrder> orders = slOrderService.getSearchSLOrder(ordernum,line,productname,inputdate,date);
         return orders;
+    }
+
+    //打印采购订单
+    @RequestMapping(value = "printPurchaseOrders")
+    public void printPurchaseOrders(@RequestParam("nums") Object nums, HttpServletResponse response){
+        slPrintService.printPurchaseOrder(nums,response);
+    }
+
+    //打印采购订单
+    @RequestMapping(value = "printWalengOrders")
+    public void printWalengOrders(@RequestParam("nums") Object nums, HttpServletResponse response){
+        slPrintService.printWalengOrder(nums,response);
     }
 
     //完成订单

@@ -33,4 +33,5 @@ public interface SLUnprintOrderDao extends JpaRepository<SLUnprintOrder,Integer>
     //查询存在
     public boolean existsByOrderlineAndProductid(@Param("orderline") String orderline,@Param("productid") String productid);
 
+    public SLUnprintOrder findById(int id);
 }

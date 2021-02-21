@@ -206,23 +206,23 @@
             }
             ,cols: [
                 [
-                {type:'checkbox', fixed: 'left'}
-                ,{field:'waterid', width:100, title: '采购流水号', sort: true}
-                ,{field:'ordernum', width:100, title: '作业单号', sort: true}
-                ,{field:'productid', width:200, title: '物料代码'}
-                ,{field:'productname', width:200, title: '物料名称', sort: true}
-                ,{field:'productname2', width:60, title: '别名'}
-                ,{field:'num', width:80, title: '数量', sort: true}
-                ,{field:'unit', width:60, title: '单位'}
-                ,{field:'outputdate', width:120, title: '交货日期', sort: true}
-                ,{field:'price', width:100, title: '含税单价'}
-                ,{field:'neijing', width:170, title: '内径'}
-                ,{field:'waijing', width:170, title: '外径'}
-                ,{field:'banpian', width:170, title: '板片'}
-                ,{field:'yaxian', width:170, title: '压线'}
-                ,{field:'demand', width:500, title: '生产要求及噱头'}
-                ,{field: 'gecengban',width: 350,title: '隔层板要求'}
-            ]
+                    {type:'checkbox', fixed: 'left'}
+                    ,{field:'waterid', width:100, title: '采购流水号', sort: true}
+                    ,{field:'ordernum', width:100, title: '作业单号', sort: true}
+                    ,{field:'productid', width:200, title: '物料代码'}
+                    ,{field:'productname', width:200, title: '物料名称', sort: true}
+                    ,{field:'productname2', width:60, title: '别名'}
+                    ,{field:'neijing', width:170, title: '内径'}
+                    ,{field:'waijing', width:170, title: '外径'}
+                    ,{field:'banpian', width:170, title: '板片'}
+                    ,{field:'yaxian', width:170, title: '压线'}
+                    ,{field:'num', width:80, title: '数量', sort: true}
+                    ,{field:'unit', width:60, title: '单位'}
+                    ,{field:'outputdate', width:120, title: '交货日期', sort: true}
+                    ,{field:'price', width:100, title: '含税单价'}
+                    ,{field:'demand', width:500, title: '生产要求及噱头'}
+                    ,{field: 'gecengban',width: 350,title: '隔层板要求'}
+                ]
             ]
             ,id: 'testReload'
         });
@@ -354,7 +354,7 @@
                         parent.layer.msg('打印中...', {icon: 16,shade: 0.3,time:5000});
 
                         frame.style.display ="none";
-                        frame.src = "printPurchaseOrders?nums="+nums;//controller层的url
+                        frame.src = "printWalengOrders?nums="+nums;//controller层的url
                         document.body.appendChild(frame);
                         frame.contentWindow.focus();
                         frame.contentWindow.print();

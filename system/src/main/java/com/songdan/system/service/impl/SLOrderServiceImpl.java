@@ -26,7 +26,7 @@ public class SLOrderServiceImpl implements SLOrderService {
 
     @Override
     public String saveSLOrder(String ordernum, String line, String productid, String productname, String type,
-                              int num, String unit, String backup, String indate, String date, String neijing) {
+                              int num, String unit, String backup, String indate, String date, String neijing,String press) {
         String orderline = ordernum+"/"+line;
         if(ordernum.equals("") || line.equals("")){
             return "不保存通用纸箱信息。";
@@ -37,7 +37,7 @@ public class SLOrderServiceImpl implements SLOrderService {
         }
         ComputeNeijingSL com = new ComputeNeijingSL(neijing,type);
         SLUnprintOrder slUnprintOrder = new SLUnprintOrder(ordernum,line,orderline,indate,date,productid, productname,
-                backup,num,unit,neijing,com.getWaiJing(),com.getBanPian(),com.getYaXian());
+                backup,num,unit,neijing,com.getWaiJing(),com.getBanPian(),com.getYaXian(),press);
         SLUnprintOrder temp = slunprint.save(slUnprintOrder);
         if(temp != null){
             return "";
@@ -62,7 +62,7 @@ public class SLOrderServiceImpl implements SLOrderService {
             SLUnprintOrder slorder = new SLUnprintOrder(order.getOrdernum(),order.getLine(),
                     orderline,order.getInputdate(),order.getOutputdate(),
                     order.getProductid(),order.getProductname(),order.getBackup(),order.getNum(),order.getUnit(),
-                    "","","","");
+                    "","","","",order.getPress());
             //System.out.println("ymunprintorder outputdate :"+ymorder.getOutputdate());
             SLpaper targetPaper = paper.findByProductid(order.getProductid());
             if(targetPaper!=null){//找的到图纸
@@ -86,7 +86,8 @@ public class SLOrderServiceImpl implements SLOrderService {
                 slorder.setWaijing(com.getWaiJing());
                 slorder.setBanpian(com.getBanPian());
                 slorder.setYaxian(com.getYaXian());
-                SLpaper p = new SLpaper(order.getProductid(),order.getProductname(),order.getNeijing(),com.getWaiJing(),com.getBanPian(),com.getYaXian(),order.getType());
+                SLpaper p = new SLpaper(order.getProductid(),order.getProductname(),order.getNeijing(),
+                        com.getWaiJing(),com.getBanPian(),com.getYaXian(),order.getType(),order.getPress());
                 SLpaper paperRes = paper.save(p);
                 if(paperRes == null){
                     return "图纸保存失败，请检查图纸相关输入";
@@ -109,7 +110,7 @@ public class SLOrderServiceImpl implements SLOrderService {
     }
 
     @Override
-    public List<SLUnprintOrder> getSearchSLOrder(String ordernum, String line, String productname, String outputdate) {
+    public List<SLUnprintOrder> getSearchSLOrder(String ordernum, String line, String productname,String indate, String outputdate) {
         Specification<SLUnprintOrder> sf = (Specification<SLUnprintOrder>)(root, query, cb)->{
             //用于添加所有查询条件
             List<Predicate> p = new ArrayList<>();
@@ -128,6 +129,10 @@ public class SLOrderServiceImpl implements SLOrderService {
             if (!outputdate.equals("")) {
                 Predicate p3 = cb.equal(root.get("outputdate").as(String.class), outputdate);
                 p.add(p3);
+            }
+            if (!indate.equals("")) {
+                Predicate p6 = cb.equal(root.get("inputdate").as(String.class), indate);
+                p.add(p6);
             }
             Predicate p4 = cb.equal(root.get("state").as(Integer.class),0);
             p.add(p4);
@@ -150,5 +155,15 @@ public class SLOrderServiceImpl implements SLOrderService {
             slunprint.updateState(id,1);
         }
         return true;
+    }
+
+    @Override
+    public List<SLUnprintOrder> findEachByid(List<String> ids) {
+        List<SLUnprintOrder> orders = new ArrayList<>();
+        for(int i=0;i<ids.size();i++){
+            SLUnprintOrder order = slunprint.findById(Integer.parseInt(ids.get(i)));
+            orders.add(order);
+        }
+        return orders;
     }
 }

@@ -91,6 +91,17 @@ public class YMPrintServiceImpl implements YMPrintService {
 //        }catch (Exception e){
 //            e.printStackTrace();
 //        }
+        return null;
+    }
+
+    @Override
+    public Object printProduceOrder(Object nums, HttpServletResponse response) {
+        return null;
+    }
+
+    @Override
+    public Object printWalengOrder(Object nums, HttpServletResponse response) {
+
         String datas = nums.toString();
         String[] str = datas.split(",");
         List<String> data = new ArrayList<String>();
@@ -193,14 +204,7 @@ public class YMPrintServiceImpl implements YMPrintService {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
         return null;
     }
-
-    @Override
-    public Object printProduceOrder(Object nums, HttpServletResponse response) {
-        return null;
-    }
-
 
 }

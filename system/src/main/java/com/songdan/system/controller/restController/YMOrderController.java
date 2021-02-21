@@ -208,10 +208,12 @@ public class YMOrderController {
     }
 
     //print瓦楞纸板采购订单
-    @RequestMapping(value = "/printPurchaseOrders")
-    public void printPurchaseOrders(@RequestParam("nums") Object nums, HttpServletResponse response) throws Exception{
-        ymPrintService.printPurchaseOrder(nums,response);
+    @RequestMapping(value = "/printWalengOrders")
+    public void printWalengOrders(@RequestParam("nums") Object nums, HttpServletResponse response) throws Exception{
+        ymPrintService.printWalengOrder(nums,response);
     }
+
+    //print采购订单
 
     //print生产通知单
 

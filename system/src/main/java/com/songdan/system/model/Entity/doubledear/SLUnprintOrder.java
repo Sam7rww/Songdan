@@ -54,6 +54,9 @@ public class SLUnprintOrder {
     //压线
     private String yaxian;
 
+    //变压
+    private String press;
+
     //状态
     private int state;
 
@@ -62,7 +65,7 @@ public class SLUnprintOrder {
 
     public SLUnprintOrder(String ordernum, String line, String orderline, String inputdate, String outputdate,
                           String productid, String productname, String backup, int num,String unit,
-                          String neijing, String waijing, String banpian, String yaxian) {
+                          String neijing, String waijing, String banpian, String yaxian,String press) {
         this.ordernum = ordernum;
         this.line = line;
         this.orderline = orderline;
@@ -77,6 +80,7 @@ public class SLUnprintOrder {
         this.waijing = waijing;
         this.banpian = banpian;
         this.yaxian = yaxian;
+        this.press = press;
         this.state = 0;
     }
 
@@ -206,5 +210,13 @@ public class SLUnprintOrder {
 
     public void setYaxian(String yaxian) {
         this.yaxian = yaxian;
+    }
+
+    public String getPress() {
+        return press;
+    }
+
+    public void setPress(String press) {
+        this.press = press;
     }
 }

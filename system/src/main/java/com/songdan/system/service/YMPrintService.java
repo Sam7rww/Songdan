@@ -36,4 +36,11 @@ public interface YMPrintService {
      * @return
      */
     public Object printProduceOrder(Object nums, HttpServletResponse response);
+
+    /**
+     * 打印瓦楞纸板采购订单
+     * @param
+     * @return
+     */
+    public Object printWalengOrder(Object nums, HttpServletResponse response);
 }

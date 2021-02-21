@@ -35,6 +35,9 @@ public class SLOrder {
     //计算方式
     private String type;
 
+    //变压信息
+    private String press;
+
     public SLOrder() {
     }
 
@@ -124,5 +127,13 @@ public class SLOrder {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getPress() {
+        return press;
+    }
+
+    public void setPress(String press) {
+        this.press = press;
     }
 }

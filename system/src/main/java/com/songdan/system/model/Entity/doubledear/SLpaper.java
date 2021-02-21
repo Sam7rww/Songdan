@@ -27,10 +27,13 @@ public class SLpaper {
     //图纸保存位置
     private String postion;
 
+    private String press;
+
     public SLpaper() {
     }
 
-    public SLpaper(String productid, String productname, String neijing, String waijing, String banpian, String yaxian, String type) {
+    public SLpaper(String productid, String productname, String neijing, String waijing, String banpian,
+                   String yaxian, String type,String press) {
         this.productid = productid;
         this.productname = productname;
         this.neijing = neijing;
@@ -38,6 +41,7 @@ public class SLpaper {
         this.banpian = banpian;
         this.yaxian = yaxian;
         this.type = type;
+        this.press = press;
     }
 
     public int getId() {
@@ -110,5 +114,13 @@ public class SLpaper {
 
     public void setPostion(String postion) {
         this.postion = postion;
+    }
+
+    public String getPress() {
+        return press;
+    }
+
+    public void setPress(String press) {
+        this.press = press;
     }
 }

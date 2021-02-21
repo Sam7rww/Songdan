@@ -1,7 +1,6 @@
 package com.songdan.system.service;
 
 import com.songdan.system.model.Entity.doubledear.SLUnprintOrder;
-import com.songdan.system.model.Entity.wildhorse.YMUnprintOrder;
 import com.songdan.system.model.vo.SLOrder;
 
 import java.util.List;
@@ -15,7 +14,7 @@ public interface SLOrderService {
      */
     public String saveSLOrder(String ordernum, String line, String productid,
                               String productname, String type, int num, String unit,String backup,
-                              String indate, String date,String neijing);
+                              String indate, String date,String neijing,String press);
 
     /**
      * 存储上传的Excel订单信息
@@ -36,7 +35,7 @@ public interface SLOrderService {
      * @param
      * @return
      */
-    public List<SLUnprintOrder> getSearchSLOrder(String ordernum,String line, String productname, String outputdate);
+    public List<SLUnprintOrder> getSearchSLOrder(String ordernum,String line, String productname,String indate, String outputdate);
 
     /**
      * 完成选择的订单
@@ -44,4 +43,11 @@ public interface SLOrderService {
      * @return
      */
     public boolean completeOrder(List<String> ids);
+
+    /**
+     * 根据waterid数组获得相应的YMUnprintOrder List
+     * @param
+     * @return
+     */
+    public List<SLUnprintOrder> findEachByid(List<String> ids);
 }
