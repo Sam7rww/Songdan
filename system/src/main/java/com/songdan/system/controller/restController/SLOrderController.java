@@ -20,6 +20,32 @@ public class SLOrderController {
     @Autowired
     private SLOrderService slOrderService;
 
+    //保存订单
+    @RequestMapping(value = "/saveSLOrderInfo")
+    public Map<String,String> saveOrderInfo(HttpServletRequest request){
+        String ordernum = request.getParameter("serial");
+        String line = request.getParameter("line");
+        String productid = request.getParameter("code");
+        String productname = request.getParameter("name");
+        String neijing = request.getParameter("neijing");
+        String type = request.getParameter("calculate");
+        int num = Integer.parseInt(request.getParameter("number").trim());
+        String unit = request.getParameter("unit").trim();
+        String indate = request.getParameter("indate");
+        String date = request.getParameter("date");
+        String backup = request.getParameter("backup");
+        String result = slOrderService.saveSLOrder(ordernum,line,productid,productname,type,num,unit,
+                backup,indate,date,neijing);
+        Map<String,String> message = new HashMap<String, String>();
+        if(result.equals("")){
+            message.put("result","pass");
+        }else{
+            message.put("result",result);
+        }
+
+        return message;
+    }
+
     //导入Excel订单信息
     @RequestMapping(value = "/importSLOrders")
     public Map<String,String> importSLOrders(@RequestBody List<SLOrder> orders){

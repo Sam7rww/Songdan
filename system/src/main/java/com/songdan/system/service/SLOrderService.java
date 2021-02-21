@@ -9,6 +9,15 @@ import java.util.List;
 public interface SLOrderService {
 
     /**
+     * 存储收到的双鹿订单信息
+     * @param
+     * @return
+     */
+    public String saveSLOrder(String ordernum, String line, String productid,
+                              String productname, String type, int num, String unit,String backup,
+                              String indate, String date,String neijing);
+
+    /**
      * 存储上传的Excel订单信息
      * @param
      * @return

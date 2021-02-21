@@ -58,7 +58,7 @@
                     <div class="layui-card-body">
                         <form class="layui-form layui-form-pane" action="">
                             <div class="layui-row layui-col-space15">
-                                <div class="layui-col-md9">
+                                <div class="layui-col-md6">
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">作业单号</label>
                                         <div class="layui-input-block">
@@ -66,7 +66,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="layui-col-md3">
+                                <div class="layui-col-md6">
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">行号</label>
                                         <div class="layui-input-block">
@@ -144,6 +144,16 @@
                                         <label class="layui-form-label">交货日期</label>
                                         <div class="layui-input-block">
                                             <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-md12">
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label">备注要求</label>
+                                        <div class="layui-input-block">
+                                            <textarea name="backup" placeholder="请输入备注信息" class="layui-textarea"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -239,28 +249,28 @@
         });
 
         //监听提交
-        // form.on('submit(demo1)', function(data){
-        //     layer.msg(JSON.stringify(data.field));
-        //     var url = "saveOrderInfo";
-        //     $.ajax({
-        //         url:url,
-        //         type:"POST",
-        //         dateType:"json",
-        //         data:data.field,
-        //         success:function (Message){
-        //             if(Message.result == "pass"){
-        //                 layer.msg("保存成功");
-        //             }else{
-        //                 layer.msg(Message.result);
-        //             }
-        //         },
-        //         error:function(XMLHttpRequest, textStatus, errorThrown) {
-        //             alert('无法上传，请联系管理员!!!');
-        //         }
-        //     })
-        //
-        //     return false;
-        // });
+        form.on('submit(demo1)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            var url = "saveSLOrderInfo";
+            $.ajax({
+                url:url,
+                type:"POST",
+                dateType:"json",
+                data:data.field,
+                success:function (Message){
+                    if(Message.result == "pass"){
+                        layer.msg("保存成功");
+                    }else{
+                        layer.msg(Message.result);
+                    }
+                },
+                error:function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert('无法上传，请联系管理员!!!');
+                }
+            })
+
+            return false;
+        });
     });
 
     $(function(){

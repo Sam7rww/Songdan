@@ -25,6 +25,28 @@ public class SLOrderServiceImpl implements SLOrderService {
     private SLpaperDao paper;
 
     @Override
+    public String saveSLOrder(String ordernum, String line, String productid, String productname, String type,
+                              int num, String unit, String backup, String indate, String date, String neijing) {
+        String orderline = ordernum+"/"+line;
+        if(ordernum.equals("") || line.equals("")){
+            return "不保存通用纸箱信息。";
+        }
+        boolean exists = slunprint.existsByOrderlineAndProductid(orderline,productid);
+        if(exists){
+            return "订单已存在，请确认。";
+        }
+        ComputeNeijingSL com = new ComputeNeijingSL(neijing,type);
+        SLUnprintOrder slUnprintOrder = new SLUnprintOrder(ordernum,line,orderline,indate,date,productid, productname,
+                backup,num,unit,neijing,com.getWaiJing(),com.getBanPian(),com.getYaXian());
+        SLUnprintOrder temp = slunprint.save(slUnprintOrder);
+        if(temp != null){
+            return "";
+        }else{
+            return "保存失败，检查输入。";
+        }
+    }
+
+    @Override
     public String saveImportExcel(List<SLOrder> orders) {
 
         for(int i=0;i<orders.size();i++){
