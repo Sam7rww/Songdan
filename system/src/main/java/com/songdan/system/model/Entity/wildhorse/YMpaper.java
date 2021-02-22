@@ -34,9 +34,10 @@ public class YMpaper {
     public YMpaper(){
     }
 
-    public YMpaper(String productid, String productname, String neijing, String waijing, String banpian, String yaxian, String type, String gecengban) {
+    public YMpaper(String productid, String productname,String productname2, String neijing, String waijing, String banpian, String yaxian, String type, String gecengban) {
         this.productid = productid;
         this.productname = productname;
+        this.productname2 = productname2;
         this.neijing = neijing;
         this.waijing = waijing;
         this.banpian = banpian;

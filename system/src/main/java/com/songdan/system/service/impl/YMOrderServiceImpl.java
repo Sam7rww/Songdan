@@ -8,6 +8,7 @@ import com.songdan.system.model.Entity.wildhorse.YMUnprintOrder;
 import com.songdan.system.model.Entity.wildhorse.YMpaper;
 import com.songdan.system.model.Entity.wildhorse.YMprintOrder;
 import com.songdan.system.model.vo.YMOrder;
+import com.songdan.system.model.vo.inspectOrder;
 import com.songdan.system.service.YMOrderService;
 import com.songdan.system.service.util.ComputeNeiJingYM;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,12 @@ public class YMOrderServiceImpl implements YMOrderService {
     private YMprintOrderDao ymprint;
 
     @Override
-    public String saveYMOrder(String waterid, String ordernum, String productid, String productname, String productname2, int num, String unit, String outputdate, String demand, String price, String neijing,String gecengban) {
+    public String saveYMOrder(String waterid, String ordernum, String productid, String productname,
+                              String productname2, int num, String unit, String outputdate,
+                              String demand, String price, String neijing,String gecengban,String type) {
         java.util.Date date = new java.util.Date();
         java.sql.Date sDate = new java.sql.Date(date.getTime());//年月日
-        ComputeNeiJingYM com = new ComputeNeiJingYM(neijing);
+        ComputeNeiJingYM com = new ComputeNeiJingYM(neijing,type);
         if(!com.assertInput()){
             return "内径输入有误，请检查。";
         }
@@ -45,7 +48,9 @@ public class YMOrderServiceImpl implements YMOrderService {
         if(temp){
             return "采购流水号不可重复。";
         }
-        YMUnprintOrder ymorder = new YMUnprintOrder(waterid,ordernum,productid,productname,productname2,num,unit,sDate,outputdate,demand,Double.parseDouble(price),neijing,com.getWaiJing(),com.getBanPian(),com.getYaXian(),gecengban);
+        YMUnprintOrder ymorder = new YMUnprintOrder(waterid,ordernum,productid,productname,productname2,
+                num,unit,sDate,outputdate,demand,
+                Double.parseDouble(price),neijing,com.getWaiJing(),com.getBanPian(),com.getYaXian(),gecengban);
         YMUnprintOrder ym = ymunprint.save(ymorder);
         if(ym != null){
             return "";
@@ -65,7 +70,11 @@ public class YMOrderServiceImpl implements YMOrderService {
             if(exists){
                 continue;
             }
-            YMUnprintOrder ymorder = new YMUnprintOrder(order.getWaterid(),order.getOrdernum(),order.getProductid(),order.getProductname(),order.getProductname2(),order.getNum(),order.getUnit(),sDate,order.getOutputdate(),order.getDemand(),Double.parseDouble(order.getPrice().trim()),"","","","",order.getGecengban());
+            YMUnprintOrder ymorder = new YMUnprintOrder(order.getWaterid(),order.getOrdernum(),
+                    order.getProductid(),order.getProductname(),order.getProductname2(),order.getNum(),
+                    order.getUnit(),sDate,order.getOutputdate(),order.getDemand(),
+                    Double.parseDouble(order.getPrice().trim()),"","","","",
+                    order.getGecengban());
             //System.out.println("ymunprintorder outputdate :"+ymorder.getOutputdate());
             YMpaper targetPaper = paper.findByProductid(order.getProductid());
             if(targetPaper!=null){//找的到图纸
@@ -79,21 +88,23 @@ public class YMOrderServiceImpl implements YMOrderService {
                 if(order.getNeijing().equals("")){
                     return "采购流水号："+order.getWaterid()+"，图纸不存在，内径不可为空！";
                 }
-                if(order.getCalculate().equals("default")){//计算外径，并保存图纸
-                    ComputeNeiJingYM com = new ComputeNeiJingYM(order.getNeijing());
-                    if(!com.assertInput()){
-                        return "采购流水号："+order.getWaterid()+",内径输入格式有误";
-                    }
-                    ymorder.setNeijing(order.getNeijing());
-                    ymorder.setWaijing(com.getWaiJing());
-                    ymorder.setBanpian(com.getBanPian());
-                    ymorder.setYaxian(com.getYaXian());
-                    YMpaper p = new YMpaper(order.getProductid(),order.getProductname(),order.getNeijing(),com.getWaiJing(),com.getBanPian(),com.getYaXian(),order.getCalculate(),order.getGecengban());
-                    YMpaper paperRes = paper.save(p);
-                    if(paperRes == null){
-                        return "图纸保存失败，请检查图纸相关输入";
-                    }
-                }else{return "暂不支持非默认计算方式";}
+                //计算外径，并保存图纸
+                ComputeNeiJingYM com = new ComputeNeiJingYM(order.getNeijing(),order.getCalculate());
+                if(!com.assertInput()){
+                    return "采购流水号："+order.getWaterid()+",内径输入格式有误";
+                }
+                ymorder.setNeijing(order.getNeijing());
+                ymorder.setWaijing(com.getWaiJing());
+                ymorder.setBanpian(com.getBanPian());
+                ymorder.setYaxian(com.getYaXian());
+                YMpaper p = new YMpaper(order.getProductid(),order.getProductname(),order.getProductname2(),
+                        order.getNeijing(),com.getWaiJing(),com.getBanPian(),com.getYaXian(),
+                        order.getCalculate(),order.getGecengban());
+                YMpaper paperRes = paper.save(p);
+                if(paperRes == null){
+                    return "图纸保存失败，请检查图纸相关输入";
+                }
+
             }
             YMUnprintOrder ym = ymunprint.save(ymorder);
             if(ym == null){
@@ -155,7 +166,8 @@ public class YMOrderServiceImpl implements YMOrderService {
     }
 
     @Override
-    public List<YMUnprintOrder> getSearchYMOrder(String waterid, String ordernum, String productname, String outputdate) {
+    public List<YMUnprintOrder> getSearchYMOrder(String waterid, String ordernum, String productname,
+                                                 String outputdate) {
 
         if(!waterid.equals("")){
             YMUnprintOrder order = ymunprint.findByWaterid(waterid);
@@ -213,6 +225,9 @@ public class YMOrderServiceImpl implements YMOrderService {
         List<YMUnprintOrder> orders = new ArrayList<>();
         for(int i=0;i<waterids.size();i++){
             YMUnprintOrder order = ymunprint.findByWaterid(waterids.get(i));
+            if(order==null){
+                continue;
+            }
             orders.add(order);
         }
         return orders;
@@ -225,10 +240,47 @@ public class YMOrderServiceImpl implements YMOrderService {
             String id = ids.get(i);
             ymunprint.updateState(id,1);
             YMUnprintOrder temp = ymunprint.findByWaterid(id);
-            YMprintOrder printorder = new YMprintOrder(temp.getWaterid(),temp.getOrdernum(),temp.getProductid(),temp.getProductname(),temp.getProductname2(),temp.getNum(),temp.getUnit(),temp.getOutputdate(),temp.getDemand(),temp.getPrice());
+            YMprintOrder printorder = new YMprintOrder(temp.getWaterid(),temp.getOrdernum(),
+                    temp.getProductid(),temp.getProductname(),temp.getProductname2(),
+                    temp.getNum(),temp.getUnit(),temp.getOutputdate(),temp.getDemand(),temp.getPrice());
             ymprint.save(printorder);
         }
         return true;
+    }
+
+    @Override
+    public List<inspectOrder> inpectOrder(String ids) {
+        boolean ext = ids.contains(",");
+        if(!ext){
+            return null;
+        }
+        String[] waterids = ids.split(",");
+        List<inspectOrder> lists = new ArrayList<>();
+        for(String temp:waterids){
+            String id = temp.trim();
+            YMUnprintOrder order = ymunprint.findByWaterid(id);
+            if(order == null){
+                continue;
+            }
+            String neijing = order.getNeijing();
+            String[] statistic = neijing.split("\\*");
+            String ordernum = order.getOrdernum();
+            String productname = order.getProductname();
+            String gecengban = order.getGecengban();
+            if(!gecengban.equals("")&&gecengban!=null){
+                productname+=" ;"+gecengban;
+            }
+            inspectOrder inspect = new inspectOrder(order.getWaterid(),productname,order.getNum(),
+                    statistic[0],statistic[1],statistic[2],order.getUnit(),ordernum.substring(ordernum.length()-5),order.getPrice());
+            lists.add(inspect);
+        }
+
+        return lists;
+    }
+
+    @Override
+    public List<inspectOrder> deliveryOrder(String ids) {
+        return null;
     }
 
     public void cutOrdernum(List<YMUnprintOrder> orders){

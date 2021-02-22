@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>松旦包装印刷有限公司</title>
+    <link rel="stylesheet" th:href="@{/css/layui.css}">
+    <style>
+        .layui-table-cell, .layui-table-tool-panel li {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+    </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">松旦包装有限公司</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a th:href="@{/wildhorse/printinspect}">野马单据</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">图纸信息</a>
+                <dl class="layui-nav-child">
+                    <dd><a th:href="@{/wildhorse/wdpaper}">野马图纸</a></dd>
+                    <dd><a th:href="@{/doubledear/slpaper}">双鹿图纸</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img th:src="@{/images/navimg/doubledear.jpeg}" class="layui-nav-img">
+                    双鹿订单
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">检验员</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-body" style="left:5px;">
+        <!-- 内容主体区域 -->
+        <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header" style="text-align: center;font-size: 30px">野马检验单生成,请在输入框中以逗号分隔输入流水号</div>
+                    <div class="layui-card-body">
+                        <form class="layui-form layui-form-pane" action="">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-md12">
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label">检验单流水号</label>
+                                        <div class="layui-input-block">
+                                            <textarea id="inspectids" name="waterid1" placeholder="请输入需要生成的检验单相关的流水号，以,间隔(英文版逗号),如Z796923,Z796924,Z796925,Z796926." class="layui-textarea"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-md8">
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="button" class="layui-btn" lay-filter="demo1" id="exportinspect">生成</button>
+                                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header" style="text-align: center;font-size: 30px">野马送货单生成,请在输入框中以逗号分隔输入流水号</div>
+                    <div class="layui-card-body">
+                        <form class="layui-form layui-form-pane" action="">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-md12">
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label">送货单流水号</label>
+                                        <div class="layui-input-block">
+                                            <textarea name="waterid2" id="deliveryids" placeholder="请输入需要生成的送货单相关的流水号，以,间隔(英文版逗号),如Z796923,Z796924,Z796925,Z796926." class="layui-textarea"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-md8">
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="button" class="layui-btn" lay-filter="demo1" id="exportdelivery">生成</button>
+                                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-footer" style="left:5px;">
+        <!-- 底部固定区域 -->
+        © Songdan.com - 底部固定区域
+    </div>
+</div>
+<script th:src="@{/layui.js}"></script>
+<script th:src="@{/js/jquery-3.5.1.js}"></script>
+<script th:src="@{/layui_exts/excel.js}"></script>
+<script>
+    //JavaScript代码区域
+    layui.config({
+        base: 'static/layui_exts/', // 配置一个可访问地址
+    }).extend({
+        excel: 'excel',
+    });
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+
+</script>
+</body>
+
+
+</html>

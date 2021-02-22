@@ -20,7 +20,14 @@
         <div class="layui-logo">松旦包装有限公司</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="">野马单据</a></li>
+            <li class="layui-nav-item"><a th:href="@{/wildhorse/printinspect}">野马单据</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">图纸信息</a>
+                <dl class="layui-nav-child">
+                    <dd><a th:href="">野马图纸</a></dd>
+                    <dd><a th:href="">双鹿图纸</a></dd>
+                </dl>
+            </li>
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
@@ -49,7 +56,7 @@
                                     <div class="layui-form-item layui-form-text">
                                         <label class="layui-form-label">检验单流水号</label>
                                         <div class="layui-input-block">
-                                            <textarea id="inspectids" name="waterid1" placeholder="请输入需要生成的检验单相关的流水号，以,间隔" class="layui-textarea"></textarea>
+                                            <textarea id="inspectids" name="waterid1" placeholder="请输入需要生成的检验单相关的流水号，以,间隔(英文版逗号),如Z796923,Z796924,Z796925,Z796926." class="layui-textarea"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -58,7 +65,7 @@
                                 <div class="layui-col-md8">
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
-                                            <button type="button" class="layui-btn" lay-filter="demo1" id="exportinspect" onclick="exportinspect()">生成</button>
+                                            <button type="button" class="layui-btn" lay-filter="demo1" id="exportinspect">生成</button>
                                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                                         </div>
                                     </div>
@@ -81,7 +88,7 @@
                                     <div class="layui-form-item layui-form-text">
                                         <label class="layui-form-label">送货单流水号</label>
                                         <div class="layui-input-block">
-                                            <textarea name="waterid2" placeholder="请输入需要生成的送货单相关的流水号，以,间隔" class="layui-textarea"></textarea>
+                                            <textarea name="waterid2" id="deliveryids" placeholder="请输入需要生成的送货单相关的流水号，以,间隔(英文版逗号),如Z796923,Z796924,Z796925,Z796926." class="layui-textarea"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -127,285 +134,145 @@
      * 导出检验单
      * @return {[type]} [description]
      */
-    function exportinspect() {
-        layui.use(['excel'], function () {
-            var excel = layui.excel
-            var waterids = $('#inspectids').val();
-            var d = new Date()
-            var data = [
-                {
-                    waterid: '', productname: {
-                        v: '宁波市松旦包装印刷有限公司', s: {
-                            alignment: {
-                                horizontal: 'center',
-                                vertical: 'center'
-                            },
-                            font: {sz:18, bold:true}
-                        }
-                    }, num: '', long: '', wide: '', high: '',unit:'',ordernum:'',price: ''
-                },// 被合并的列数据也需要填充上
-                {waterid: '',productname: {
+    $('#exportinspect').on('click',function (){
+        var excel = layui.excel
+        var waterids = $('#inspectids').val();
+        var d = new Date();
+        var data = [
+            {
+                waterid: '', productname: {
+                    v: '宁波市松旦包装印刷有限公司', s: {
+                        alignment: {
+                            horizontal: 'center',
+                            vertical: 'center'
+                        },
+                        font: {sz:18, bold:true}
+                    }
+                }, num: '', length: '', wide: '', high: '',unit:'',ordernum:'',price: ''
+            },// 被合并的列数据也需要填充上
+            {waterid: '',productname: {
                     v:'送检单',s:{
                         alignment: {
-                                horizontal: 'center',
-                                vertical: 'center'
-                            },font: {sz:11, bold:true}
-                        }
-                    },num: '',long:'',wide: '',high: '',unit: '',ordernum: '',price: ''},
-                // {waterid: '',productname: '', num: '', long: '', wide: '', high: '',unit:'',ordernum:'',price: ''},
-                {waterid: '客户名称：浙江野马电池有限公司',productname: '', num: '', long: '', wide: '', high: '',unit:'NO:',ordernum:'',price: ''},
-                {waterid: '送货地址：镇海区骆驼街道荣吉路875号',productname: '', num: '', long: '', wide: '', high: '送检日期:'+d,unit:'',ordernum:'',price: ''},
-                {waterid: '销售订单号', productname: '产品名称', num: '数量', long: '长', wide: '宽', high: '高', unit:'单位', ordernum:'作业单号', price:'单价'},
-            ]
-            // 生成配置的辅助函数，返回结果作为扩展功能的配置参数传入即可
-            // 1. 复杂表头合并[B1,C1,D1][E1,F1]
-            var mergeConf = excel.makeMergeConfig([
-                ['B1', 'C1'],
-                ['B2', 'C2'],
-                ['F4', 'I4'],
-            ])
-            // 2. B列宽 150，F列宽200，默认80
-            var colConf = excel.makeColConfig({
-                'B': 275,
-            }, 50)
-            // 3. 第1行行高40，第二行行高30，默认20
-            // var rowConf = excel.makeRowConfig({
-            //     1: 40,
-            //     3: 30
-            // }, 20)
-            $.ajax({
-                type: 'post',
-                url: 'exportPurchaseOrders',
-                data: JSON.stringify(datas),
-                contentType : "application/json",
-                success: function (res) {
-                    res.unshift({waterid:'采购流水号',ordernum: '作业单号',productid: '物料代码', productname: '物料名称',productname2:'别名',num:'数量',unit:'单位',outputdate:'交货日期',demand:'生产要求及噱头',price:'含税单价'});
-                    LAY_EXCEL.exportExcel(res, '野马电池采购订单.xlsx', 'xlsx')
-                },
-                error:function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest.status);
-                    alert(XMLHttpRequest.readyState);
-                    alert(textStatus);
-                }
-            });
-
-            // 4. 公式的用法
-            data.push({waterid: '开单人:',productname: '', num: '', long: '送货人:', wide: '', high: '',unit:'收货人:',ordernum:'',price: ''})
-            excel.exportExcel({
-                sheet1: data,
-                sheet2: data
-            }, '测试导出复杂表头.xlsx', 'xlsx', {
-                extend: {
-                    // extend 中可以指定某个 sheet 的属性，如果不指定 sheet 则所有 sheet 套用同一套属性
-                    sheet1: {
-                        '!merges': mergeConf
-                        , '!cols': colConf
-                        , '!rows': rowConf
+                            horizontal: 'center',
+                            vertical: 'center'
+                        },font: {sz:11, bold:true}
                     }
-                }
-            })
-        })
-    }
-
-
-    layui.use(['table','excel'], function(){
-        var table = layui.table;
-
-
-
-        //单独设置导出按钮
-        table.on('toolbar(test)', function (obj) {
-            var checkStatus = table.checkStatus(obj.config.id);
-            switch (obj.event) {
-                case 'exportPurchaseData': //导出采购订单
-                    layer.alert('导出采购订单！！！');
-
-                    //获取选中的行
-                    var datas = checkStatus.data;
-                    console.log(datas);
-                    if (datas.length>0) {
-                        //导出选中行
-                        $.ajax({
-                            type: 'post',
-                            url: 'exportPurchaseOrders',
-                            data: JSON.stringify(datas),
-                            contentType : "application/json",
-                            success: function (res) {
-                                res.unshift({waterid:'采购流水号',ordernum: '作业单号',productid: '物料代码', productname: '物料名称',productname2:'别名',num:'数量',unit:'单位',outputdate:'交货日期',demand:'生产要求及噱头',price:'含税单价'});
-                                LAY_EXCEL.exportExcel(res, '野马电池采购订单.xlsx', 'xlsx')
-                            },
-                            error:function(XMLHttpRequest, textStatus, errorThrown) {
-                                alert(XMLHttpRequest.status);
-                                alert(XMLHttpRequest.readyState);
-                                alert(textStatus);
-                            }
-                        });
-                        // table.exportFile(obj.config.id, datas, 'xls');
-                    } else {
-                        layer.alert('请先选择需要导出数据。');
+                },num: '',length:'',wide: '',high: '',unit: '',ordernum: '',price: ''},
+            // {waterid: '',productname: '', num: '', long: '', wide: '', high: '',unit:'',ordernum:'',price: ''},
+            {waterid: '客户名称：浙江野马电池有限公司',productname: '', num: '', length: '', wide: '', high: '',unit:'NO:',ordernum:'',price: ''},
+            {waterid: '送货地址：镇海区骆驼街道荣吉路875号',productname: '', num: '', length: '', wide: '', high: '送检日期:'+d.toLocaleDateString(),unit:'',ordernum:'',price: ''},
+            {waterid: '销售订单号', productname: '产品名称', num: '数量', length: '长', wide: '宽', high: '高', unit:'单位', ordernum:'作业单号', price:'单价'},
+        ]
+        // 生成配置的辅助函数，返回结果作为扩展功能的配置参数传入即可
+        // 1. 复杂表头合并[B1,C1,D1][E1,F1]
+        var mergeConf = excel.makeMergeConfig([
+            ['B1', 'C1'],
+            ['B2', 'C2'],
+            ['A3', 'B3'],
+            ['A4', 'B4'],
+            ['F4', 'I4'],
+        ])
+        // 2. B列宽 400，默认50
+        var colConf = excel.makeColConfig({
+            'B': 400,
+        }, 50)
+        console.log(data)
+        $.ajax({
+            type: 'post',
+            url: 'printInspectOrder',
+            data: {"waterids":waterids},
+            dateType:"json",
+            success: function (res) {
+                if(res){
+                    for(var i = 0; i<res.length;i++){
+                        data.push(res[i]);
                     }
-                    break;
-                case 'exportProduceData': //导出生产通知单
-                    layer.alert('导出生产通知单！！！');
+                    data.push({waterid: '开票人:',productname: '', num: '', length: '送货人:', wide: '', high: '',unit:'收货人:',ordernum:'',price: ''})
 
-                    //获取选中的行
-                    var datas = checkStatus.data;
-                    if (datas.length>0) {
-                        //导出选中行
-                        $.ajax({
-                            type: 'post',
-                            url: 'exportProduceOrders',
-                            data: JSON.stringify(datas),
-                            contentType : "application/json",
-                            success: function (res) {
-                                res.unshift({ordernum: '作业单号',productid: '物料代码', productname: '物料名称',neijing:'内径',waijing:'外径',banpian:'板片',yaxian:'压线',num:'数量',unit:'单位'});
-                                LAY_EXCEL.exportExcel(res, '宁波市松旦包装印刷有限公司生产通知单.xlsx', 'xlsx')
-                            },
-                            error:function(XMLHttpRequest, textStatus, errorThrown) {
-                                alert(XMLHttpRequest.status);
-                                alert(XMLHttpRequest.readyState);
-                                alert(textStatus);
-                            }
-                        });
-                        // table.exportFile(obj.config.id, datas, 'xls');
-                    } else {
-                        layer.alert('请先选择需要导出数据。');
-                    }
-                    break;
-                case 'printData': //打印自选列
-                    //选中数据
-                    var datas = checkStatus.data;
-                    var style = [
-                        '<style>', 'body{font-size: 12px; color: #666;}',
-                        'table{width: 100%; border-collapse: collapse; border-spacing: 0;}',
-                        'th,td{line-height: 20px; padding: 9px 15px; border: 1px solid #ccc; text-align: left; font-size: 12px; color: #666;}', '</style>'
-                    ].join('');
-                    if (datas.length > 0) {
-                        //获取列名和列值
-                        var cols = obj.config.cols[0];
-                        var tableHtml = '<table><tr>';
-                        for (var j = 0; j < cols.length; j++) {
-                            if (!cols[j].hide && cols[j].type !== "checkbox") {
-                                tableHtml += '<td>' + cols[j].title+'</td>';
-                            }
-                        }
-                        tableHtml += '</tr>';
-                        for (var l = 0; l < datas.length; l++) {
-                            tableHtml += '<tr>';
-                            for (var m = 0; m < cols.length; m++) {
-                                if (!cols[m].hide && cols[m].type !== "checkbox" && cols[m].type !=="cols[m].type !==") {
-                                    tableHtml += '<td>' + datas[l][cols[m].field] + '</td>';
-                                }
-                            }
-                            tableHtml += '</tr>';
-                        }
-                        tableHtml += '</table>';
-                        //创建一个打印窗口
-                        var printWindow = window.open("打印窗口", "_blank");
-                        //将明细页面拷贝到新的窗口，这样新的窗口就有了明细页面的样式
-                        var htmlbox = '<html><head>' + style+'</head><body></body></html>';
-                        printWindow.document.write(htmlbox);
-                        //获得要打印的内容
-                        var printbox = tableHtml;
-                        //将要打印的内容替换到新窗口的body中
-                        printWindow.document.body.innerHTML = printbox;
-                        //脚本向窗口(不管是本窗口或其他窗口)写完内容后，必须关闭输出流。在延时脚本的最后一个document.write()方法后面，必须确保含有document.close()方法，不这样做就不能显示图像和表单。
-                        //并且，任何后面调用的document.write()方法只会把内容追加到页面后，而不会清除现有内容来写入新值。
-                        printWindow.document.close();
-                        //打印
-                        //chrome浏览器使用jqprint插件打印时偶尔空白页问题
-                        //解决方案：有时候页面总是加载不出来，打印出现空白页，可以设置延迟时间来等待页面的渲染，但是渲染时间的长短跟页面的大小有关，是不固定的。所以这里使用事件监听器。
-                        printWindow.addEventListener('load', function () {
-                            printWindow.print();
-                            //关闭窗口
-                            printWindow.close();
-                        });
-                    } else {
-                        alert('请先选中要打印的数据！');
-                    }
-                    break;
-                case 'printPurchaseData': //打印瓦楞纸板采购订单
-
-                    //获取选中的行
-                    var datas = checkStatus.data;
-                    var frame = document.createElement("IFRAME");
-                    console.log(datas);
-                    if (datas.length>0) {
-                        //导出选中行
-                        var nums = "";
-                        for(var i=0;i<checkStatus.data.length;i++){
-                            nums += checkStatus.data[i].waterid+",";
-                        }
-                        parent.layer.msg('打印中...', {icon: 16,shade: 0.3,time:5000});
-
-                        frame.style.display ="none";
-                        frame.src = "printPurchaseOrders?nums="+nums;//controller层的url
-                        document.body.appendChild(frame);
-                        frame.contentWindow.focus();
-                        frame.contentWindow.print();
-                    } else {
-                        layer.alert('请先选择需要导出数据。');
-                    }
-                    break;
-                case 'completeCheckData': //完成选中数据
-                    //获取选中的行
-                    var datas = checkStatus.data;
-                    if (datas.length>0) {
-                        //完成选中行
-                        var idJSON = [];
-                        var idItem = {};
-                        for(var i=0;i<datas.length;i++){
-                            //idItem.waterid = datas[i].waterid;
-                            idJSON.push(datas[i].waterid);
-                            //idItem={};
-                        }
-                        layer.confirm('确定完成吗？',function (index){
-                            $.ajax({
-                                type: 'post',
-                                url: 'completeOrders',
-                                data: JSON.stringify(idJSON),
-                                contentType : "application/json",
-                                success:function (res){
-                                    window.location.reload();
-                                },
-                                error:function(XMLHttpRequest, textStatus, errorThrown) {
-                                    alert(XMLHttpRequest.status);
-                                    alert(XMLHttpRequest.readyState);
-                                    alert(textStatus);
-                                }
-                            })
-
-                            layer.close(index);
+                    excel.exportExcel(data, '野马电池送检单.xlsx', 'xlsx',
+                        {extend:{'!merges': mergeConf
+                                , '!cols': colConf}
                         })
-                    } else {
-                        layer.alert('请先选择完成的数据。');
-                    }
-                    break;
-                //自定义头工具栏右侧图标 - 提示
-                case 'LAYTABLE_TIPS':
-                    layer.alert('完成打印导出工作后记得点击完成选中订单！');
-                    break;
+                }else{
+                    alert("请检查输入格式，逗号需为英文版格式。");
+                }
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("无法生成Excel 送检单，请联系管理员。");
             }
         });
+    });
 
-        $('#searchbtn').on('click',function (){
-            var waterid = $('#waterid').val();
-            var ordernum = $('#ordernum').val();
-            var productname = $('#productname').val();
-            var outputdate = $('#date').val();
-            table.reload('testReload',{
-                url:"getSearchOrder"
-                ,method:'post'
-                ,where: {
-                    'id':waterid,
-                    'serial':ordernum,
-                    'name':productname,
-                    'date':outputdate,
+    /**
+     * 导出送货单
+     * @return {[type]} [description]
+     */
+    $('#exportdelivery').on('click',function (){
+        var excel = layui.excel
+        var waterids = $('#deliveryids').val();
+        var d = new Date();
+        var data = [
+            {
+                waterid: '', productname: {
+                    v: '宁波市松旦包装印刷有限公司', s: {
+                        alignment: {
+                            horizontal: 'center',
+                            vertical: 'center'
+                        },
+                        font: {sz:18, bold:true}
+                    }
+                }, num: '', length: '', wide: '', high: '',unit:'',ordernum:'',price: ''
+            },// 被合并的列数据也需要填充上
+            {waterid: '',productname: {
+                    v:'送货单',s:{
+                        alignment: {
+                            horizontal: 'center',
+                            vertical: 'center'
+                        },font: {sz:11, bold:true}
+                    }
+                },num: '',length:'',wide: '',high: '',unit: '',ordernum: '',price: ''},
+            // {waterid: '',productname: '', num: '', long: '', wide: '', high: '',unit:'',ordernum:'',price: ''},
+            {waterid: '客户名称：浙江野马电池有限公司',productname: '', num: '', length: '', wide: '', high: '',unit:'NO:',ordernum:'',price: ''},
+            {waterid: '送货地址：镇海区骆驼街道荣吉路875号',productname: '', num: '', length: '', wide: '', high: '送检日期:'+d.toLocaleDateString(),unit:'',ordernum:'',price: ''},
+            {waterid: '销售订单号', productname: '产品名称', num: '数量', length: '长', wide: '宽', high: '高', unit:'单位', ordernum:'作业单号', price:'单价'},
+        ]
+        // 生成配置的辅助函数，返回结果作为扩展功能的配置参数传入即可
+        // 1. 复杂表头合并[B1,C1,D1][E1,F1]
+        var mergeConf = excel.makeMergeConfig([
+            ['B1', 'C1'],
+            ['B2', 'C2'],
+            ['A3', 'B3'],
+            ['A4', 'B4'],
+            ['F4', 'I4'],
+        ])
+        // 2. B列宽 400，默认50
+        var colConf = excel.makeColConfig({
+            'B': 400,
+        }, 50)
+        console.log(data)
+        $.ajax({
+            type: 'post',
+            url: 'printInspectOrder',
+            data: {"waterids":waterids},
+            dateType:"json",
+            success: function (res) {
+                if(res){
+                    for(var i = 0; i<res.length;i++){
+                        data.push(res[i]);
+                    }
+                    data.push({waterid: '开票人:',productname: '', num: '', length: '送货人:', wide: '', high: '',unit:'收货人:',ordernum:'',price: ''})
+
+                    excel.exportExcel(data, '野马电池送检单.xlsx', 'xlsx',
+                        {extend:{'!merges': mergeConf
+                                , '!cols': colConf}
+                        })
+                }else{
+                    alert("请检查输入格式，逗号需为英文版格式。");
                 }
-                ,done: function () {
-                    this.where={};
-                }
-            });
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("无法生成Excel 送检单，请联系管理员。");
+            }
         });
     });
 </script>

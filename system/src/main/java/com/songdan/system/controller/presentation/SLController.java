@@ -10,9 +10,14 @@ public class SLController {
     //双鹿页面
     @RequestMapping(value = "/slinput")
     public String slinput(){
-        return "/doubledear/slinput";
+        return "doubledear/slinput";
     }
 
     @RequestMapping(value = "/slprint")
-    public String printOrder(){return "/doubledear/slprint"; }
+    public String printOrder(){return "doubledear/slprint"; }
+
+    @RequestMapping(value = "/slpaper")
+    public String slpaper(){
+        return "doubledear/slpaper";
+    }
 }

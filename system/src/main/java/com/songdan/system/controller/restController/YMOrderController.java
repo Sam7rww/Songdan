@@ -5,6 +5,7 @@ import com.songdan.system.model.Entity.wildhorse.YMUnprintOrder;
 import com.songdan.system.model.vo.YMOrder;
 import com.songdan.system.model.vo.YMProduceOrder;
 import com.songdan.system.model.vo.YMPurchaseOrder;
+import com.songdan.system.model.vo.inspectOrder;
 import com.songdan.system.service.YMOrderService;
 import com.songdan.system.service.YMPrintService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,8 @@ public class YMOrderController {
         String price = request.getParameter("price").trim();
         String desc = request.getParameter("desc");
         String gecengban = request.getParameter("gecengban").trim();
-        String result = ymOrderService.saveYMOrder(waterid,ordernum,productid,productname,productname2,num,unit,date,desc,price,neijing,gecengban);
+        String type = request.getParameter("calculate").trim();
+        String result = ymOrderService.saveYMOrder(waterid,ordernum,productid,productname,productname2,num,unit,date,desc,price,neijing,gecengban,type);
         Map<String,String> message = new HashMap<String, String>();
         if(result.equals("")){
             message.put("result","pass");
@@ -143,7 +145,6 @@ public class YMOrderController {
             message.put("gecengban",temp.getGecengban());
             message.put("state",temp.getState());
         }
-
         return message;
     }
 
@@ -224,5 +225,17 @@ public class YMOrderController {
         boolean res = ymOrderService.completeOrder(ids);
         return res;
     }
+
+    //打印送检单
+    @RequestMapping(value = "/printInspectOrder")
+    public List printInspectOrder(HttpServletRequest request){
+        String ids = request.getParameter("waterids");
+        List<inspectOrder> lists = ymOrderService.inpectOrder(ids);
+        if(lists == null){
+            return null;
+        }
+        return lists;
+    }
+    //打印送货单
 
 }

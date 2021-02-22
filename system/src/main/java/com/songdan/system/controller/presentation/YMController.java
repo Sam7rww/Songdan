@@ -1,7 +1,6 @@
 package com.songdan.system.controller.presentation;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -21,4 +20,14 @@ public class YMController {
 
     @RequestMapping(value = "/printorder")
     public String printOrder(){return "wildhorse/printorder"; }
+
+    @RequestMapping(value = "/printinspect")
+    public String printInspect(){
+        return "wildhorse/printinspect";
+    }
+
+    @RequestMapping(value = "/wdpaper")
+    public String wdpaper(){
+        return "wildhorse/whpaper";
+    }
 }

@@ -18,7 +18,7 @@ public class ComputeNeiJingYM {
 
     private boolean inputCorrectFlag;//判定输入是否为长*宽*高
 
-    public ComputeNeiJingYM(String nj){
+    public ComputeNeiJingYM(String nj, String type){
         String[] njs = nj.split("\\*");
         int l = njs.length;
         if(l!=3){

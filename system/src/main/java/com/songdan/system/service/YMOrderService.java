@@ -2,6 +2,7 @@ package com.songdan.system.service;
 
 import com.songdan.system.model.Entity.wildhorse.YMUnprintOrder;
 import com.songdan.system.model.vo.YMOrder;
+import com.songdan.system.model.vo.inspectOrder;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface YMOrderService {
      */
     public String saveYMOrder(String waterid, String ordernum, String productid,
                               String productname, String productname2, int num, String unit,
-                              String date, String demand, String price,String neijing,String gecengban);
+                              String date, String demand, String price,String neijing,String gecengban,String type);
 
     /**
      * 存储上传的Excel订单信息
@@ -72,4 +73,17 @@ public interface YMOrderService {
      */
     public boolean completeOrder(List<String> ids);
 
+    /**
+     * 生成送检单
+     * @param
+     * @return
+     */
+    public List<inspectOrder> inpectOrder(String ids);
+
+    /**
+     * 生成送货单
+     * @param
+     * @return
+     */
+    public List<inspectOrder> deliveryOrder(String ids);
 }
