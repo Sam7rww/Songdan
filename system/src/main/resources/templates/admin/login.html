@@ -48,10 +48,10 @@
             success : function(data){
                 if(data.result === "pass"){
                     if(data.role === "leader"){
-                        window.location.href="http://localhost:8080/wildhorse/inputorder";
+                        window.location.href="http://localhost:8080/system/wildhorse/inputorder";
                         // window.location.href="http://localhost:8080/system/wildhorse/inputorder";
                     }else if(data.role === "checker"){
-                        window.location.href="http://localhost:8080/wildhorse/printinspect";
+                        window.location.href="http://localhost:8080/system/wildhorse/printinspect";
                         // window.location.href="http://localhost:8080/system/wildhorse/printinspect";
                     }else{
                         alert(data.info);
