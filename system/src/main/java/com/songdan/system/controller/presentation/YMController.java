@@ -26,7 +26,7 @@ public class YMController {
         return "wildhorse/printinspect";
     }
 
-    @RequestMapping(value = "/wdpaper")
+    @RequestMapping(value = "/whpaper")
     public String wdpaper(){
         return "wildhorse/whpaper";
     }

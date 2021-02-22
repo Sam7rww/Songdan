@@ -7,10 +7,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping(value = "/wildhorse")
 public class PaperController {
 
     @Autowired
@@ -39,10 +41,44 @@ public class PaperController {
     }
 
     @RequestMapping(value = "/addYM")
-    public Map<String,Object> addYM(){
+    public Map<String,Object> addYM(HttpServletRequest request){
+        System.out.println("Enter add paper");
+        String productid = request.getParameter("productid");
+        String productname = request.getParameter("productname");
+        String productname2 = request.getParameter("productname2");
+        String gecengban = request.getParameter("gecengban").trim();
+        String type = request.getParameter("calculate").trim();
+        String neijing = request.getParameter("neijing");
+        String result = paperService.savepaper(productid,productname,productname2,gecengban,type,neijing);
         Map<String,Object> message = new HashMap<String, Object>();
+        if(result.equals("")){
+            message.put("result","pass");
+        }else{
+            message.put("result",result);
+        }
         return message;
     }
 
-
+    @RequestMapping(value = "/updateYM")
+    public Map<String,Object> updateYM(HttpServletRequest request){
+        System.out.println("Enter update paper");
+        String productid = request.getParameter("productid");
+        String productname = request.getParameter("productname");
+        String productname2 = request.getParameter("productname2");
+        String gecengban = request.getParameter("gecengban").trim();
+        String type = request.getParameter("calculate").trim();
+        String neijing = request.getParameter("neijing");
+        String waijing = request.getParameter("waijing");
+        String banpian = request.getParameter("banpian");
+        String yaxian = request.getParameter("yaxian");
+        String result = paperService.updatepaper(productid,productname,productname2,
+                gecengban,type,neijing,waijing,banpian,yaxian);
+        Map<String,Object> message = new HashMap<String, Object>();
+        if(result.equals("")){
+            message.put("result","pass");
+        }else{
+            message.put("result",result);
+        }
+        return message;
+    }
 }

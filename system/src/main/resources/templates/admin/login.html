@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>松旦包装印刷有限公司</title>
+    <link rel="stylesheet" media="screen" th:href="@{/css/login.css}">
+</head>
+<body>
+<!-- particles.js container -->
+<div id="particles-js" style="display: flex;align-items: center;justify-content: center">
+    <canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;" width="472" height="625"></canvas>
+</div>
+<div class="apTitle">宁波市松旦包装印刷有限公司</div>
+<div class="logcon">
+    <input type="text" placeholder="账号" id="username">
+    <input type="password" placeholder="密码" id="password">
+    <button type="button" id="submits">登录</button>
+</div>
+
+
+<!-- scripts -->
+<script th:src="@{/js/login.js}"></script>
+<script th:src="@{/js/loginApp.js}"></script>
+<script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+<script>
+    // function changeImg() {
+    //     let pic = document.getElementById('picture');
+    //     console.log(pic.src)
+    //     if (pic.getAttribute("src", 2) == "img/check.png") {
+    //         pic.src = "img/checked.png"
+    //     } else {
+    //         pic.src = "img/check.png"
+    //     }
+    // }
+
+    $("#submits").on("click",function () {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        if(username == ""||password ==""){
+            alert("账号、密码不可为空");
+        }
+        $.ajax({
+            type:"post",
+            url:"signin",
+            data:{"username":username,"password":password},
+            dataType:"json",
+            async:false,
+            success : function(data){
+                if(data.result === "pass"){
+                    if(data.role === "leader"){
+                        window.location.href="http://localhost:8080/wildhorse/inputorder";
+                        // window.location.href="http://localhost:8080/system/wildhorse/inputorder";
+                    }else if(data.role === "checker"){
+                        window.location.href="http://localhost:8080/wildhorse/printinspect";
+                        // window.location.href="http://localhost:8080/system/wildhorse/printinspect";
+                    }else{
+                        alert(data.info);
+                    }
+                }else{
+                    alert(data.info);
+                }
+            },error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest.status);
+                alert(XMLHttpRequest.readyState);
+                alert(textStatus);
+            }
+        });
+
+    });
+
+
+</script>
+
+</body>
+</html>

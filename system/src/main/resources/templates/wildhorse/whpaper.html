@@ -24,7 +24,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">图纸信息</a>
                 <dl class="layui-nav-child">
-                    <dd><a th:href="@{/wildhorse/wdpaper}">野马图纸</a></dd>
+                    <dd><a th:href="@{/wildhorse/whpaper}">野马图纸</a></dd>
                     <dd><a th:href="@{/doubledear/slpaper}">双鹿图纸</a></dd>
                 </dl>
             </li>
@@ -39,7 +39,7 @@
                     <dd><a href="">检验员</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">退出</a></li>
+            <li class="layui-nav-item"><a href="http://localhost:8080/system/login">退出</a></li>
         </ul>
     </div>
 
@@ -133,9 +133,9 @@
                                 <div class="layui-col-md8">
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
-                                            <button type="submit" class="layui-btn layui-btn-normal" id="add">添加图纸</button>
+                                            <button type="submit" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="add" id="add">添加图纸</button>
                                             <button type="button" class="layui-btn layui-btn-normal" id="search">查询图纸</button>
-                                            <button type="submit" class="layui-btn" lay-submit="" lay-filter="change">修改图纸</button>
+                                            <button type="submit" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="change" id="change">修改图纸</button>
                                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                                         </div>
                                     </div>
@@ -166,6 +166,89 @@
     });
     layui.use('element', function(){
         var element = layui.element;
+
+    });
+
+    layui.use(['form','laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //监听提交
+        form.on('submit(add)', function(data){
+            //layer.msg(JSON.stringify(data.field));
+            $.ajax({
+                url:"addYM",
+                type:"POST",
+                dateType:"json",
+                data:data.field,
+                success:function (Message){
+                    if(Message.result === "pass"){
+                        layer.msg("保存成功");
+                    }else{
+                        layer.msg(Message.result);
+                    }
+                },
+                error:function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert('无法上传，请联系管理员!!!');
+                }
+            })
+            return false;
+        });
+
+        form.on('submit(change)', function(data){
+            //layer.msg(JSON.stringify(data.field));
+            $.ajax({
+                url:"updateYM",
+                type:"POST",
+                dateType:"json",
+                data:data.field,
+                success:function (Message){
+                    if(Message.result === "pass"){
+                        layer.msg("修改成功");
+                    }else{
+                        layer.msg(Message.result);
+                    }
+                },
+                error:function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert('无法上传，请联系管理员!!!');
+                }
+            })
+            return false;
+        });
+
+        layui.$('#search').on('click', function(){
+            var productid = $('#productid').val();
+            var productname = $('#productname').val();
+            $.ajax({
+                url:"searchYM",
+                type:"POST",
+                dateType:"json",
+                data: {"id":productid,"name":productname},
+                async:false,
+                success:function (message){
+                    if(message.result == "pass"){
+                        form.val('example',{
+                            "productid":message.productid
+                            ,"productname":message.productname
+                            ,"productname2":message.productname2
+                            ,"neijing":message.neijing
+                            ,"waijing":message.waijing
+                            ,"banpian":message.banpian
+                            ,"yaxian":message.yaxian
+                            ,"gecengban":message.gecengban
+                            ,"calculate":message.type
+                        });
+                        layer.msg("搜索完成。");
+                    }else{
+                        layer.msg(message.result);
+                    }
+
+                },error(){
+                    alert('无法搜索，请联系管理员!!!');
+                }
+            })
+
+        });
 
     });
 

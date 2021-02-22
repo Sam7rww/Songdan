@@ -24,7 +24,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">图纸信息</a>
                 <dl class="layui-nav-child">
-                    <dd><a th:href="@{/wildhorse/wdpaper}">野马图纸</a></dd>
+                    <dd><a th:href="@{/wildhorse/whpaper}">野马图纸</a></dd>
                     <dd><a th:href="@{/doubledear/slpaper}">双鹿图纸</a></dd>
                 </dl>
             </li>
@@ -39,7 +39,7 @@
                     <dd><a href="">检验员</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">退出</a></li>
+            <li class="layui-nav-item"><a href="http://localhost:8080/system/login">退出</a></li>
         </ul>
     </div>
 
@@ -77,37 +77,6 @@
             </div>
         </div>
 
-        <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">
-            <div class="layui-col-md12">
-                <div class="layui-card">
-                    <div class="layui-card-header" style="text-align: center;font-size: 30px">野马送货单生成,请在输入框中以逗号分隔输入流水号</div>
-                    <div class="layui-card-body">
-                        <form class="layui-form layui-form-pane" action="">
-                            <div class="layui-row layui-col-space15">
-                                <div class="layui-col-md12">
-                                    <div class="layui-form-item layui-form-text">
-                                        <label class="layui-form-label">送货单流水号</label>
-                                        <div class="layui-input-block">
-                                            <textarea name="waterid2" id="deliveryids" placeholder="请输入需要生成的送货单相关的流水号，以,间隔(英文版逗号),如Z796923,Z796924,Z796925,Z796926." class="layui-textarea"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="layui-row layui-col-space15">
-                                <div class="layui-col-md8">
-                                    <div class="layui-form-item">
-                                        <div class="layui-input-block">
-                                            <button type="button" class="layui-btn" lay-filter="demo1" id="exportdelivery">生成</button>
-                                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="layui-footer" style="left:5px;">

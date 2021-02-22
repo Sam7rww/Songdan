@@ -14,10 +14,10 @@ public class YMPaperServiceImpl implements YMPaperService {
     private YMpaperDao ympaperdao;
 
     @Override
-    public String savepaper(String id, String name, String name2, String gecengban, String type, String neijing, String waijing, String banpian, String yaxian) {
+    public String savepaper(String id, String name, String name2, String gecengban, String type, String neijing) {
         boolean exist = ympaperdao.existsByProductid(id);
         if(exist){
-            return "图纸已存在，请确认";
+            return "图纸已存在，请确认。";
         }
         ComputeNeiJingYM com = new ComputeNeiJingYM(neijing,type);
         if(!com.assertInput()){
