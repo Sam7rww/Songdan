@@ -367,9 +367,14 @@
                         ,'gecengban':'R'
                     }
                 }, function(data) {
-                    console.log(data);
+                    // console.log(data);
                     var arr = new Array();
                     for(i = 1; i < data[0].Sheet1.length; i++){
+                        var outd = data[0].Sheet1[i].outputdate;
+                        if(!isNaN(outd)){
+                            // console.log("outputdate是日期格式！")
+                            outd = excel.dateCodeFormat(outd,'YYYY/MM/DD')
+                        }
                         var tt = {
                             waterid : data[0].Sheet1[i].waterid,
                             ordernum : data[0].Sheet1[i].ordernum,
@@ -378,7 +383,7 @@
                             productname2: data[0].Sheet1[i].productname2,
                             unit: data[0].Sheet1[i].unit,
                             num: data[0].Sheet1[i].num,
-                            outputdate: excel.dateCodeFormat(data[0].Sheet1[i].outputdate,'YYYY/MM/DD'),
+                            outputdate: outd,
                             demand: data[0].Sheet1[i].demand,
                             price: data[0].Sheet1[i].price,
                             neijing: data[0].Sheet1[i].neijing,
@@ -435,9 +440,14 @@
                         ,'gecengban':'R'
                     }
                 }, function(data) {
-                    console.log(data);
+                    // console.log(data);
                     var arr = new Array();
                     for(i = 1; i < data[0].Sheet1.length; i++){
+                        var outd = data[0].Sheet1[i].outputdate;
+                        if(!isNaN(outd)){
+                            // console.log("outputdate是日期格式！")
+                            outd = excel.dateCodeFormat(outd,'YYYY/MM/DD')
+                        }
                         var tt = {
                             waterid : data[0].Sheet1[i].waterid,
                             ordernum : data[0].Sheet1[i].ordernum,
@@ -446,7 +456,7 @@
                             productname2: data[0].Sheet1[i].productname2,
                             unit: data[0].Sheet1[i].unit,
                             num: data[0].Sheet1[i].num,
-                            outputdate: excel.dateCodeFormat(data[0].Sheet1[i].outputdate,'YYYY/MM/DD'),
+                            outputdate: outd,
                             demand: data[0].Sheet1[i].demand,
                             price: data[0].Sheet1[i].price,
                             neijing: data[0].Sheet1[i].neijing,
@@ -503,9 +513,14 @@
                         ,'gecengban':'N'
                     }
                 }, function(data) {
-                    console.log(data);
+                    // console.log(data);
                     var arr = new Array();
                     for(i = 1; i < data[0].Sheet1.length; i++){
+                        var outd = data[0].Sheet1[i].outputdate;
+                        if(!isNaN(outd)){
+                            // console.log("outputdate是日期格式！")
+                            outd = excel.dateCodeFormat(outd,'YYYY/MM/DD')
+                        }
                         var tt = {
                             waterid : data[0].Sheet1[i].waterid,
                             ordernum : data[0].Sheet1[i].ordernum,
@@ -514,7 +529,7 @@
                             productname2: data[0].Sheet1[i].productname2,
                             unit: data[0].Sheet1[i].unit,
                             num: data[0].Sheet1[i].num,
-                            outputdate: excel.dateCodeFormat(data[0].Sheet1[i].outputdate,'YYYY/MM/DD'),
+                            outputdate: outd,
                             demand: data[0].Sheet1[i].demand,
                             price: data[0].Sheet1[i].price,
                             neijing: data[0].Sheet1[i].neijing,

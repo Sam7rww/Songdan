@@ -266,7 +266,7 @@
                 dateType:"json",
                 data:data.field,
                 success:function (Message){
-                    if(Message.result == "pass"){
+                    if(Message.result === "pass"){
                         layer.msg("保存成功");
                     }else{
                         layer.msg(Message.result);
@@ -304,9 +304,19 @@
                         ,'press':'Z'
                     }
                 }, function(data) {
-                    console.log(data);
+                    // console.log(data);
                     var arr = new Array();
                     for(i = 1; i < data[0].Sheet1.length; i++){
+                        var ind = data[0].Sheet1[i].inputdate;
+                        var outd = data[0].Sheet1[i].outputdate;
+                        if(!isNaN(ind)){
+                            // console.log("inputdate是日期格式！");
+                            ind = excel.dateCodeFormat(ind,'YYYY-MM-DD')
+                        }
+                        if(!isNaN(outd)){
+                            // console.log("outputdate是日期格式！")
+                            outd = excel.dateCodeFormat(outd,'YYYY-MM-DD')
+                        }
                         var tt = {
                             ordernum : data[0].Sheet1[i].ordernum,
                             productid: data[0].Sheet1[i].productid,
@@ -314,8 +324,8 @@
                             line: data[0].Sheet1[i].line,
                             unit: data[0].Sheet1[i].unit,
                             num: data[0].Sheet1[i].num,
-                            inputdate: data[0].Sheet1[i].inputdate,
-                            outputdate: data[0].Sheet1[i].outputdate,
+                            inputdate: ind,
+                            outputdate: outd,
                             backup: data[0].Sheet1[i].backup,
                             neijing: data[0].Sheet1[i].neijing,
                             type: data[0].Sheet1[i].type,
