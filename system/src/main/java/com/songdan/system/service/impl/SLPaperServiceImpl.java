@@ -19,10 +19,6 @@ public class SLPaperServiceImpl implements SLPaperService {
         if(exist){
             return "图纸编号已存在，请确认。";
         }
-        boolean exist2 = sLpaperDao.existsByProductname(name);
-        if(exist2){
-            return "图纸名字已存在，请确认。";
-        }
         ComputeNeijingSL com = new ComputeNeijingSL(neijing,type);
         if(!com.assertInput()){
             return "内径输入格式有误，请检查。";
@@ -38,7 +34,7 @@ public class SLPaperServiceImpl implements SLPaperService {
 
     @Override
     public String updatepaper(String id, String name, String press, String type, String neijing, String waijing, String banpian, String yaxian) {
-        boolean exist = sLpaperDao.existsByProductname(name);
+        boolean exist = sLpaperDao.existsByProductid(id);
         if(exist){
             sLpaperDao.update(id,name,press,type,neijing,waijing,banpian,yaxian);
         }else{
@@ -51,9 +47,7 @@ public class SLPaperServiceImpl implements SLPaperService {
     @Override
     public SLpaper searchpaper(String id, String name) {
         SLpaper paper = null;
-        if(!name.equals("")){
-            paper = sLpaperDao.findByProductname(name);
-        }else if(!id.equals("")){
+        if(!id.equals("")){
             paper = sLpaperDao.findByProductid(id);
         }else{
             return paper;

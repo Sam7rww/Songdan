@@ -12,7 +12,6 @@ public class YMpaper {
     @Column(unique = true, nullable = false)
     private String productid;
 
-    @Column(unique = true, nullable = false)
     private String productname;
 
     private String productname2;

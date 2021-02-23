@@ -17,7 +17,7 @@ public interface YMpaperDao extends JpaRepository<YMpaper,String> {
     //@Query(nativeQuery = true,value = "select * from ympaper p where p.productid = ?2 and p.productname = ?1")
     public boolean existsByProductid(String productid);
 
-    public boolean existsByProductname(String productname);
+//    public boolean existsByProductname(String productname);
 
     public YMpaper findByProductid(String productid);
 
@@ -25,7 +25,7 @@ public interface YMpaperDao extends JpaRepository<YMpaper,String> {
 
     @Modifying
     @Transactional
-    @Query("update YMpaper p set p.productid=?1,p.productname2=?3,p.gecengban=?4,p.type=?5,p.neijing=?6,p.waijing=?7,p.banpian=?8,p.yaxian=?9 where p.productname=?2")
+    @Query("update YMpaper p set p.productname=?2,p.productname2=?3,p.gecengban=?4,p.type=?5,p.neijing=?6,p.waijing=?7,p.banpian=?8,p.yaxian=?9 where p.productid=?1")
     public void update(@Param("productid") String id,@Param("productname") String name,@Param("productname2") String name2,
                           @Param("gecengban") String gcb,@Param("type") String t,@Param("neijing") String n,
                           @Param("waijing") String w,@Param("banpian") String b,@Param("yaxian") String y);

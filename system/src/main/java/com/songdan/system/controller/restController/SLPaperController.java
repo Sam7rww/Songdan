@@ -42,11 +42,11 @@ public class SLPaperController {
     @RequestMapping(value = "/addSL")
     public Map<String,Object> addYM(HttpServletRequest request){
 //        System.out.println("Enter add paper");
-        String productid = request.getParameter("productid");
-        String productname = request.getParameter("productname");
+        String productid = request.getParameter("productid").trim();
+        String productname = request.getParameter("productname").trim();
         String press = request.getParameter("press").trim();
         String type = request.getParameter("calculate").trim();
-        String neijing = request.getParameter("neijing");
+        String neijing = request.getParameter("neijing").trim();
         String result = slPaperService.savepaper(productid,productname,press,type,neijing);
         Map<String,Object> message = new HashMap<String, Object>();
         if(result.equals("")){

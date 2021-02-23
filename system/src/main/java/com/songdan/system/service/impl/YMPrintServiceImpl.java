@@ -42,7 +42,9 @@ public class YMPrintServiceImpl implements YMPrintService {
         List<YMProduceOrder> produceOrders = new ArrayList<>();
         for(int i=0;i<unprintOrders.size();i++){
             YMUnprintOrder temp = unprintOrders.get(i);
-            YMProduceOrder produceOrder = new YMProduceOrder(temp.getOrdernum(),temp.getProductid(),temp.getProductname(),temp.getNeijing(),temp.getWaijing(),temp.getBanpian(),temp.getYaxian(),temp.getNum(),temp.getUnit());
+            YMProduceOrder produceOrder = new YMProduceOrder(temp.getOrdernum().substring(temp.getOrdernum().length()-5),
+                    temp.getProductid(),temp.getProductname(),temp.getNeijing(),temp.getWaijing(),
+                    temp.getBanpian(),temp.getYaxian(),temp.getOutputdate(),temp.getNum(),temp.getGecengban());
             produceOrders.add(produceOrder);
         }
         return produceOrders;

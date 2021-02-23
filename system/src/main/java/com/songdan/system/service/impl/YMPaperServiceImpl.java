@@ -19,10 +19,10 @@ public class YMPaperServiceImpl implements YMPaperService {
         if(exist){
             return "图纸编号已存在，请确认。";
         }
-        boolean exist2 = ympaperdao.existsByProductname(name);
-        if(exist2){
-            return "图纸名字已存在，请确认。";
-        }
+//        boolean exist2 = ympaperdao.existsByProductname(name);
+//        if(exist2){
+//            return "图纸名字已存在，请确认。";
+//        }
         ComputeNeiJingYM com = new ComputeNeiJingYM(neijing,type);
         if(!com.assertInput()){
             return "内径输入格式有误，请检查。";
@@ -39,7 +39,7 @@ public class YMPaperServiceImpl implements YMPaperService {
     @Override
     public String updatepaper(String id, String name, String name2, String gecengban, String type,
                               String neijing, String waijing, String banpian, String yaxian) {
-        boolean exist = ympaperdao.existsByProductname(name);
+        boolean exist = ympaperdao.existsByProductid(id);
         if(exist){
             ympaperdao.update(id,name,name2,gecengban,type,neijing,waijing,banpian,yaxian);
         }else{
@@ -52,9 +52,7 @@ public class YMPaperServiceImpl implements YMPaperService {
     @Override
     public YMpaper searchpaper(String id, String name) {
         YMpaper paper = null;
-        if(!name.equals("")){
-            paper = ympaperdao.findByProductname(name);
-        }else if(!id.equals("")){
+        if(!id.equals("")){
             paper = ympaperdao.findByProductid(id);
         }else{
             return paper;

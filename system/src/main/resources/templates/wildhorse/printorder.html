@@ -138,8 +138,8 @@
                         <button class="layui-btn layui-btn-sm" lay-event="printPurchaseData">打印采购订单</button>
                         <button class="layui-btn layui-btn-sm" lay-event="printWalengData">打印瓦楞纸板采购订单</button>
                         <!--                    <button class="layui-btn layui-btn-sm" lay-event="printProduceData">打印生产通知单</button>-->
-                        <button class="layui-btn layui-btn-sm" lay-event="exportPurchaseData">导出采购订单EXCEL</button>
-                        <button class="layui-btn layui-btn-sm" lay-event="exportProduceData">导出生产通知单EXCEL</button>
+                        <button class="layui-btn layui-btn-sm" lay-event="exportPurchaseData">导出野马采购订单EXCEL</button>
+                        <button class="layui-btn layui-btn-sm" lay-event="exportProduceData">导出松旦采购订单EXCEL</button>
                         <button class="layui-btn layui-btn-sm" lay-event="completeCheckData">完成选中订单</button>
                     </div>
                 </script>
@@ -253,8 +253,8 @@
         table.on('toolbar(test)', function (obj) {
             var checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
-                case 'exportPurchaseData': //导出采购订单
-                    layer.alert('导出采购订单！！！');
+                case 'exportPurchaseData': //导出野马采购订单
+                    layer.alert('导出野马采购订单！！！');
 
                     //获取选中的行
                     var datas = checkStatus.data;
@@ -281,8 +281,8 @@
                         layer.alert('请先选择需要导出数据。');
                     }
                     break;
-                case 'exportProduceData': //导出生产通知单
-                    layer.alert('导出生产通知单！！！');
+                case 'exportProduceData': //导出松旦采购订单
+                    layer.alert('导出松旦采购订单！！！');
 
                     //获取选中的行
                     var datas = checkStatus.data;
@@ -294,7 +294,7 @@
                             data: JSON.stringify(datas),
                             contentType : "application/json",
                             success: function (res) {
-                                res.unshift({ordernum: '作业单号',productid: '物料代码', productname: '物料名称',neijing:'内径',waijing:'外径',banpian:'板片',yaxian:'压线',num:'数量',unit:'单位'});
+                                res.unshift({ordernum: '作业单号', productname: '物料名称',neijing:'内径',waijing:'外径',banpian:'板片',yaxian:'压线',outputdate:'日期',num:'数量',gecengban:'隔层板'});
                                 LAY_EXCEL.exportExcel(res, '宁波市松旦包装印刷有限公司生产通知单.xlsx', 'xlsx')
                             },
                             error:function(XMLHttpRequest, textStatus, errorThrown) {

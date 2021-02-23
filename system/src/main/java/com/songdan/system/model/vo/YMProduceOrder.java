@@ -23,13 +23,18 @@ public class YMProduceOrder {
     //压线
     private String yaxian;
 
+    //交货日期
+    private String outputdate;
+
     //数量
     private int num;
 
-    //单位
-    private String unit;
+    //隔层板
+    private String gecengban;
 
-    public YMProduceOrder(String ordernum, String productid, String productname, String neijing, String waijing, String banpian, String yaxian, int num, String unit) {
+    public YMProduceOrder(String ordernum, String productid, String productname,
+                          String neijing, String waijing, String banpian, String yaxian,
+                          String outputdate, int num, String gecengban) {
         this.ordernum = ordernum;
         this.productid = productid;
         this.productname = productname;
@@ -37,8 +42,9 @@ public class YMProduceOrder {
         this.waijing = waijing;
         this.banpian = banpian;
         this.yaxian = yaxian;
+        this.outputdate = outputdate;
         this.num = num;
-        this.unit = unit;
+        this.gecengban = gecengban;
     }
 
     public String getOrdernum() {
@@ -105,11 +111,19 @@ public class YMProduceOrder {
         this.num = num;
     }
 
-    public String getUnit() {
-        return unit;
+    public String getOutputdate() {
+        return outputdate;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setOutputdate(String outputdate) {
+        this.outputdate = outputdate;
+    }
+
+    public String getGecengban() {
+        return gecengban;
+    }
+
+    public void setGecengban(String gecengban) {
+        this.gecengban = gecengban;
     }
 }
