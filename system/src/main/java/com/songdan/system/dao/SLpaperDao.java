@@ -17,6 +17,8 @@ public interface SLpaperDao extends JpaRepository<SLpaper,String> {
     //@Query(nativeQuery = true,value = "select * from ympaper p where p.productid = ?2 and p.productname = ?1")
     public boolean existsByProductid(String productid);
 
+    public boolean existsByProductname(String productname);
+
     public SLpaper findByProductid(String productid);
 
     public SLpaper findByProductname(String productname);

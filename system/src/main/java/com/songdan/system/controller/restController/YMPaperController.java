@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/wildhorse")
-public class PaperController {
+public class YMPaperController {
 
     @Autowired
     private YMPaperService paperService;

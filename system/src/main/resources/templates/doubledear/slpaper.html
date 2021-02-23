@@ -48,15 +48,75 @@
         <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">
             <div class="layui-col-md12">
                 <div class="layui-card">
-                    <div class="layui-card-header" style="text-align: center;font-size: 30px">野马检验单生成,请在输入框中以逗号分隔输入流水号</div>
+                    <div class="layui-card-header" style="text-align: center;">双鹿图纸信息调整</div>
                     <div class="layui-card-body">
-                        <form class="layui-form layui-form-pane" action="">
+                        <form class="layui-form layui-form-pane" action="" lay-filter="example">
                             <div class="layui-row layui-col-space15">
-                                <div class="layui-col-md12">
-                                    <div class="layui-form-item layui-form-text">
-                                        <label class="layui-form-label">检验单流水号</label>
+                                <div class="layui-col-md6">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">物料编号</label>
                                         <div class="layui-input-block">
-                                            <textarea id="inspectids" name="waterid1" placeholder="请输入需要生成的检验单相关的流水号，以,间隔(英文版逗号),如Z796923,Z796924,Z796925,Z796926." class="layui-textarea"></textarea>
+                                            <input type="text" name="productid" required  lay-verify="required" placeholder="请输入物料编号" autocomplete="off" class="layui-input" id="productid">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md6">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">物料名字</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="productname" required lay-verify="required" placeholder="请输入物料名字" autocomplete="off" class="layui-input" id="productname">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-md6">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">变压信息</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="press" placeholder="请输入隔层板信息" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md6">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">计算方法</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="calculate" placeholder="默认+5" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-md3">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">内径</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="neijing" required  lay-verify="required" placeholder="请输入图纸内径" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md3">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">外径</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="waijing" placeholder="请输入图纸外径" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md3">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">压线</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="yaxian" placeholder="请输入图纸压线" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md3">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">板片</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="banpian" placeholder="请输入图纸板片" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -65,7 +125,9 @@
                                 <div class="layui-col-md8">
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
-                                            <button type="button" class="layui-btn" lay-filter="demo1" id="exportinspect">生成</button>
+                                            <button type="submit" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="add" id="add">添加图纸</button>
+                                            <button type="button" class="layui-btn layui-btn-normal" id="search">查询图纸</button>
+                                            <button type="submit" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="change" id="change">修改图纸</button>
                                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                                         </div>
                                     </div>
@@ -96,6 +158,88 @@
     });
     layui.use('element', function(){
         var element = layui.element;
+
+    });
+
+    layui.use(['form','laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //监听提交
+        form.on('submit(add)', function(data){
+            //layer.msg(JSON.stringify(data.field));
+            $.ajax({
+                url:"addSL",
+                type:"POST",
+                dateType:"json",
+                data:data.field,
+                success:function (Message){
+                    if(Message.result === "pass"){
+                        layer.msg("保存成功");
+                    }else{
+                        layer.msg(Message.result);
+                    }
+                },
+                error:function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert('无法上传，请联系管理员!!!');
+                }
+            })
+            return false;
+        });
+
+        form.on('submit(change)', function(data){
+            //layer.msg(JSON.stringify(data.field));
+            $.ajax({
+                url:"updateSL",
+                type:"POST",
+                dateType:"json",
+                data:data.field,
+                success:function (Message){
+                    if(Message.result === "pass"){
+                        layer.msg("修改成功");
+                    }else{
+                        layer.msg(Message.result);
+                    }
+                },
+                error:function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert('无法上传，请联系管理员!!!');
+                }
+            })
+            return false;
+        });
+
+        layui.$('#search').on('click', function(){
+            var productid = $('#productid').val();
+            var productname = $('#productname').val();
+            $.ajax({
+                url:"searchSL",
+                type:"POST",
+                dateType:"json",
+                data: {"id":productid,"name":productname},
+                async:false,
+                success:function (message){
+                    if(message.result == "pass"){
+                        form.val('example',{
+                            "productid":message.productid
+                            ,"productname":message.productname
+                            ,"neijing":message.neijing
+                            ,"waijing":message.waijing
+                            ,"banpian":message.banpian
+                            ,"yaxian":message.yaxian
+                            ,"press":message.press
+                            ,"calculate":message.type
+                        });
+                        layer.msg("搜索完成。");
+                    }else{
+                        layer.msg(message.result);
+                    }
+
+                },error(){
+                    alert('无法搜索，请联系管理员!!!');
+                }
+            })
+
+        });
 
     });
 

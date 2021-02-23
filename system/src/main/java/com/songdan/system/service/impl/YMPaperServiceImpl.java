@@ -17,7 +17,11 @@ public class YMPaperServiceImpl implements YMPaperService {
     public String savepaper(String id, String name, String name2, String gecengban, String type, String neijing) {
         boolean exist = ympaperdao.existsByProductid(id);
         if(exist){
-            return "图纸已存在，请确认。";
+            return "图纸编号已存在，请确认。";
+        }
+        boolean exist2 = ympaperdao.existsByProductname(name);
+        if(exist2){
+            return "图纸名字已存在，请确认。";
         }
         ComputeNeiJingYM com = new ComputeNeiJingYM(neijing,type);
         if(!com.assertInput()){
@@ -25,7 +29,7 @@ public class YMPaperServiceImpl implements YMPaperService {
         }
         YMpaper paper = new YMpaper(id,name,name2,neijing,com.getWaiJing(),com.getBanPian(),com.getYaXian(),type,gecengban);
         YMpaper res = ympaperdao.save(paper);
-        if(paper == null){
+        if(res == null){
             return "图纸保存失败，请检查输入。";
         }else{
             return "";
