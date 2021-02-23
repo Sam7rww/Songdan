@@ -111,8 +111,9 @@ public class YMOrderController {
         String ordernum = request.getParameter("serial");
         String productname = request.getParameter("name");
         String date = request.getParameter("date");
+        String indate = request.getParameter("indate");
         String neijing = request.getParameter("neijing");
-        List<YMUnprintOrder> orders = ymOrderService.getSearchYMOrder(waterid,ordernum,productname,date,neijing);
+        List<YMUnprintOrder> orders = ymOrderService.getSearchYMOrder(waterid,ordernum,productname,indate,date,neijing);
         return orders;
     }
 

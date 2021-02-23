@@ -91,7 +91,15 @@
                                 </div>
                             </div>
                             <div class="layui-row layui-col-space15">
-                                <div class="layui-col-md4">
+                                <div class="layui-col-md3">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">录入日期</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="indate" id="indate" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md3">
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">交货日期</label>
                                         <div class="layui-input-block">
@@ -99,7 +107,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="layui-col-md4">
+                                <div class="layui-col-md3">
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">内径</label>
                                         <div class="layui-input-block">
@@ -107,7 +115,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="layui-col-md4">
+                                <div class="layui-col-md3">
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
                                             <button type="button" class="layui-btn" lay-filter="demo1" id="searchbtn">搜索</button>
@@ -168,6 +176,10 @@
         laydate.render({
             elem: '#date'
             ,format: 'yyyy/MM/dd'
+        });
+        laydate.render({
+            elem: '#indate'
+            ,format: 'yyyy-MM-dd'
         });
 
         //监听提交
@@ -439,6 +451,7 @@
             var waterid = $('#waterid').val();
             var ordernum = $('#ordernum').val();
             var productname = $('#productname').val();
+            var inputdate = $('#indate').val();
             var outputdate = $('#date').val();
             var neijing = $('#neijing').val();
             table.reload('testReload',{
@@ -448,6 +461,7 @@
                     'id':waterid,
                     'serial':ordernum,
                     'name':productname,
+                    'indate':inputdate,
                     'date':outputdate,
                     'neijing':neijing,
                 }

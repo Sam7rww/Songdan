@@ -167,7 +167,7 @@ public class YMOrderServiceImpl implements YMOrderService {
 
     @Override
     public List<YMUnprintOrder> getSearchYMOrder(String waterid, String ordernum, String productname,
-                                                 String outputdate, String neijing) {
+                                                 String inputdate,String outputdate, String neijing) {
 
         if(!waterid.equals("")){
             YMUnprintOrder order = ymunprint.findByWaterid(waterid);
@@ -200,6 +200,10 @@ public class YMOrderServiceImpl implements YMOrderService {
                 if (!neijing.equals("")) {
                     Predicate p5 = cb.equal(root.get("neijing").as(String.class), neijing);
                     p.add(p5);
+                }
+                if (!inputdate.equals("")) {
+                    Predicate p6 = cb.equal(root.get("inputdate").as(String.class), inputdate);
+                    p.add(p6);
                 }
                 Predicate p4 = cb.equal(root.get("state").as(Integer.class),0);
                 p.add(p4);
