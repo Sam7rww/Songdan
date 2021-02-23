@@ -50,7 +50,7 @@ public interface YMOrderService {
      * @param
      * @return
      */
-    public List<YMUnprintOrder> getSearchYMOrder(String waterid, String ordernum, String productname, String outputdate);
+    public List<YMUnprintOrder> getSearchYMOrder(String waterid, String ordernum, String productname, String outputdate, String neijing);
 
     /**
      * 获取当日输入的野马订单信息

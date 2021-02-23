@@ -89,7 +89,8 @@ public class SLOrderController {
         String productname = request.getParameter("name");
         String inputdate = request.getParameter("inputdate");
         String date = request.getParameter("date");
-        List<SLUnprintOrder> orders = slOrderService.getSearchSLOrder(ordernum,line,productname,inputdate,date);
+        String neijing = request.getParameter("neijing");
+        List<SLUnprintOrder> orders = slOrderService.getSearchSLOrder(ordernum,line,productname,inputdate,date,neijing);
         return orders;
     }
 
@@ -99,7 +100,7 @@ public class SLOrderController {
         slPrintService.printPurchaseOrder(nums,response);
     }
 
-    //打印采购订单
+    //打印瓦楞纸采购订单
     @RequestMapping(value = "printWalengOrders")
     public void printWalengOrders(@RequestParam("nums") Object nums, HttpServletResponse response){
         slPrintService.printWalengOrder(nums,response);

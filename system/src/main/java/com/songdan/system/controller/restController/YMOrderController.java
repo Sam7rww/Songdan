@@ -111,7 +111,8 @@ public class YMOrderController {
         String ordernum = request.getParameter("serial");
         String productname = request.getParameter("name");
         String date = request.getParameter("date");
-        List<YMUnprintOrder> orders = ymOrderService.getSearchYMOrder(waterid,ordernum,productname,date);
+        String neijing = request.getParameter("neijing");
+        List<YMUnprintOrder> orders = ymOrderService.getSearchYMOrder(waterid,ordernum,productname,date,neijing);
         return orders;
     }
 
@@ -215,6 +216,10 @@ public class YMOrderController {
     }
 
     //print采购订单
+    @RequestMapping(value = "/printPurchaseOrders")
+    public void printPurchaseOrders(@RequestParam("nums") Object nums, HttpServletResponse response) throws Exception{
+        ymPrintService.printPurchaseOrder(nums,response);
+    }
 
     //print生产通知单
 

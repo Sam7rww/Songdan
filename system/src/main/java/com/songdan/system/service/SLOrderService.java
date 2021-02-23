@@ -35,7 +35,8 @@ public interface SLOrderService {
      * @param
      * @return
      */
-    public List<SLUnprintOrder> getSearchSLOrder(String ordernum,String line, String productname,String indate, String outputdate);
+    public List<SLUnprintOrder> getSearchSLOrder(String ordernum,String line, String productname,
+                                                 String indate, String outputdate, String neijing);
 
     /**
      * 完成选择的订单

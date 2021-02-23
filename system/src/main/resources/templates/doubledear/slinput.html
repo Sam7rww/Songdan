@@ -290,18 +290,18 @@
                 // 可以在读取过程中梳理数据
                 excel.importExcel(files, {
                     fields: {
-                        'ordernum': 'A'
-                        ,'line':'B'
-                        ,'inputdate':'D'
-                        ,'outputdate':'M'
-                        ,'productid': 'E'
-                        ,'productname': 'F'
-                        ,'backup':'L'
-                        ,'num':'G'
-                        ,'unit':'R'
-                        ,'neijing':'V'
-                        ,'type':'W'
-                        ,'press':'X'
+                        'ordernum': 'D'
+                        ,'line':'E'
+                        ,'inputdate':'G'
+                        ,'outputdate':'P'
+                        ,'productid': 'H'
+                        ,'productname': 'I'
+                        ,'backup':'AA'
+                        ,'num':'J'
+                        ,'unit':'O'
+                        ,'neijing':'X'
+                        ,'type':'Y'
+                        ,'press':'Z'
                     }
                 }, function(data) {
                     console.log(data);
@@ -314,8 +314,8 @@
                             line: data[0].Sheet1[i].line,
                             unit: data[0].Sheet1[i].unit,
                             num: data[0].Sheet1[i].num,
-                            inputdate: excel.dateCodeFormat(data[0].Sheet1[i].inputdate,'YYYY-MM-DD'),
-                            outputdate: excel.dateCodeFormat(data[0].Sheet1[i].outputdate,'YYYY-MM-DD'),
+                            inputdate: data[0].Sheet1[i].inputdate,
+                            outputdate: data[0].Sheet1[i].outputdate,
                             backup: data[0].Sheet1[i].backup,
                             neijing: data[0].Sheet1[i].neijing,
                             type: data[0].Sheet1[i].type,

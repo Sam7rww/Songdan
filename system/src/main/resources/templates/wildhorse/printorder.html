@@ -99,7 +99,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="layui-col-md8">
+                                <div class="layui-col-md4">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">内径</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="neijing" placeholder="请输入搜索内径" autocomplete="off" class="layui-input" id="neijing">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
                                             <button type="button" class="layui-btn" lay-filter="demo1" id="searchbtn">搜索</button>
@@ -119,7 +127,8 @@
                 <script type="text/html" id="toolbarDemo">
                     <div class="layui-btn-container">
                         <button class="layui-btn layui-btn-sm" lay-event="printData">自选列打印</button>
-                        <button class="layui-btn layui-btn-sm" lay-event="printPurchaseData">打印瓦楞纸板采购订单</button>
+                        <button class="layui-btn layui-btn-sm" lay-event="printPurchaseData">打印采购订单</button>
+                        <button class="layui-btn layui-btn-sm" lay-event="printWalengData">打印瓦楞纸板采购订单</button>
                         <!--                    <button class="layui-btn layui-btn-sm" lay-event="printProduceData">打印生产通知单</button>-->
                         <button class="layui-btn layui-btn-sm" lay-event="exportPurchaseData">导出采购订单EXCEL</button>
                         <button class="layui-btn layui-btn-sm" lay-event="exportProduceData">导出生产通知单EXCEL</button>
@@ -339,7 +348,7 @@
                         alert('请先选中要打印的数据！');
                     }
                     break;
-                case 'printPurchaseData': //打印瓦楞纸板采购订单
+                case 'printWalengData': //打印瓦楞纸板采购订单
 
                     //获取选中的行
                     var datas = checkStatus.data;
@@ -355,6 +364,29 @@
 
                         frame.style.display ="none";
                         frame.src = "printWalengOrders?nums="+nums;//controller层的url
+                        document.body.appendChild(frame);
+                        frame.contentWindow.focus();
+                        frame.contentWindow.print();
+                    } else {
+                        layer.alert('请先选择需要导出数据。');
+                    }
+                    break;
+                case 'printPurchaseData': //打印采购订单
+
+                    //获取选中的行
+                    var datas = checkStatus.data;
+                    var frame = document.createElement("IFRAME");
+                    console.log(datas);
+                    if (datas.length>0) {
+                        //导出选中行
+                        var nums = "";
+                        for(var i=0;i<checkStatus.data.length;i++){
+                            nums += checkStatus.data[i].waterid+",";
+                        }
+                        parent.layer.msg('打印中...', {icon: 16,shade: 0.3,time:5000});
+
+                        frame.style.display ="none";
+                        frame.src = "printPurchaseOrders?nums="+nums;//controller层的url
                         document.body.appendChild(frame);
                         frame.contentWindow.focus();
                         frame.contentWindow.print();
@@ -403,34 +435,12 @@
             }
         });
 
-        //头工具栏事件
-        // table.on('toolbar(test)', function(obj){
-        //     var checkStatus = table.checkStatus(obj.config.id);
-        //     switch(obj.event){
-        //         case 'printCheckData':
-        //             var data = checkStatus.data;
-        //             layer.alert(JSON.stringify(data));
-        //             break;
-        //         case 'exportCheckData':
-        //             var data = checkStatus.data;
-        //             layer.msg('选中了：'+ data.length + ' 个');
-        //             break;
-        //         case 'completeCheckData':
-        //             layer.msg(checkStatus.isAll ? '全选': '未全选');
-        //             break;
-        //
-        //         //自定义头工具栏右侧图标 - 提示
-        //         case 'LAYTABLE_TIPS':
-        //             layer.alert('这是工具栏右侧自定义的一个图标按钮');
-        //             break;
-        //     };
-        // });
-
         $('#searchbtn').on('click',function (){
             var waterid = $('#waterid').val();
             var ordernum = $('#ordernum').val();
             var productname = $('#productname').val();
             var outputdate = $('#date').val();
+            var neijing = $('#neijing').val();
             table.reload('testReload',{
                 url:"getSearchOrder"
                 ,method:'post'
@@ -439,6 +449,7 @@
                     'serial':ordernum,
                     'name':productname,
                     'date':outputdate,
+                    'neijing':neijing,
                 }
                 ,done: function () {
                     this.where={};

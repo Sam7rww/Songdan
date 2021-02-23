@@ -50,7 +50,109 @@ public class YMPrintServiceImpl implements YMPrintService {
 
     @Override
     public Object printPurchaseOrder(Object nums, HttpServletResponse response) {
-//        System.out.println("enter printPurchaseOrder!!");
+        String datas = nums.toString();
+        String[] str = datas.split(",");
+        List<String> data = new ArrayList<String>();
+        for (int i = 0; i < str.length; i++) {
+            data.add(str[i]);
+        }
+        //用于存储YMUnprintOrder的每个for循环的值
+        List list = new ArrayList<>();
+        //查询选中的订单信息
+        List<YMUnprintOrder> ymorders = ymOrderService.findEachByWaterid(data);
+        for (YMUnprintOrder temp:ymorders) {
+            String[] arr = {temp.getOrdernum().substring(temp.getOrdernum().length()-5), temp.getProductname(),
+                    temp.getNeijing(),temp.getWaijing(),temp.getBanpian(),temp.getYaxian(),
+                    temp.getOutputdate(),temp.getNum()+"",temp.getGecengban(),""};
+            list.add(arr);
+        }
+        try {
+            Document document = new Document(PageSize.A4.rotate());
+            File f = File.createTempFile("野马电池采购订单", ".pdf");
+            PdfWriter.getInstance(document, new FileOutputStream(f));
+
+            // 设置字体
+            BaseFont bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H",
+                    BaseFont.NOT_EMBEDDED);
+            com.itextpdf.text.Font titleFont =
+                    new com.itextpdf.text.Font(bfChinese, 15, com.itextpdf.text.Font.BOLD);
+            com.itextpdf.text.Font thFont =
+                    new com.itextpdf.text.Font(bfChinese, 12, com.itextpdf.text.Font.BOLD);
+            com.itextpdf.text.Font nomalFont = new com.itextpdf.text.Font(bfChinese, 10,
+                    com.itextpdf.text.Font.NORMAL);
+
+            document.open();
+
+            //标题
+            Paragraph paragraphOne = new Paragraph("松旦包装采购订单",titleFont);
+            paragraphOne.setAlignment(Element.ALIGN_CENTER);
+            paragraphOne.setSpacingAfter(50);
+            paragraphOne.setSpacingBefore(50);
+            document.add(paragraphOne);
+
+            // table1
+            PdfPTable table1 = new PdfPTable(10);
+            table1.setWidthPercentage(100); // Width 100%
+            float[] columnWidths = {0.05f, 0.18f,0.13f,0.13f,0.13f,0.13f,0.08f,0.05f,0.06f,0.06f};
+            table1.setWidths(columnWidths);
+            String[] ths = {"作业单号","物料名称","内径","外径","板片","压线","日期","数量","隔层板","备注"};
+            for (String th : ths) {
+                Paragraph para = new Paragraph(th, thFont);
+                para.setAlignment(Element.ALIGN_CENTER);
+                PdfPCell cell = new PdfPCell(para);
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table1.addCell(cell);
+            }
+            document.add(table1);
+
+            // table2
+
+            for (int i = 0; i < list.size(); i++) {
+                PdfPTable table2 = new PdfPTable(10);
+                table2.setWidthPercentage(100); // Width 100%
+                table2.setWidths(columnWidths);
+                String[] arr = (String[]) list.get(i);
+                for (int j = 0; j < arr.length; j++) {
+                    Paragraph para = new Paragraph(arr[j], nomalFont);
+                    para.setAlignment(Element.ALIGN_CENTER);
+                    PdfPCell cell = new PdfPCell(para);
+                    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table2.addCell(cell);
+                }
+                document.add(table2);
+            }
+
+            document.close();
+
+            PdfReader reader = new PdfReader(f.getAbsolutePath());
+
+            StringBuffer script = new StringBuffer();
+            script.append("this.print({bUI: false,bSilent: true,bShrinkToFit: false});")
+                    .append("\r\nthis.closeDoc();");
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+            try {
+                PdfStamper stamp = new PdfStamper(reader, bos);
+//                stamp.setViewerPreferences(PdfWriter.HideMenubar | PdfWriter.HideToolbar
+//                        | PdfWriter.HideWindowUI);
+                stamp.addJavaScript(script.toString());
+                stamp.close();
+            } catch (DocumentException e) {
+            }
+            response.getOutputStream().write(bos.toByteArray());
+            return null;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Object printProduceOrder(Object nums, HttpServletResponse response) {
 //        //告诉浏览器用什么软件可以打开此文件
 //        //response.setHeader("content-Type", "application/pdf");
 //        response.setContentType("application/pdf");
@@ -91,11 +193,6 @@ public class YMPrintServiceImpl implements YMPrintService {
 //        }catch (Exception e){
 //            e.printStackTrace();
 //        }
-        return null;
-    }
-
-    @Override
-    public Object printProduceOrder(Object nums, HttpServletResponse response) {
         return null;
     }
 

@@ -91,7 +91,7 @@
                                 </div>
                             </div>
                             <div class="layui-row layui-col-space15">
-                                <div class="layui-col-md4">
+                                <div class="layui-col-md3">
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">录入日期</label>
                                         <div class="layui-input-block">
@@ -99,7 +99,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="layui-col-md4">
+                                <div class="layui-col-md3">
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">交货日期</label>
                                         <div class="layui-input-block">
@@ -107,7 +107,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="layui-col-md4">
+                                <div class="layui-col-md3">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">内径</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="neijing" placeholder="请输入内径" autocomplete="off" class="layui-input" id="neijing">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md3">
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
                                             <button type="button" class="layui-btn" lay-filter="demo1" id="searchbtn">搜索</button>
@@ -368,6 +376,7 @@
             var productname = $('#productname').val();
             var inputdate = $('#indate').val();
             var outputdate = $('#date').val();
+            var neijing = $('neijing').val();
             table.reload('testReload',{
                 url:"getSearchOrders"
                 ,method:'post'
@@ -377,6 +386,7 @@
                     'name':productname,
                     'inputdate':inputdate,
                     'date':outputdate,
+                    'neijing':neijing,
                 }
                 ,done: function () {
                     this.where={};

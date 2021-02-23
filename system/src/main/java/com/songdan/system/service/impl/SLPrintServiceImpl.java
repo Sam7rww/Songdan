@@ -36,7 +36,7 @@ public class SLPrintServiceImpl implements SLPrintService {
         for (SLUnprintOrder temp:slorders) {
             String[] arr = {temp.getProductid().substring(temp.getProductid().length()-5),temp.getProductname(),
                     temp.getNeijing(),temp.getWaijing(),temp.getBanpian(),temp.getYaxian(),
-                    temp.getNum()+"",temp.getOutputdate(),temp.getPress(),""};
+                    temp.getOutputdate(),temp.getNum()+"",temp.getPress(),""};
             list.add(arr);
         }
         try {
@@ -72,9 +72,9 @@ public class SLPrintServiceImpl implements SLPrintService {
             // table1
             PdfPTable table1 = new PdfPTable(10);
             table1.setWidthPercentage(100); // Width 100%
-            float[] columnWidths = {0.05f, 0.18f,0.13f,0.13f,0.13f,0.13f,0.05f,0.08f,0.05f,0.07f};
+            float[] columnWidths = {0.05f, 0.18f,0.13f,0.13f,0.13f,0.13f,0.08f,0.05f,0.05f,0.07f};
             table1.setWidths(columnWidths);
-            String[] ths = {"物料代码","物料名称","内径","外径","板片","压线","数量","日期","变压","备注"};
+            String[] ths = {"物料代码","物料名称","内径","外径","板片","压线","日期","数量","变压","备注"};
             for (String th : ths) {
                 Paragraph para = new Paragraph(th, thFont);
                 para.setAlignment(Element.ALIGN_CENTER);

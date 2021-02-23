@@ -110,7 +110,8 @@ public class SLOrderServiceImpl implements SLOrderService {
     }
 
     @Override
-    public List<SLUnprintOrder> getSearchSLOrder(String ordernum, String line, String productname,String indate, String outputdate) {
+    public List<SLUnprintOrder> getSearchSLOrder(String ordernum, String line, String productname,
+                                                 String indate, String outputdate, String neijing) {
         Specification<SLUnprintOrder> sf = (Specification<SLUnprintOrder>)(root, query, cb)->{
             //用于添加所有查询条件
             List<Predicate> p = new ArrayList<>();
@@ -133,6 +134,10 @@ public class SLOrderServiceImpl implements SLOrderService {
             if (!indate.equals("")) {
                 Predicate p6 = cb.equal(root.get("inputdate").as(String.class), indate);
                 p.add(p6);
+            }
+            if (!indate.equals("")) {
+                Predicate p7 = cb.equal(root.get("neijing").as(String.class), neijing);
+                p.add(p7);
             }
             Predicate p4 = cb.equal(root.get("state").as(Integer.class),0);
             p.add(p4);
