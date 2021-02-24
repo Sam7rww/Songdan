@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 
-//	@Override
-//	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-//		return builder.sources(Application.class);
-//	}
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(Application.class);
+	}
 
 
 	public static void main(String[] args) {
