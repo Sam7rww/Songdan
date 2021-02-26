@@ -314,6 +314,6 @@ public class YMOrderServiceImpl implements YMOrderService {
             Matcher m = p.matcher(target);
             dest = m.replaceAll("");
         }
-        return "";
+        return dest;
     }
 }
