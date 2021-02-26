@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class YMOrderServiceImpl implements YMOrderService {
@@ -70,13 +72,17 @@ public class YMOrderServiceImpl implements YMOrderService {
             if(exists){
                 continue;
             }
-            YMUnprintOrder ymorder = new YMUnprintOrder(order.getWaterid(),order.getOrdernum(),
-                    order.getProductid(),order.getProductname(),order.getProductname2(),order.getNum(),
+            //PDF转Excel会出现多余空格换行
+            String ordernum = replaceExcess(order.getOrdernum());
+            String productid = replaceExcess(order.getProductid());
+            String productname = replaceExcess(order.getProductname());
+            YMUnprintOrder ymorder = new YMUnprintOrder(order.getWaterid(),ordernum,
+                    productid,productname,order.getProductname2(),order.getNum(),
                     order.getUnit(),sDate,order.getOutputdate(),order.getDemand(),
                     Double.parseDouble(order.getPrice().trim()),"","","","",
                     order.getGecengban());
             //System.out.println("ymunprintorder outputdate :"+ymorder.getOutputdate());
-            YMpaper targetPaper = paper.findByProductid(order.getProductid());
+            YMpaper targetPaper = paper.findByProductid(productid);
             if(targetPaper!=null){//找的到图纸
                 //System.out.println("find paper");
                 ymorder.setNeijing(targetPaper.getNeijing());
@@ -97,7 +103,7 @@ public class YMOrderServiceImpl implements YMOrderService {
                 ymorder.setWaijing(com.getWaiJing());
                 ymorder.setBanpian(com.getBanPian());
                 ymorder.setYaxian(com.getYaXian());
-                YMpaper p = new YMpaper(order.getProductid(),order.getProductname(),order.getProductname2(),
+                YMpaper p = new YMpaper(productid,productname,order.getProductname2(),
                         order.getNeijing(),com.getWaiJing(),com.getBanPian(),com.getYaXian(),
                         order.getCalculate(),order.getGecengban());
                 YMpaper paperRes = paper.save(p);
@@ -298,5 +304,16 @@ public class YMOrderServiceImpl implements YMOrderService {
             orders.get(i).setOrdernum(cut);
         }
         return ;
+    }
+
+    //删去字符串中的空格，制表符，回车，换行
+    public String replaceExcess(String target){
+        String dest = "";
+        if(target!=null){
+            Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+            Matcher m = p.matcher(target);
+            dest = m.replaceAll("");
+        }
+        return "";
     }
 }

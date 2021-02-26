@@ -52,7 +52,7 @@ public class SLOrderServiceImpl implements SLOrderService {
         for(int i=0;i<orders.size();i++){
             SLOrder order = orders.get(i);
             String orderline = order.getOrdernum()+"/"+order.getLine();
-            if(order.getOrdernum().equals("") || order.getLine().equals("")){
+            if(order.getOrdernum().equals("") || order.getLine().equals("") || order.getProductid().equals("")){
                 continue;
             }
             boolean exists = slunprint.existsByOrderlineAndProductid(orderline,order.getProductid());
@@ -111,7 +111,7 @@ public class SLOrderServiceImpl implements SLOrderService {
 
     @Override
     public List<SLUnprintOrder> getSearchSLOrder(String ordernum, String line, String productname,
-                                                 String indate, String outputdate, String neijing) {
+                                                 String inputdate, String outputdate, String neijing) {
         Specification<SLUnprintOrder> sf = (Specification<SLUnprintOrder>)(root, query, cb)->{
             //用于添加所有查询条件
             List<Predicate> p = new ArrayList<>();
@@ -120,22 +120,22 @@ public class SLOrderServiceImpl implements SLOrderService {
                 p.add(p1);
             }
             if(!line.equals("")){
-                Predicate p5 = cb.equal(root.get("line").as(String.class),line);
-                p.add(p5);
-            }
-            if (!productname.equals("")) {
-                Predicate p2 = cb.like(root.get("productname").as(String.class), "%"+productname+"%");
+                Predicate p2 = cb.equal(root.get("line").as(String.class),line);
                 p.add(p2);
             }
-            if (!outputdate.equals("")) {
-                Predicate p3 = cb.equal(root.get("outputdate").as(String.class), outputdate);
+            if (!productname.equals("")) {
+                Predicate p3 = cb.like(root.get("productname").as(String.class), "%"+productname+"%");
                 p.add(p3);
             }
-            if (!indate.equals("")) {
-                Predicate p6 = cb.equal(root.get("inputdate").as(String.class), indate);
+            if (!outputdate.equals("")) {
+                Predicate p5 = cb.equal(root.get("outputdate").as(String.class), outputdate);
+                p.add(p5);
+            }
+            if (!inputdate.equals("")) {
+                Predicate p6 = cb.equal(root.get("inputdate").as(String.class), inputdate);
                 p.add(p6);
             }
-            if (!indate.equals("")) {
+            if (!neijing.equals("")) {
                 Predicate p7 = cb.equal(root.get("neijing").as(String.class), neijing);
                 p.add(p7);
             }

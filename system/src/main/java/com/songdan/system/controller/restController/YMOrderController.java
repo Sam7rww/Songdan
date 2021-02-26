@@ -53,8 +53,8 @@ public class YMOrderController {
     @RequestMapping(value = "/saveOrderInfo")
     public Map<String,String> saveOrderInfo(HttpServletRequest request){
         String waterid = request.getParameter("id");
-        String ordernum = request.getParameter("serial");
-        String productid = request.getParameter("code");
+        String ordernum = request.getParameter("serial").replace(" ","");
+        String productid = request.getParameter("code").replace(" ","");
         String productname = request.getParameter("name");
         String productname2 = request.getParameter("name2");
         String neijing = request.getParameter("neijing");
