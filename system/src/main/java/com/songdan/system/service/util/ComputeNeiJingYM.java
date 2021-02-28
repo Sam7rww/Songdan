@@ -18,10 +18,15 @@ public class ComputeNeiJingYM {
 
     private boolean inputCorrectFlag;//判定输入是否为长*宽*高
 
+    private boolean inputGeban = false;//输入仅为长*宽，不需要保存图纸
+
     public ComputeNeiJingYM(String nj, String type){
         String[] njs = nj.split("\\*");
         int l = njs.length;
-        if(l!=3){
+        if(l==2){
+            inputGeban = true;
+            inputCorrectFlag = true;
+        }else if(l!=3){
             inputCorrectFlag = false;
         }else{
             inputCorrectFlag = true;
@@ -38,6 +43,10 @@ public class ComputeNeiJingYM {
             BigDecimal c = new BigDecimal(WJheight);
             WJheight = c.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
         }
+    }
+
+    public boolean assertInputGeban(){
+        return inputGeban;
     }
 
     public boolean assertInput(){

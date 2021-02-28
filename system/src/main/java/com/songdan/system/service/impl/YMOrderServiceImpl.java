@@ -99,18 +99,24 @@ public class YMOrderServiceImpl implements YMOrderService {
                 if(!com.assertInput()){
                     return "采购流水号："+order.getWaterid()+",内径输入格式有误";
                 }
-                ymorder.setNeijing(order.getNeijing());
-                ymorder.setWaijing(com.getWaiJing());
-                ymorder.setBanpian(com.getBanPian());
-                ymorder.setYaxian(com.getYaXian());
-                YMpaper p = new YMpaper(productid,productname,order.getProductname2(),
-                        order.getNeijing(),com.getWaiJing(),com.getBanPian(),com.getYaXian(),
-                        order.getCalculate(),order.getGecengban());
-                YMpaper paperRes = paper.save(p);
-                if(paperRes == null){
-                    return "图纸保存失败，请检查图纸相关输入";
+                if(com.assertInputGeban()){//输入为隔板订单，不需要保存图纸
+                    ymorder.setNeijing(order.getNeijing());
+                    ymorder.setWaijing("");
+                    ymorder.setBanpian("");
+                    ymorder.setYaxian("");
+                }else{
+                    ymorder.setNeijing(order.getNeijing());
+                    ymorder.setWaijing(com.getWaiJing());
+                    ymorder.setBanpian(com.getBanPian());
+                    ymorder.setYaxian(com.getYaXian());
+                    YMpaper p = new YMpaper(productid,productname,order.getProductname2(),
+                            order.getNeijing(),com.getWaiJing(),com.getBanPian(),com.getYaXian(),
+                            order.getCalculate(),order.getGecengban());
+                    YMpaper paperRes = paper.save(p);
+                    if(paperRes == null){
+                        return "图纸保存失败，请检查图纸相关输入";
+                    }
                 }
-
             }
             YMUnprintOrder ym = ymunprint.save(ymorder);
             if(ym == null){
@@ -284,8 +290,16 @@ public class YMOrderServiceImpl implements YMOrderService {
             if(!gecengban.equals("")&&gecengban!=null){
                 productname+=" ;"+gecengban;
             }
-            inspectOrder inspect = new inspectOrder(order.getWaterid(),productname,order.getNum(),
-                    statistic[0],statistic[1],statistic[2],order.getUnit(),ordernum.substring(ordernum.length()-5),order.getPrice());
+            inspectOrder inspect;
+            if(statistic.length==2){
+                inspect = new inspectOrder(order.getWaterid(),productname,order.getNum(),
+                        statistic[0],statistic[1],"",
+                        order.getUnit(),ordernum.substring(ordernum.length()-5),order.getPrice());
+            }else{
+                inspect = new inspectOrder(order.getWaterid(),productname,order.getNum(),
+                        statistic[0],statistic[1],statistic[2],
+                        order.getUnit(),ordernum.substring(ordernum.length()-5),order.getPrice());
+            }
             lists.add(inspect);
         }
 
