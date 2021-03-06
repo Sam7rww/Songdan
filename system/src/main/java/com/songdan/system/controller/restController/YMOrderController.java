@@ -2,20 +2,18 @@ package com.songdan.system.controller.restController;
 
 
 import com.songdan.system.model.Entity.wildhorse.YMUnprintOrder;
-import com.songdan.system.model.vo.YMOrder;
-import com.songdan.system.model.vo.YMProduceOrder;
-import com.songdan.system.model.vo.YMPurchaseOrder;
-import com.songdan.system.model.vo.inspectOrder;
+import com.songdan.system.model.vo.*;
+import com.songdan.system.service.ExcelService;
 import com.songdan.system.service.YMOrderService;
 import com.songdan.system.service.YMPrintService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +28,9 @@ public class YMOrderController {
 
     @Autowired
     private YMPrintService ymPrintService;
+
+    @Autowired
+    private ExcelService excelService;
 
     private static Map<String,String> matchUnit = new HashMap<String,String>(){
         {
@@ -243,5 +244,25 @@ public class YMOrderController {
         return lists;
     }
     //打印送货单
+
+    //合并多个excel
+    @ResponseBody
+    @RequestMapping(value = "/uploadExcel")
+    public Map<String,Object> uploadExcel(@RequestParam("target") MultipartFile file, HttpServletRequest request, HttpSession session) throws IOException {
+        System.out.println("Enter Multi Excel!");
+        Map<String,Object> result = new HashMap<>();
+        // 原始名称
+        String name = file.getOriginalFilename();
+        if(name.length()<6|| !name.substring(name.length()-5).equals(".xlsx")){
+            result.put("result","fail");
+            return result;
+        }
+
+        List<YMmailOrder> temp = excelService.mergeSheets(file.getInputStream());
+        result.put("result","pass");
+        result.put("datas",temp);
+
+        return result;
+    }
 
 }
