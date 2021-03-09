@@ -403,7 +403,7 @@
                     var temp =res.datas;
                     temp.unshift({id:"序号",waterid:'采购流水号',ordernum: '作业单号',productid: '物料代码',
                         productname: '物料名称',productname2:'别名',unit:'单位',num:'数量',outputdate:'交货日期',
-                        demand:'生产要求及噱头',price:'含税单价'});
+                        demand:'生产要求及噱头',price:'含税单价',neijing:'内径',calculate:'计算方式',gecengban:'隔层板'});
                     LAY_EXCEL.exportExcel(temp, '野马电池邮件采购订单.xlsx', 'xlsx')
                 }else{
                     alert("导入文件有问题，请检查");

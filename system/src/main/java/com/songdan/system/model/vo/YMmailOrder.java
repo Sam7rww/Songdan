@@ -36,6 +36,15 @@ public class YMmailOrder {
     //含税单价
     private String price;
 
+    //内径
+    private String neijing;
+
+    //计算方式
+    private String calculate;
+
+    //隔层板
+    private String gecengban;
+
     public YMmailOrder() {
     }
 
@@ -125,5 +134,29 @@ public class YMmailOrder {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getNeijing() {
+        return neijing;
+    }
+
+    public void setNeijing(String neijing) {
+        this.neijing = neijing;
+    }
+
+    public String getCalculate() {
+        return calculate;
+    }
+
+    public void setCalculate(String calculate) {
+        this.calculate = calculate;
+    }
+
+    public String getGecengban() {
+        return gecengban;
+    }
+
+    public void setGecengban(String gecengban) {
+        this.gecengban = gecengban;
     }
 }

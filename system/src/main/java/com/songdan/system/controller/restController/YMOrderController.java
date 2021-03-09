@@ -249,7 +249,7 @@ public class YMOrderController {
     @ResponseBody
     @RequestMapping(value = "/uploadExcel")
     public Map<String,Object> uploadExcel(@RequestParam("target") MultipartFile file, HttpServletRequest request, HttpSession session) throws IOException {
-        System.out.println("Enter Multi Excel!");
+//        System.out.println("Enter Multi Excel!");
         Map<String,Object> result = new HashMap<>();
         // 原始名称
         String name = file.getOriginalFilename();
