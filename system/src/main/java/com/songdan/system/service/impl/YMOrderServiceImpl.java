@@ -68,6 +68,9 @@ public class YMOrderServiceImpl implements YMOrderService {
 
         for(int i=0;i<orders.size();i++){
             YMOrder order = orders.get(i);
+            if(order.getWaterid().equals("")){
+                continue;
+            }
             boolean exists = ymunprint.existsByWaterid(order.getWaterid());
             if(exists){
                 continue;
