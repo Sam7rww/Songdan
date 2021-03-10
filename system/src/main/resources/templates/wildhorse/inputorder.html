@@ -223,6 +223,27 @@
             </div>
         </div>
 
+        <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">合并多个Excel为一个Excel。</div>
+                    <div class="layui-card-body">
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-md12">
+                                <div class="layui-form-label">合并Excel</div>
+                                <div class="layui-form-block">
+                                    <button type="button" class="layui-btn" id="merge-excel">
+                                        <i class="layui-icon">&#xe67c;</i>上传Excel
+                                    </button>
+                                    <!--                                    <input type="file" class="layui-btn layui-btn-primary" id="LAY-merge-excel" multiple="multiple">-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 <!--        <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">-->
 <!--            <div class="layui-col-md12">-->
 <!--                <div class="layui-card">-->
@@ -310,7 +331,7 @@
                             <div class="layui-col-md12">
                                 <div class="layui-form-label">合并Excel</div>
                                 <div class="layui-form-block">
-                                    <button type="button" class="layui-btn" id="merge-excel">
+                                    <button type="button" class="layui-btn" id="merge-sheets">
                                         <i class="layui-icon">&#xe67c;</i>上传Excel
                                     </button>
 <!--                                    <input type="file" class="layui-btn layui-btn-primary" id="LAY-merge-excel" multiple="multiple">-->
@@ -365,7 +386,7 @@
                 dateType:"json",
                 data:data.field,
                 success:function (Message){
-                    if(Message.result == "pass"){
+                    if(Message.result === "pass"){
                         layer.msg("保存成功");
                     }else{
                         layer.msg(Message.result);
@@ -381,11 +402,11 @@
     });
 
 
-    //merge
+    //merge sheet
     layui.use('upload', function () {
         var upload = layui.upload;
         upload.render({
-            elem: '#merge-excel'
+            elem: '#merge-sheets'
             , url: 'uploadExcel'
             , method: 'POST'
             , accept: 'file' //普通文件
@@ -410,7 +431,50 @@
                 }
 
             },error:function (){
+                alert('无法上传，请联系管理员!!!');
+            }
+        });
 
+    });
+
+    //merge Excels
+    layui.use(['layer','upload'], function () {
+        var upload = layui.upload;
+        var layer = layui.layer;
+        upload.render({
+            elem: '#merge-excel'
+            , url: 'mergeExcel'
+            , multiple: true
+            , method: 'POST'
+            , accept: 'file' //普通文件
+            , field: 'target'//设置字段名
+            , done: function (res){
+                if(res.result === "fail"){
+                    layer.msg("文件名："+res.file+",上传失败，请检查重新上传");
+                }
+            }
+            , allDone: function(obj){ //当文件全部被提交后，才触发
+                alert("全部上传ok");
+                $.ajax({
+                    url:'clearExcel',
+                    type:"Get",
+                    dateType:"json",
+                    success:function (res){
+                        var temp =res.datas;
+                        temp.unshift({code:"订单号",line:"行号",productid: '物料代码', productname: '物料名称'
+                            ,unit:'单位',outputdate:'交货日期',num:'订单数',submitnum:'已交付数',unsubmitnum:'未交付数'
+                            ,waterid:'采购流水号',productname2:'别名',ordernum: '作业单号', demand:'生产要求及噱头'
+                            ,price:'含税单价',allprice:'含税金额',decision:'单据确认'
+                            ,neijing:'内径',calculate:'计算方式',gecengban:'隔层板'});
+                        LAY_EXCEL.exportExcel(temp, '野马电池邮件采购订单Excel合并.xlsx', 'xlsx')
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert('无法下载合并的Excel，请联系管理员!!!');
+                    }
+                });
+            }
+            ,error:function (){
+                alert('无法上传，请联系管理员!!!');
             }
         });
 

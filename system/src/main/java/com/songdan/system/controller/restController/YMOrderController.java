@@ -245,7 +245,7 @@ public class YMOrderController {
     }
     //打印送货单
 
-    //合并多个excel
+    //合并多个excel的sheet
     @ResponseBody
     @RequestMapping(value = "/uploadExcel")
     public Map<String,Object> uploadExcel(@RequestParam("target") MultipartFile file, HttpServletRequest request, HttpSession session) throws IOException {
@@ -262,6 +262,39 @@ public class YMOrderController {
         result.put("result","pass");
         result.put("datas",temp);
 
+        return result;
+    }
+
+    //合并多个excel
+    @ResponseBody
+    @RequestMapping(value = "/mergeExcel")
+    public Map<String,Object> mergeExcel(@RequestParam("target") MultipartFile file, HttpServletRequest request, HttpSession session) throws IOException {
+//        System.out.println("Enter Multi Excel!");
+        Map<String,Object> result = new HashMap<>();
+        // 原始名称
+        String name = file.getOriginalFilename();
+        if(name.length()<5|| !name.substring(name.length()-4).equals(".xls")){
+            result.put("result","fail");
+            result.put("file",name);
+            return result;
+        }
+
+        String res = excelService.mergeExcels(file.getInputStream());
+        if(res.equals("success")){
+            result.put("result","pass");
+        }else{
+            result.put("result","fail");
+            result.put("file",name);
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/clearExcel")
+    public Map<String,Object> clearExcel(){
+        Map<String,Object> result = new HashMap<>();
+        List<YMmrgOrder> orders = excelService.clearExcels();
+        result.put("result","pass");
+        result.put("datas",orders);
         return result;
     }
 
