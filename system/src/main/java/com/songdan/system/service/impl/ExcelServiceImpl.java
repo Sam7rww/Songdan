@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -86,7 +88,13 @@ public class ExcelServiceImpl implements ExcelService {
                         Cell numb = row.getCell(7);//数量
                         order.setNum(this.getCellString(numb));
                         Cell dt = row.getCell(8);//交货日期
-                        order.setOutputdate(this.getCellString(dt));
+                        if(dt.getCellTypeEnum() == CellType.NUMERIC){
+                            Date temp = dt.getDateCellValue();
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                            order.setOutputdate(sdf.format(temp));
+                        }else{
+                            order.setOutputdate(this.getCellString(dt));
+                        }
                         Cell demand = row.getCell(9);//生产要求及噱头
                         order.setDemand(this.getCellString(demand));
                         Cell price = row.getCell(10);//含税单价
@@ -158,7 +166,13 @@ public class ExcelServiceImpl implements ExcelService {
                     Cell unit = row.getCell(4);//单位
                     order.setUnit(this.getCellString(unit));
                     Cell dt = row.getCell(5);//交货日期
-                    order.setOutputdate(this.getCellString(dt));
+                    if(dt.getCellTypeEnum() == CellType.NUMERIC){
+                        Date temp = dt.getDateCellValue();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                        order.setOutputdate(sdf.format(temp));
+                    }else{
+                        order.setOutputdate(this.getCellString(dt));
+                    }
                     Cell numb = row.getCell(6);//订单数
                     order.setNum(this.getCellString(numb));
                     Cell smtnum = row.getCell(7);//已交付数

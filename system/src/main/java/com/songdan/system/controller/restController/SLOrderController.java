@@ -2,16 +2,18 @@ package com.songdan.system.controller.restController;
 
 import com.songdan.system.model.Entity.doubledear.SLUnprintOrder;
 import com.songdan.system.model.vo.SLOrder;
+import com.songdan.system.model.vo.SLmrgOrder;
+import com.songdan.system.service.SLExcelService;
 import com.songdan.system.service.SLOrderService;
 import com.songdan.system.service.SLPrintService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,9 @@ public class SLOrderController {
 
     @Autowired
     private SLPrintService slPrintService;
+
+    @Autowired
+    private SLExcelService slExcelService;
 
     //保存订单
     @RequestMapping(value = "/saveSLOrderInfo")
@@ -95,13 +100,13 @@ public class SLOrderController {
     }
 
     //打印采购订单
-    @RequestMapping(value = "printPurchaseOrders")
+    @RequestMapping(value = "/printPurchaseOrders")
     public void printPurchaseOrders(@RequestParam("nums") Object nums, HttpServletResponse response){
         slPrintService.printPurchaseOrder(nums,response);
     }
 
     //打印瓦楞纸采购订单
-    @RequestMapping(value = "printWalengOrders")
+    @RequestMapping(value = "/printWalengOrders")
     public void printWalengOrders(@RequestParam("nums") Object nums, HttpServletResponse response){
         slPrintService.printWalengOrder(nums,response);
     }
@@ -112,5 +117,37 @@ public class SLOrderController {
         //System.out.println("进入completeOrders");
         boolean res = slOrderService.completeOrder(ids);
         return res;
+    }
+
+    //合并多个excel
+    @ResponseBody
+    @RequestMapping(value = "/slmergeExcel")
+    public Map<String,Object> slmergeExcel(@RequestParam("target") MultipartFile file, HttpServletRequest request, HttpSession session)throws IOException {
+        Map<String,Object> result = new HashMap<>();
+        // 原始名称
+        String name = file.getOriginalFilename();
+        if(name.length()<5|| !name.substring(name.length()-4).equals(".xls")){
+            result.put("result","fail");
+            result.put("file",name);
+            return result;
+        }
+
+        String res = slExcelService.mergeExcels(file.getInputStream());
+        if(res.equals("success")){
+            result.put("result","pass");
+        }else{
+            result.put("result","fail");
+            result.put("file",name);
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/slclearExcel")
+    public Map<String,Object> slclearExcel(){
+        Map<String,Object> result = new HashMap<>();
+        List<SLmrgOrder> orders = slExcelService.clearExcels();
+        result.put("result","pass");
+        result.put("datas",orders);
+        return result;
     }
 }

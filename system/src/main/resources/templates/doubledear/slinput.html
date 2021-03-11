@@ -208,6 +208,27 @@
             </div>
         </div>
 
+        <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">合并多个Excel为一个Excel。</div>
+                    <div class="layui-card-body">
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-md12">
+                                <div class="layui-form-label">合并Excel</div>
+                                <div class="layui-form-block">
+                                    <button type="button" class="layui-btn" id="merge-excel">
+                                        <i class="layui-icon">&#xe67c;</i>上传Excel
+                                    </button>
+                                    <!--                                    <input type="file" class="layui-btn layui-btn-primary" id="LAY-merge-excel" multiple="multiple">-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 <!--        <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">-->
 <!--            <div class="layui-col-md12">-->
 <!--                <div class="layui-card">-->
@@ -306,33 +327,68 @@
                 }, function(data) {
                     // console.log(data);
                     var arr = new Array();
-                    for(i = 1; i < data[0].Sheet1.length; i++){
-                        var ind = data[0].Sheet1[i].inputdate;
-                        var outd = data[0].Sheet1[i].outputdate;
-                        if(!isNaN(ind)){
-                            // console.log("inputdate是日期格式！");
-                            ind = excel.dateCodeFormat(ind,'YYYY-MM-DD')
+                    if(data[0].Sheet1){
+                        // console.log("This is Sheet1");
+                        for(i = 1; i < data[0].Sheet1.length; i++){
+                            var ind = data[0].Sheet1[i].inputdate;
+                            var outd = data[0].Sheet1[i].outputdate;
+                            if(!isNaN(ind)){
+                                // console.log("inputdate是日期格式！");
+                                ind = excel.dateCodeFormat(ind,'YYYY-MM-DD')
+                            }
+                            if(!isNaN(outd)){
+                                // console.log("outputdate是日期格式！")
+                                outd = excel.dateCodeFormat(outd,'YYYY-MM-DD')
+                            }
+                            var tt = {
+                                ordernum : data[0].Sheet1[i].ordernum,
+                                productid: data[0].Sheet1[i].productid,
+                                productname: data[0].Sheet1[i].productname,
+                                line: data[0].Sheet1[i].line,
+                                unit: data[0].Sheet1[i].unit,
+                                num: data[0].Sheet1[i].num,
+                                inputdate: ind,
+                                outputdate: outd,
+                                backup: data[0].Sheet1[i].backup,
+                                neijing: data[0].Sheet1[i].neijing,
+                                type: data[0].Sheet1[i].type,
+                                press: data[0].Sheet1[i].press,
+                            };
+                            arr.push(tt);
                         }
-                        if(!isNaN(outd)){
-                            // console.log("outputdate是日期格式！")
-                            outd = excel.dateCodeFormat(outd,'YYYY-MM-DD')
+                    }else if(data[0].sheet1){
+                        // console.log("This is sheet1(small)");
+                        for(i = 1; i < data[0].sheet1.length; i++){
+                            var ind = data[0].sheet1[i].inputdate;
+                            var outd = data[0].sheet1[i].outputdate;
+                            if(!isNaN(ind)){
+                                // console.log("inputdate是日期格式！");
+                                ind = excel.dateCodeFormat(ind,'YYYY-MM-DD')
+                            }
+                            if(!isNaN(outd)){
+                                // console.log("outputdate是日期格式！")
+                                outd = excel.dateCodeFormat(outd,'YYYY-MM-DD')
+                            }
+                            var tt = {
+                                ordernum : data[0].sheet1[i].ordernum,
+                                productid: data[0].sheet1[i].productid,
+                                productname: data[0].sheet1[i].productname,
+                                line: data[0].sheet1[i].line,
+                                unit: data[0].sheet1[i].unit,
+                                num: data[0].sheet1[i].num,
+                                inputdate: ind,
+                                outputdate: outd,
+                                backup: data[0].sheet1[i].backup,
+                                neijing: data[0].sheet1[i].neijing,
+                                type: data[0].sheet1[i].type,
+                                press: data[0].sheet1[i].press,
+                            };
+                            arr.push(tt);
                         }
-                        var tt = {
-                            ordernum : data[0].Sheet1[i].ordernum,
-                            productid: data[0].Sheet1[i].productid,
-                            productname: data[0].Sheet1[i].productname,
-                            line: data[0].Sheet1[i].line,
-                            unit: data[0].Sheet1[i].unit,
-                            num: data[0].Sheet1[i].num,
-                            inputdate: ind,
-                            outputdate: outd,
-                            backup: data[0].Sheet1[i].backup,
-                            neijing: data[0].Sheet1[i].neijing,
-                            type: data[0].Sheet1[i].type,
-                            press: data[0].Sheet1[i].press,
-                        };
-                        arr.push(tt);
+                    }else{
+                        alert("输入Excel文件有问题，请检查Sheet名.");
                     }
+
 
                     $.ajax({
                         type: 'post',
@@ -341,7 +397,7 @@
                         data: JSON.stringify(arr),
                         contentType : "application/json",
                         success: function (res) {
-                            if(res.success == "true"){
+                            if(res.success === "true"){
                                 layer.msg(res.message);
                             }else{
                                 //表格导入失败后，重载文件上传
@@ -356,6 +412,51 @@
                 });
             } catch (e) {
                 layer.alert(e.message);
+            }
+        });
+
+    });
+
+    //merge Excels
+    layui.use(['layer','upload'], function () {
+        var upload = layui.upload;
+        var layer = layui.layer;
+        upload.render({
+            elem: '#merge-excel'
+            , url: 'slmergeExcel'
+            , multiple: true
+            , method: 'POST'
+            , accept: 'file' //普通文件
+            , field: 'target'//设置字段名
+            , done: function (res){
+                if(res.result === "fail"){
+                    layer.msg("文件名："+res.file+",上传失败，请检查重新上传");
+                }
+            }
+            , allDone: function(obj){ //当文件全部被提交后，才触发
+                alert("全部上传ok");
+                $.ajax({
+                    url:'slclearExcel',
+                    type:"Get",
+                    dateType:"json",
+                    success:function (res){
+                        var temp =res.datas;
+                        temp.unshift({purchaseorder:"采购凭证",lineproject:"行项目",submitline:"交货计划行"
+                            ,ordernum: '销售单号',line:"行项目",net:"网络号",inputdate:"日期"
+                            ,productid: "物料号", productname: "物料描述",num:"订单数量",getnum:"已收货数量"
+                            ,outputnum:"发货数量",boxnum:"箱只数",lumbernum:"托只数",unit:'单位',outputdate:"交货日期"
+                            ,submitlocation:"交货地点",lastprint:"上次打印时间",savelocation:"库存地点"
+                            ,purchasegroup:"采购组",state:"状态",workshop:"工厂",workshopname:"工厂名称"
+                            ,neijing:"内径",type:"计算方式",press:"变压信息"});
+                        LAY_EXCEL.exportExcel(temp, '双鹿电池采购订单Excel合并.xlsx', 'xlsx')
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert('无法下载合并的Excel，请联系管理员!!!');
+                    }
+                });
+            }
+            ,error:function (){
+                alert('无法上传，请联系管理员!!!');
             }
         });
 
