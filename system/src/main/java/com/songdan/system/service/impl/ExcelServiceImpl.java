@@ -93,7 +93,13 @@ public class ExcelServiceImpl implements ExcelService {
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
                             order.setOutputdate(sdf.format(temp));
                         }else{
-                            order.setOutputdate(this.getCellString(dt));
+                            String temp = this.getCellString(dt);
+                            if((this.getCellString(dt)).contains("-")){
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd");
+                                temp = sdf2.format(sdf.parse(temp).getTime());
+                            }
+                            order.setOutputdate(temp);
                         }
                         Cell demand = row.getCell(9);//生产要求及噱头
                         order.setDemand(this.getCellString(demand));
@@ -108,8 +114,6 @@ public class ExcelServiceImpl implements ExcelService {
                 }
 
             }
-
-
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -171,7 +175,13 @@ public class ExcelServiceImpl implements ExcelService {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
                         order.setOutputdate(sdf.format(temp));
                     }else{
-                        order.setOutputdate(this.getCellString(dt));
+                        String temp = this.getCellString(dt);
+                        if((this.getCellString(dt)).contains("-")){
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd");
+                            temp = sdf2.format(sdf.parse(temp).getTime());
+                        }
+                        order.setOutputdate(temp);
                     }
                     Cell numb = row.getCell(6);//订单数
                     order.setNum(this.getCellString(numb));

@@ -12,6 +12,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,8 +61,29 @@ public class SLOrderServiceImpl implements SLOrderService {
             if(exists){
                 continue;
             }
+            //output,input日期规范化YYYY-MM-DD
+            String opt = order.getOutputdate();
+            String ipt = order.getInputdate();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd");
+            if(opt.contains("/")){
+                try {
+                    opt = sdf.format(sdf2.parse(opt).getTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return "日期格式有误，输入错误。";
+                }
+            }
+            if(ipt.contains("/")){
+                try {
+                    ipt = sdf.format(sdf2.parse(ipt).getTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return "日期格式有误，输入错误。";
+                }
+            }
             SLUnprintOrder slorder = new SLUnprintOrder(order.getOrdernum(),order.getLine(),
-                    orderline,order.getInputdate(),order.getOutputdate(),
+                    orderline,ipt,opt,
                     order.getProductid(),order.getProductname(),order.getBackup(),order.getNum(),order.getUnit(),
                     "","","","",order.getPress());
             //System.out.println("ymunprintorder outputdate :"+ymorder.getOutputdate());

@@ -16,6 +16,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -79,12 +81,24 @@ public class YMOrderServiceImpl implements YMOrderService {
             String ordernum = replaceExcess(order.getOrdernum());
             String productid = replaceExcess(order.getProductid());
             String productname = replaceExcess(order.getProductname());
+            //output日期规范化YYYY/MM/DD
+            String opd = order.getOutputdate();
+            if(opd.contains("-")){
+//                System.out.println("交货日期YYYY-MM-DD,需修改");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd");
+                try {
+                    opd = sdf2.format(sdf.parse(opd).getTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return "日期格式有误，输入错误。";
+                }
+            }
             YMUnprintOrder ymorder = new YMUnprintOrder(order.getWaterid(),ordernum,
                     productid,productname,order.getProductname2(),order.getNum(),
-                    order.getUnit(),sDate,order.getOutputdate(),order.getDemand(),
+                    order.getUnit(),sDate,opd,order.getDemand(),
                     Double.parseDouble(order.getPrice().trim()),"","","","",
                     order.getGecengban());
-            //System.out.println("ymunprintorder outputdate :"+ymorder.getOutputdate());
             YMpaper targetPaper = paper.findByProductid(productid);
             if(targetPaper!=null){//找的到图纸
                 //System.out.println("find paper");
