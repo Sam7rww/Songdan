@@ -39,11 +39,11 @@ public class ExcelServiceImpl implements ExcelService {
                 Sheet sheet = workbook.getSheetAt(sheetIdx);
                 int firstRowIndex = sheet.getFirstRowNum() + 1;   //第一行是列名，所以不读
                 int lastRowIndex = sheet.getLastRowNum();
-                //System.out.println("firstRowIndex: " + firstRowIndex);
-                //System.out.println("lastRowIndex: " + lastRowIndex);
+//                System.out.println("firstRowIndex: " + firstRowIndex);
+//                System.out.println("lastRowIndex: " + lastRowIndex);
                 boolean isHeadInfo = false;
                 for (int rIndex = firstRowIndex; rIndex <= lastRowIndex; rIndex++) {   //遍历行
-                    //System.out.println("rIndex: " + rIndex);
+//                    System.out.println("rIndex: " + rIndex);
                     YMmailOrder order = new YMmailOrder();
                     Row row = sheet.getRow(rIndex);
                     if (row.getCell(0).getCellTypeEnum() == CellType.STRING) {
@@ -59,9 +59,9 @@ public class ExcelServiceImpl implements ExcelService {
                         }
                     }
 
-                    row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
-                    row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
-                    row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
+                    row.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellType(Cell.CELL_TYPE_STRING);
+                    row.getCell(2, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellType(Cell.CELL_TYPE_STRING);
+                    row.getCell(3, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellType(Cell.CELL_TYPE_STRING);
                     if((row.getCell(1).getStringCellValue().trim()).equals("")||
                             row.getCell(2).getStringCellValue().trim().equals("")||
                             row.getCell(3).getStringCellValue().trim().equals("")){
@@ -104,7 +104,8 @@ public class ExcelServiceImpl implements ExcelService {
                         Cell demand = row.getCell(9);//生产要求及噱头
                         order.setDemand(this.getCellString(demand));
                         Cell price = row.getCell(10);//含税单价
-                        order.setPrice(this.getCellString(price));
+                        double pricetemp = Double.parseDouble(this.getCellString(price));
+                        order.setPrice(pricetemp+"");
 
                         //自动填写内径
                         this.searchNJ(order,this.getCellString(pid));
@@ -148,9 +149,9 @@ public class ExcelServiceImpl implements ExcelService {
                     }
                 }
 
-                row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
-                row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
-                row.getCell(9).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(2,Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(3,Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(9,Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellType(Cell.CELL_TYPE_STRING);
                 if((row.getCell(2).getStringCellValue().trim()).equals("")||
                         row.getCell(3).getStringCellValue().trim().equals("")||
                         row.getCell(9).getStringCellValue().trim().equals("")){

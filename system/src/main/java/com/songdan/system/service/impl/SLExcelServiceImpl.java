@@ -48,9 +48,9 @@ public class SLExcelServiceImpl implements SLExcelService {
                     }
                 }
 
-                row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
-                row.getCell(7).setCellType(Cell.CELL_TYPE_STRING);
-                row.getCell(8).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(3,Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(7,Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(8,Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellType(Cell.CELL_TYPE_STRING);
                 if((row.getCell(3).getStringCellValue().trim()).equals("")||
                         row.getCell(7).getStringCellValue().trim().equals("")||
                         row.getCell(8).getStringCellValue().trim().equals("")){
