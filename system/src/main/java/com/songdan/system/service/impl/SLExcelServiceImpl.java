@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -137,6 +138,15 @@ public class SLExcelServiceImpl implements SLExcelService {
     public List<SLmrgOrder> clearExcels() {
         List<SLmrgOrder> lists = new ArrayList<>();
         lists.addAll(SLExcels);
+        lists.sort(new Comparator<SLmrgOrder>() {
+            @Override
+            public int compare(SLmrgOrder o1, SLmrgOrder o2) {
+                if(o1.getOrdernum()==null||o2.getOrdernum()==null){
+                    return 0;
+                }
+                return o1.getOrdernum().compareTo(o2.getOrdernum());
+            }
+        });
         SLExcels.clear();
         return lists;
     }

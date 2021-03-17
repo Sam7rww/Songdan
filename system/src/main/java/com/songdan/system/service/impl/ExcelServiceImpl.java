@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -227,6 +228,15 @@ public class ExcelServiceImpl implements ExcelService {
     public List<YMmrgOrder> clearExcels() {
         List<YMmrgOrder> orders = new ArrayList<>();
         orders.addAll(Excellists);
+        orders.sort(new Comparator<YMmrgOrder>() {
+            @Override
+            public int compare(YMmrgOrder o1, YMmrgOrder o2) {
+                if(o1.getWaterid()==null||o2.getWaterid()==null){
+                    return 0;
+                }
+                return o1.getWaterid().compareTo(o2.getWaterid());
+            }
+        });
         Excellists.clear();
 //        System.out.println("ExcelLists的大小"+Excellists.size());
         return orders;
