@@ -94,6 +94,9 @@ public class SLOrderServiceImpl implements SLOrderService {
                 slorder.setWaijing(targetPaper.getWaijing());
                 slorder.setBanpian(targetPaper.getBanpian());
                 slorder.setYaxian(targetPaper.getYaxian());
+                if(!order.getPress().equals(targetPaper.getPress())){
+                    paper.updatepress(order.getProductid(),order.getPress());
+                }
             }else{//找不到图纸
                 //System.out.println("can't find paper");
                 if(order.getNeijing().equals("")){

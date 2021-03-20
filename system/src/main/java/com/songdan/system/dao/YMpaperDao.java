@@ -29,4 +29,9 @@ public interface YMpaperDao extends JpaRepository<YMpaper,String> {
     public void update(@Param("productid") String id,@Param("productname") String name,@Param("productname2") String name2,
                           @Param("gecengban") String gcb,@Param("type") String t,@Param("neijing") String n,
                           @Param("waijing") String w,@Param("banpian") String b,@Param("yaxian") String y);
+
+    @Modifying
+    @Transactional
+    @Query("update YMpaper p set p.gecengban=?2 where p.productid=?1")
+    public void updategecengban(@Param("productid") String id,@Param("gecengban") String gcb);
 }

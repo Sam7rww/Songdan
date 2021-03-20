@@ -106,6 +106,9 @@ public class YMOrderServiceImpl implements YMOrderService {
                 ymorder.setWaijing(targetPaper.getWaijing());
                 ymorder.setBanpian(targetPaper.getBanpian());
                 ymorder.setYaxian(targetPaper.getYaxian());
+                if(!order.getGecengban().equals(targetPaper.getGecengban())){
+                    paper.updategecengban(order.getProductid(),order.getGecengban());
+                }
             }else{//找不到图纸
                 //System.out.println("can't find paper");
                 if(order.getNeijing().equals("")){

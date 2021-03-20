@@ -33,6 +33,7 @@ public interface YMUnprintOrderDao extends JpaRepository<YMUnprintOrder,String>,
     public YMUnprintOrder findByWaterid(String waterid);
 
     //删去一条
+    @Modifying
     @Transactional
     public void deleteByWaterid(String waterid);
 
