@@ -10,15 +10,12 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SLExcelServiceImpl implements SLExcelService {
 
-    private static List<SLmrgOrder> SLExcels = new ArrayList<>();
+    private static List<SLmrgOrder> SLExcels = Collections.synchronizedList(new ArrayList<>());
 
     @Autowired
     private SLpaperDao paperDao;
@@ -136,15 +133,23 @@ public class SLExcelServiceImpl implements SLExcelService {
 
     @Override
     public List<SLmrgOrder> clearExcels() {
-        List<SLmrgOrder> lists = new ArrayList<>();
+        List<SLmrgOrder> lists = Collections.synchronizedList(new ArrayList<>());
         lists.addAll(SLExcels);
         lists.sort(new Comparator<SLmrgOrder>() {
             @Override
             public int compare(SLmrgOrder o1, SLmrgOrder o2) {
-                if(o1.getOrdernum()==null||o2.getOrdernum()==null){
+                if(o1.getPurchaseorder()==null||o2.getPurchaseorder()==null){
                     return 0;
+                }else if(o1.getPurchaseorder().equals(o2.getPurchaseorder())){
+                    if(o1.getLineproject()==null||o2.getLineproject()==null){
+                        return 0;
+                    }else{
+                        return Integer.compare(o1.getProjectLineint(), o2.getProjectLineint());
+                    }
+                }else{
+                    return Long.compare(o1.getPurchaseint(),o2.getPurchaseint());
                 }
-                return o1.getOrdernum().compareTo(o2.getOrdernum());
+
             }
         });
         SLExcels.clear();

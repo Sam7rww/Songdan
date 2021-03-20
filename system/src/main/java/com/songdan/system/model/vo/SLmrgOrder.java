@@ -277,4 +277,12 @@ public class SLmrgOrder {
     public void setPress(String press) {
         this.press = press;
     }
+
+    public long getPurchaseint(){
+        return Long.parseLong(this.purchaseorder.trim());
+    }
+
+    public int getProjectLineint(){
+        return Integer.parseInt(this.lineproject.trim());
+    }
 }

@@ -11,17 +11,14 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
 public class ExcelServiceImpl implements ExcelService {
 
-    private static List<YMmrgOrder> Excellists = new ArrayList<>();
+    private static List<YMmrgOrder> Excellists = Collections.synchronizedList(new ArrayList<>());
 
     @Autowired
     private YMpaperDao paperdao;
@@ -226,7 +223,7 @@ public class ExcelServiceImpl implements ExcelService {
 
     @Override
     public List<YMmrgOrder> clearExcels() {
-        List<YMmrgOrder> orders = new ArrayList<>();
+        List<YMmrgOrder> orders = Collections.synchronizedList(new ArrayList<>());
         orders.addAll(Excellists);
         orders.sort(new Comparator<YMmrgOrder>() {
             @Override
