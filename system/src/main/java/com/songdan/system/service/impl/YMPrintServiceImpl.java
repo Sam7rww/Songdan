@@ -63,7 +63,13 @@ public class YMPrintServiceImpl implements YMPrintService {
         //查询选中的订单信息
         List<YMUnprintOrder> ymorders = ymOrderService.findEachByWaterid(data);
         for (YMUnprintOrder temp:ymorders) {
-            String[] arr = {temp.getOrdernum().substring(temp.getOrdernum().length()-5), temp.getProductname(),
+            String ordernumTemp = "";
+            if(temp.getOrdernum().length()<5){
+                ordernumTemp = temp.getOrdernum();
+            }else{
+                ordernumTemp = temp.getOrdernum().substring(temp.getOrdernum().length()-5);
+            }
+            String[] arr = {ordernumTemp, temp.getProductname(),
                     temp.getNeijing(),temp.getWaijing(),temp.getBanpian(),temp.getYaxian(),
                     temp.getOutputdate(),temp.getNum()+"",temp.getGecengban(),""};
             list.add(arr);

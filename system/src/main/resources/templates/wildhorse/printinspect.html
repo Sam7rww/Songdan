@@ -189,10 +189,17 @@
                     }
                     data.push({waterid: '开票人:',productname: '', num: '', length: '送货人:', wide: '', high: '',unit:'收货人:',ordernum:'',price: ''})
 
+                    // excel.setExportCellStyle(data,'B1:B'+data.length,{
+                    //     s:{
+                    //         alignment:{
+                    //             wrapText: true
+                    //         }
+                    //     }
+                    // });
                     excel.exportExcel(data, '野马电池送检单.xlsx', 'xlsx',
                         {extend:{'!merges': mergeConf
                                 , '!cols': colConf}
-                        })
+                        });
                 }else{
                     alert("请检查输入格式，逗号需为英文版格式。");
                 }
@@ -262,6 +269,13 @@
                     }
                     data.push({waterid: '开票人:',productname: '', num: '', length: '送货人:', wide: '', high: '',unit:'收货人:',ordernum:'',price: ''})
 
+                    // excel.setExportCellStyle(data,'B1:B'+data.length,{
+                    //     s:{
+                    //         alignment:{
+                    //             wrapText: true
+                    //         }
+                    //     }
+                    // });
                     excel.exportExcel(data, '野马电池送检单.xlsx', 'xlsx',
                         {extend:{'!merges': mergeConf
                                 , '!cols': colConf}
