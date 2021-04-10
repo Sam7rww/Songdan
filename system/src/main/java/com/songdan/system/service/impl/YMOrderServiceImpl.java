@@ -204,6 +204,9 @@ public class YMOrderServiceImpl implements YMOrderService {
         if(!waterid.equals("")){
             YMUnprintOrder order = ymunprint.findByWaterid(waterid);
             List<YMUnprintOrder> ymorderlist = new ArrayList<>();
+            if(order == null){
+                return ymorderlist;
+            }
             if(order.getState()!=0){
                 return ymorderlist;
             }
@@ -305,6 +308,13 @@ public class YMOrderServiceImpl implements YMOrderService {
             String neijing = order.getNeijing();
             String[] statistic = neijing.split("\\*");
             String ordernum = order.getOrdernum();
+            //作业单号信息处理：长度大于5，截取最后5位；小于5（作业单号为备货）,全部显示
+            String ordernumTemp = "";
+            if(ordernum.length()<5){
+                ordernumTemp = ordernum;
+            }else{
+                ordernumTemp = ordernum.substring(ordernum.length()-5);
+            }
             String productname = order.getProductname();
             String gecengban = order.getGecengban();
             if(!gecengban.equals("")&&gecengban!=null){
@@ -314,11 +324,11 @@ public class YMOrderServiceImpl implements YMOrderService {
             if(statistic.length==2){
                 inspect = new inspectOrder(order.getWaterid(),productname,order.getNum(),
                         statistic[0],statistic[1],"",
-                        order.getUnit(),ordernum.substring(ordernum.length()-5),order.getPrice());
+                        order.getUnit(),ordernumTemp,order.getPrice());
             }else{
                 inspect = new inspectOrder(order.getWaterid(),productname,order.getNum(),
                         statistic[0],statistic[1],statistic[2],
-                        order.getUnit(),ordernum.substring(ordernum.length()-5),order.getPrice());
+                        order.getUnit(),ordernumTemp,order.getPrice());
             }
             lists.add(inspect);
         }
