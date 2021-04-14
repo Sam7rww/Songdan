@@ -34,7 +34,14 @@ public class SLPrintServiceImpl implements SLPrintService {
         //查询选中的订单信息
         List<SLUnprintOrder> slorders = slOrderService.findEachByid(data);
         for (SLUnprintOrder temp:slorders) {
-            String[] arr = {temp.getProductid().substring(temp.getProductid().length()-5),temp.getProductname(),
+            String producttemp = "";
+            if(temp.getProductid().length()<5){
+                producttemp = temp.getProductid();
+            }else{
+                producttemp = temp.getProductid().substring(temp.getProductid().length()-5);
+            }
+
+            String[] arr = {producttemp,temp.getProductname(),
                     temp.getNeijing(),temp.getWaijing(),temp.getBanpian(),temp.getYaxian(),
                     temp.getOutputdate(),temp.getNum()+"",temp.getPress(),""};
             list.add(arr);

@@ -63,13 +63,13 @@ public class YMPrintServiceImpl implements YMPrintService {
         //查询选中的订单信息
         List<YMUnprintOrder> ymorders = ymOrderService.findEachByWaterid(data);
         for (YMUnprintOrder temp:ymorders) {
-            String ordernumTemp = "";
-            if(temp.getOrdernum().length()<5){
-                ordernumTemp = temp.getOrdernum();
+            String productidTemp = "";
+            if(temp.getProductid().length()<5){
+                productidTemp = temp.getProductid();
             }else{
-                ordernumTemp = temp.getOrdernum().substring(temp.getOrdernum().length()-5);
+                productidTemp = temp.getProductid().substring(temp.getProductid().length()-5);
             }
-            String[] arr = {ordernumTemp, temp.getProductname(),
+            String[] arr = {productidTemp, temp.getProductname(),
                     temp.getNeijing(),temp.getWaijing(),temp.getBanpian(),temp.getYaxian(),
                     temp.getOutputdate(),temp.getNum()+"",temp.getGecengban(),""};
             list.add(arr);
@@ -103,7 +103,7 @@ public class YMPrintServiceImpl implements YMPrintService {
             table1.setWidthPercentage(100); // Width 100%
             float[] columnWidths = {0.05f, 0.18f,0.13f,0.13f,0.13f,0.13f,0.08f,0.05f,0.06f,0.06f};
             table1.setWidths(columnWidths);
-            String[] ths = {"作业单号","物料名称","内径","外径","板片","压线","日期","数量","隔层板","备注"};
+            String[] ths = {"物料代码","物料名称","内径","外径","板片","压线","日期","数量","隔层板","备注"};
             for (String th : ths) {
                 Paragraph para = new Paragraph(th, thFont);
                 para.setAlignment(Element.ALIGN_CENTER);
