@@ -74,15 +74,23 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">变压信息</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="press" placeholder="请输入隔层板信息" autocomplete="off" class="layui-input">
+                                            <input type="text" name="press" placeholder="请输入变压信息" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="layui-col-md6">
+                                <div class="layui-col-md3">
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">计算方法</label>
                                         <div class="layui-input-block">
                                             <input type="text" name="calculate" placeholder="默认+5" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md3">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">图纸版本</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="position" placeholder="请输入图纸版本" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -228,6 +236,7 @@
                             ,"yaxian":message.yaxian
                             ,"press":message.press
                             ,"calculate":message.type
+                            ,"position":message.position
                         });
                         layer.msg("搜索完成。");
                     }else{

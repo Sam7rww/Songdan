@@ -19,7 +19,7 @@ public class SLPaperController {
     private SLPaperService slPaperService;
 
     @RequestMapping(value = "/searchSL")
-    public Map<String,Object> searchYM(@Param("id") String id, @Param("name") String name){
+    public Map<String,Object> searchSL(@Param("id") String id, @Param("name") String name){
         Map<String,Object> message = new HashMap<String, Object>();
         SLpaper temp = slPaperService.searchpaper(id,name);
         if(temp == null){
@@ -34,20 +34,22 @@ public class SLPaperController {
             message.put("waijing",temp.getWaijing());
             message.put("yaxian",temp.getYaxian());
             message.put("banpian",temp.getBanpian());
-            message.put("gecengban",temp.getPress());
+            message.put("press",temp.getPress());
+            message.put("position",temp.getPostion());
         }
         return message;
     }
 
     @RequestMapping(value = "/addSL")
-    public Map<String,Object> addYM(HttpServletRequest request){
+    public Map<String,Object> addSL(HttpServletRequest request){
 //        System.out.println("Enter add paper");
         String productid = request.getParameter("productid").trim();
         String productname = request.getParameter("productname").trim();
         String press = request.getParameter("press").trim();
         String type = request.getParameter("calculate").trim();
         String neijing = request.getParameter("neijing").trim();
-        String result = slPaperService.savepaper(productid,productname,press,type,neijing);
+        String position = request.getParameter("position").trim();
+        String result = slPaperService.savepaper(productid,productname,press,type,neijing,position);
         Map<String,Object> message = new HashMap<String, Object>();
         if(result.equals("")){
             message.put("result","pass");
@@ -58,7 +60,7 @@ public class SLPaperController {
     }
 
     @RequestMapping(value = "/updateSL")
-    public Map<String,Object> updateYM(HttpServletRequest request){
+    public Map<String,Object> updateSL(HttpServletRequest request){
 //        System.out.println("Enter update paper");
         String productid = request.getParameter("productid");
         String productname = request.getParameter("productname");
@@ -68,8 +70,9 @@ public class SLPaperController {
         String waijing = request.getParameter("waijing");
         String banpian = request.getParameter("banpian");
         String yaxian = request.getParameter("yaxian");
+        String position = request.getParameter("position");
         String result = slPaperService.updatepaper(productid,productname,
-                press,type,neijing,waijing,banpian,yaxian);
+                press,type,neijing,waijing,banpian,yaxian,position);
         Map<String,Object> message = new HashMap<String, Object>();
         if(result.equals("")){
             message.put("result","pass");

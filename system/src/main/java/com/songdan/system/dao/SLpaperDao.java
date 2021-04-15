@@ -25,10 +25,11 @@ public interface SLpaperDao extends JpaRepository<SLpaper,String> {
 
     @Modifying
     @Transactional
-    @Query("update SLpaper p set p.productname=?2,p.press=?3,p.type=?4,p.neijing=?5,p.waijing=?6,p.banpian=?7,p.yaxian=?8 where p.productid=?1")
+    @Query("update SLpaper p set p.productname=?2,p.press=?3,p.type=?4,p.neijing=?5,p.waijing=?6,p.banpian=?7,p.yaxian=?8,p.postion=?9 where p.productid=?1")
     public void update(@Param("productid") String id, @Param("productname") String name,
                        @Param("press") String press, @Param("type") String t, @Param("neijing") String n,
-                       @Param("waijing") String w, @Param("banpian") String b, @Param("yaxian") String y);
+                       @Param("waijing") String w, @Param("banpian") String b, @Param("yaxian") String y,
+                       @Param("position") String p);
 
     @Modifying
     @Transactional

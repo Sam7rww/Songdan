@@ -14,7 +14,7 @@ public class SLPaperServiceImpl implements SLPaperService {
     private SLpaperDao sLpaperDao;
 
     @Override
-    public String savepaper(String id, String name, String press, String type, String neijing) {
+    public String savepaper(String id, String name, String press, String type, String neijing,String position) {
         boolean exist = sLpaperDao.existsByProductid(id);
         if(exist){
             return "图纸编号已存在，请确认。";
@@ -24,6 +24,7 @@ public class SLPaperServiceImpl implements SLPaperService {
             return "内径输入格式有误，请检查。";
         }
         SLpaper paper = new SLpaper(id,name,neijing,com.getWaiJing(),com.getBanPian(),com.getYaXian(),type,press);
+        paper.setPostion(position);
         SLpaper res = sLpaperDao.save(paper);
         if(res == null){
             return "图纸保存失败，请检查输入。";
@@ -33,10 +34,10 @@ public class SLPaperServiceImpl implements SLPaperService {
     }
 
     @Override
-    public String updatepaper(String id, String name, String press, String type, String neijing, String waijing, String banpian, String yaxian) {
+    public String updatepaper(String id, String name, String press, String type, String neijing, String waijing, String banpian, String yaxian,String position) {
         boolean exist = sLpaperDao.existsByProductid(id);
         if(exist){
-            sLpaperDao.update(id,name,press,type,neijing,waijing,banpian,yaxian);
+            sLpaperDao.update(id,name,press,type,neijing,waijing,banpian,yaxian,position);
         }else{
             return "查找不到需要修改图纸,图纸名字不可修改";
         }
