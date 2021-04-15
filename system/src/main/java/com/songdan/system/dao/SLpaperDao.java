@@ -35,4 +35,9 @@ public interface SLpaperDao extends JpaRepository<SLpaper,String> {
     @Query("update SLpaper p set p.press=?2 where p.productid=?1")
     public void updatepress(@Param("productid") String id,@Param("press") String press);
 
+    @Modifying
+    @Transactional
+    @Query("update SLpaper p set p.postion=?2 where p.productid=?1")
+    public void updateposition(@Param("productid") String id,@Param("position") String position);
+
 }

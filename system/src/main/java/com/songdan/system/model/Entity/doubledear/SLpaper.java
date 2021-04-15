@@ -23,7 +23,7 @@ public class SLpaper {
     private String yaxian;
     //图纸计算方法
     private String type;
-    //图纸保存位置
+    //图纸保存版本信息
     private String postion;
 
     private String press;

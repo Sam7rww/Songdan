@@ -144,10 +144,10 @@ public class SLExcelServiceImpl implements SLExcelService {
                     if(o1.getLineproject()==null||o2.getLineproject()==null){
                         return 0;
                     }else{
-                        return Integer.compare(o1.getProjectLineint(), o2.getProjectLineint());
+                        return Integer.compare(Strtoint(o1.getLineproject()), Strtoint(o2.getLineproject()));
                     }
                 }else{
-                    return Long.compare(o1.getPurchaseint(),o2.getPurchaseint());
+                    return Long.compare(Strtolong(o1.getPurchaseorder()),Strtolong(o2.getPurchaseorder()));
                 }
 
             }
@@ -171,10 +171,20 @@ public class SLExcelServiceImpl implements SLExcelService {
             order.setNeijing(targetPaper.getNeijing());
             order.setType(targetPaper.getType());
             order.setPress(targetPaper.getPress());
+            order.setPosition(targetPaper.getPostion()==null?"":targetPaper.getPostion());
         }else{
             order.setNeijing("");
             order.setType("");
             order.setPress("");
+            order.setPosition("");
         }
+    }
+
+    private long Strtolong(String str){
+        return Long.parseLong(str.trim());
+    }
+
+    private int Strtoint(String str){
+        return Integer.parseInt(str.trim());
     }
 }

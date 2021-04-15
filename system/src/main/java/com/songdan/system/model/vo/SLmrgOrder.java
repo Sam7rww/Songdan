@@ -67,6 +67,9 @@ public class SLmrgOrder {
     //变压信息
     private String press;
 
+    //图纸版本信息
+    private String position;
+
     public SLmrgOrder() {
     }
 
@@ -278,11 +281,19 @@ public class SLmrgOrder {
         this.press = press;
     }
 
-    public long getPurchaseint(){
-        return Long.parseLong(this.purchaseorder.trim());
+//    public long getPurchaseint(){
+//        return Long.parseLong(this.purchaseorder.trim());
+//    }
+//
+//    public int getProjectLineint(){
+//        return Integer.parseInt(this.lineproject.trim());
+//    }
+
+    public String getPosition() {
+        return position;
     }
 
-    public int getProjectLineint(){
-        return Integer.parseInt(this.lineproject.trim());
+    public void setPosition(String position) {
+        this.position = position;
     }
 }

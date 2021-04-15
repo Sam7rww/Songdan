@@ -94,8 +94,11 @@ public class SLOrderServiceImpl implements SLOrderService {
                 slorder.setWaijing(targetPaper.getWaijing());
                 slorder.setBanpian(targetPaper.getBanpian());
                 slorder.setYaxian(targetPaper.getYaxian());
-                if(!order.getPress().equals(targetPaper.getPress())){
+                if(!order.getPress().equals(targetPaper.getPress())){//更新已有的图纸变压信息
                     paper.updatepress(order.getProductid(),order.getPress());
+                }
+                if(!order.getPosition().equals(targetPaper.getPostion())){//更新已有的图纸版本信息
+                    paper.updateposition(order.getProductid(),order.getPosition());
                 }
             }else{//找不到图纸
                 //System.out.println("can't find paper");
@@ -114,6 +117,7 @@ public class SLOrderServiceImpl implements SLOrderService {
                 slorder.setYaxian(com.getYaXian());
                 SLpaper p = new SLpaper(order.getProductid(),order.getProductname(),order.getNeijing(),
                         com.getWaiJing(),com.getBanPian(),com.getYaXian(),order.getType(),order.getPress());
+                p.setPostion(order.getPosition());//设置图纸的版本信息
                 SLpaper paperRes = paper.save(p);
                 if(paperRes == null){
                     return "图纸保存失败，请检查图纸相关输入";

@@ -2,7 +2,9 @@ package com.songdan.system.service.impl;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import com.songdan.system.dao.SLpaperDao;
 import com.songdan.system.model.Entity.doubledear.SLUnprintOrder;
+import com.songdan.system.model.Entity.doubledear.SLpaper;
 import com.songdan.system.service.SLOrderService;
 import com.songdan.system.service.SLPrintService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class SLPrintServiceImpl implements SLPrintService {
     @Autowired
     private SLOrderService slOrderService;
 
+    @Autowired
+    private SLpaperDao sLpaperDao;
+
     @Override
     public Object printPurchaseOrder(Object nums, HttpServletResponse response) {
         String datas = nums.toString();
@@ -34,6 +39,7 @@ public class SLPrintServiceImpl implements SLPrintService {
         //查询选中的订单信息
         List<SLUnprintOrder> slorders = slOrderService.findEachByid(data);
         for (SLUnprintOrder temp:slorders) {
+            //处理物料代码后5位
             String producttemp = "";
             if(temp.getProductid().length()<5){
                 producttemp = temp.getProductid();
@@ -41,7 +47,11 @@ public class SLPrintServiceImpl implements SLPrintService {
                 producttemp = temp.getProductid().substring(temp.getProductid().length()-5);
             }
 
-            String[] arr = {producttemp,temp.getProductname(),
+            //获取图纸版本信息
+            SLpaper sLpaper = sLpaperDao.findByProductid(temp.getProductid());
+            String position = (sLpaper.getPostion()==null?"":sLpaper.getPostion());
+
+            String[] arr = {producttemp,position,temp.getProductname(),
                     temp.getNeijing(),temp.getWaijing(),temp.getBanpian(),temp.getYaxian(),
                     temp.getOutputdate(),temp.getNum()+"",temp.getPress(),""};
             list.add(arr);
@@ -77,11 +87,11 @@ public class SLPrintServiceImpl implements SLPrintService {
 
 
             // table1
-            PdfPTable table1 = new PdfPTable(10);
+            PdfPTable table1 = new PdfPTable(11);
             table1.setWidthPercentage(100); // Width 100%
-            float[] columnWidths = {0.05f, 0.18f,0.13f,0.13f,0.13f,0.13f,0.08f,0.05f,0.05f,0.07f};
+            float[] columnWidths = {0.05f,0.04f,0.18f,0.125f,0.125f,0.125f,0.125f,0.08f,0.05f,0.05f,0.05f};
             table1.setWidths(columnWidths);
-            String[] ths = {"物料代码","物料名称","内径","外径","板片","压线","日期","数量","变压","备注"};
+            String[] ths = {"物料代码","版本","物料名称","内径","外径","板片","压线","日期","数量","变压","备注"};
             for (String th : ths) {
                 Paragraph para = new Paragraph(th, thFont);
                 para.setAlignment(Element.ALIGN_CENTER);
@@ -95,7 +105,7 @@ public class SLPrintServiceImpl implements SLPrintService {
             // table2
 
             for (int i = 0; i < list.size(); i++) {
-                PdfPTable table2 = new PdfPTable(10);
+                PdfPTable table2 = new PdfPTable(11);
                 table2.setWidthPercentage(100); // Width 100%
                 table2.setWidths(columnWidths);
                 String[] arr = (String[]) list.get(i);

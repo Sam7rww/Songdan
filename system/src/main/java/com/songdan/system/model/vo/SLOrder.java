@@ -38,6 +38,9 @@ public class SLOrder {
     //变压信息
     private String press;
 
+    //图纸版本信息
+    private String position;
+
     public SLOrder() {
     }
 
@@ -135,5 +138,13 @@ public class SLOrder {
 
     public void setPress(String press) {
         this.press = press;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 }
