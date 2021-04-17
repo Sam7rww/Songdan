@@ -64,10 +64,10 @@ public class YMPrintServiceImpl implements YMPrintService {
         List<YMUnprintOrder> ymorders = ymOrderService.findEachByWaterid(data);
         for (YMUnprintOrder temp:ymorders) {
             String productidTemp = "";
-            if(temp.getProductid().length()<5){
+            if(temp.getProductid().length()<6){
                 productidTemp = temp.getProductid();
             }else{
-                productidTemp = temp.getProductid().substring(temp.getProductid().length()-5);
+                productidTemp = temp.getProductid().substring(temp.getProductid().length()-6);
             }
             String[] arr = {productidTemp, temp.getProductname(),
                     temp.getNeijing(),temp.getWaijing(),temp.getBanpian(),temp.getYaxian(),
