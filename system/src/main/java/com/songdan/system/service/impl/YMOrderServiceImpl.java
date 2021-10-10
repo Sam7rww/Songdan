@@ -283,10 +283,13 @@ public class YMOrderServiceImpl implements YMOrderService {
             String id = ids.get(i);
             ymunprint.updateState(id,1);
             YMUnprintOrder temp = ymunprint.findByWaterid(id);
-            YMprintOrder printorder = new YMprintOrder(temp.getWaterid(),temp.getOrdernum(),
-                    temp.getProductid(),temp.getProductname(),temp.getProductname2(),
-                    temp.getNum(),temp.getUnit(),temp.getOutputdate(),temp.getDemand(),temp.getPrice());
-            ymprint.save(printorder);
+            boolean exist = ymprint.existsByWaterid(temp.getWaterid());
+            if(!exist){
+                YMprintOrder printorder = new YMprintOrder(temp.getWaterid(),temp.getOrdernum(),
+                        temp.getProductid(),temp.getProductname(),temp.getProductname2(),
+                        temp.getNum(),temp.getUnit(),temp.getOutputdate(),temp.getDemand(),temp.getPrice());
+                ymprint.save(printorder);
+            }
         }
         return true;
     }

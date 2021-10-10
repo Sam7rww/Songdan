@@ -100,7 +100,7 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">内径</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="neijing" required  lay-verify="required" placeholder="请输入图纸内径" autocomplete="off" class="layui-input">
+                                            <input type="text" name="neijing" id="neijing" required  lay-verify="required" placeholder="请输入图纸内径" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -108,7 +108,7 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">外径</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="waijing" placeholder="请输入图纸内径" autocomplete="off" class="layui-input">
+                                            <input type="text" name="waijing" id="waijing" placeholder="请输入图纸内径" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">压线</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="yaxian" placeholder="请输入图纸内径" autocomplete="off" class="layui-input">
+                                            <input type="text" name="yaxian" id="yaxian" placeholder="请输入图纸内径" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -124,7 +124,7 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">板片</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="banpian" placeholder="请输入图纸内径" autocomplete="off" class="layui-input">
+                                            <input type="text" name="banpian" id="banpian" placeholder="请输入图纸内径" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -137,6 +137,7 @@
                                             <button type="button" class="layui-btn layui-btn-normal" id="search">查询图纸</button>
                                             <button type="submit" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="change" id="change">修改图纸</button>
                                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                            <button type="button" class="layui-btn layui-btn-primary" id="cal_default" onclick="cal_neijing()">默认方式计算外径压线板片</button>
                                         </div>
                                     </div>
                                 </div>
@@ -251,6 +252,51 @@
         });
 
     });
+
+    function cal_neijing(){
+        var NJ = document.getElementById("neijing").value;
+        var WJ = $("#waijing")
+        var BP = $("#banpian")
+        var YX = $("#yaxian")
+        var temp = NJ.split("*");
+        if(temp.length != 3){
+            alert("内径输入有误！")
+            return;
+        }
+        var WJlength = Math.round(parseFloat(temp[0])*10+10)/10;
+        var WJwidth = Math.round(parseFloat(temp[1])*10+6)/10;
+        var WJheight = Math.round(parseFloat(temp[2])*10 + 12)/10;
+
+        //banpian
+        var BPl = Math.round((WJlength*10 + WJwidth*10)*2+45)/10;
+        var BPw = Math.round(WJwidth*10 + WJheight*10)/10;
+        var BPtemp = WJwidth*10;
+        if(BPtemp%2 !=0){
+            BPw = Math.round(BPw*10+1)/10;//奇数
+        }else{
+            BPw = Math.round(BPw*10+2)/10;//偶数
+        }
+        BPl.toFixed(1);
+        BPw.toFixed(1);
+
+        //yaxian
+        var YXl = WJwidth;
+        var YXtemp = WJwidth*10;
+        if(YXtemp %2 != 0 ){
+            YXl = Math.round(YXl*10+1)/10;//奇数
+        }else{
+            YXl = Math.round(YXl*10+2)/10;//偶数
+        }
+        YXl /= 2;
+        YXl.toFixed(1);
+
+        WJlength.toFixed(1);
+        WJwidth.toFixed(1);
+        WJheight.toFixed(1);
+        WJ.val(WJlength+"*"+WJwidth+"*"+WJheight);
+        BP.val(BPl+"*"+BPw);
+        YX.val(YXl+"+"+WJheight+"+"+YXl);
+    }
 
 </script>
 </body>
