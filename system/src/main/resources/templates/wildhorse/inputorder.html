@@ -218,6 +218,26 @@
         <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">
             <div class="layui-col-md12">
                 <div class="layui-card">
+                    <div class="layui-card-header">野马公司新网站(云星空)的原始Excel导入,查询图纸隔层板相关信息。</div>
+                    <div class="layui-card-body">
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-md12">
+                                <div class="layui-form-label">更新Excel</div>
+                                <div class="layui-form-block">
+                                    <button type="button" class="layui-btn" id="update-excels">
+                                        <i class="layui-icon">&#xe67c;</i>上传Excel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-row" style="padding: 20px; background-color: #F2F2F2;">
+            <div class="layui-col-md12">
+                <div class="layui-card">
                     <div class="layui-card-header">在浙江宁波野马网站导出Excel，再导入本网站。ps:请先下载模板。Excel需按照格式排版，否则会报错。</div>
                     <div class="layui-card-body">
                         <div class="layui-row layui-col-space15">
@@ -417,6 +437,33 @@
 
             return false;
         });
+    });
+
+    //野马云星空 新系统, 查询订单图纸信息
+    layui.use('upload', function () {
+        var upload = layui.upload;
+        upload.render({
+            elem: '#update-excels'
+            , url: 'updateExcel'
+            , method: 'POST'
+            , accept: 'file' //普通文件
+            , field: 'target'//设置字段名
+            , done: function (res) { //每个文件提交一次触发一次。详见“请求成功的回调”
+                if(res.result === "pass"){
+                    var temp =res.datas;
+                    temp.unshift({waterid:'采购流水号',ordernum: '作业单号',productid: '物料代码',
+                        productname: '物料名称',productname2:'别名',unit:'单位',num:'数量',outputdate:'交货日期',
+                        demand:'生产要求及噱头',price:'含税单价',neijing:'内径',calculate:'计算方式',gecengban:'隔层板'});
+                    LAY_EXCEL.exportExcel(temp, '野马电池云星空新系统采购订单.xlsx', 'xlsx')
+                }else{
+                    alert("导入文件有问题，请检查每一列是否正确");
+                }
+
+            },error:function (){
+                alert('无法上传，请联系管理员!!!');
+            }
+        });
+
     });
 
 

@@ -298,4 +298,28 @@ public class YMOrderController {
         return result;
     }
 
+    //云星空新系统 的 upload Excel, and search for neijing
+    @ResponseBody
+    @RequestMapping(value = "/updateExcel")
+    public Map<String,Object> updateExcel(@RequestParam("target") MultipartFile file, HttpServletRequest request, HttpSession session) throws IOException {
+//        System.out.println("Enter Multi Excel!");
+        Map<String,Object> result = new HashMap<>();
+        // 原始名称
+        String name = file.getOriginalFilename();
+        if(name.length()<6|| !name.substring(name.length()-5).equals(".xlsx")){
+            result.put("result","fail");
+            return result;
+        }
+
+        List<YMOrder> temp = excelService.searchExcel(file.getInputStream());
+        if(temp == null){
+            result.put("result","fail");
+            return result;
+        }else{
+            result.put("result","pass");
+            result.put("datas",temp);
+        }
+        return result;
+    }
+
 }

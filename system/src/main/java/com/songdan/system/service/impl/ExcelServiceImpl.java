@@ -2,6 +2,7 @@ package com.songdan.system.service.impl;
 
 import com.songdan.system.dao.YMpaperDao;
 import com.songdan.system.model.Entity.wildhorse.YMpaper;
+import com.songdan.system.model.vo.YMOrder;
 import com.songdan.system.model.vo.YMmailOrder;
 import com.songdan.system.model.vo.YMmrgOrder;
 import com.songdan.system.service.ExcelService;
@@ -239,6 +240,212 @@ public class ExcelServiceImpl implements ExcelService {
         return orders;
     }
 
+//    @Override
+//    public List<YMOrder> searchExcel(InputStream inputStream) {
+//        List<YMOrder> list = new ArrayList<>();
+//        Workbook workbook = null;
+//        try {
+//            workbook = WorkbookFactory.create(inputStream);
+//            inputStream.close();
+//
+//            //开始遍历第一个sheet里的内容
+//            Sheet sheet = workbook.getSheetAt(0);
+//            int firstRowIndex = sheet.getFirstRowNum();
+//            int lastRowIndex = sheet.getLastRowNum();
+////            System.out.println("firstRowIndex: " + firstRowIndex);
+////            System.out.println("lastRowIndex: " + lastRowIndex);
+//            boolean isHeadInfo = false;
+//            for (int rIndex = firstRowIndex; rIndex <= lastRowIndex; rIndex++) {   //遍历行
+////                System.out.println("rIndex: " + rIndex);
+//                YMOrder order = new YMOrder();
+//                Row row = sheet.getRow(rIndex);
+//                if (!isHeadInfo && row.getCell(0) != null && row.getCell(0).getCellTypeEnum() == CellType.STRING) {
+//                    String numNo = "单据编号";
+//                    if ((row.getCell(0).getStringCellValue().trim()).equals(numNo)) {
+//                        isHeadInfo = true;
+//                        //check head info is correst (each column is desired column)
+//                        if (!row.getCell(4, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("交货日期")||
+//                                !row.getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("采购流水号")||
+//                                !row.getCell(7, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("物料编码")||
+//                                !row.getCell(8, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("物料名称")||
+//                                !row.getCell(9, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("采购数量")||
+//                                !row.getCell(10, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("需求单据编号")||
+//                                !row.getCell(13, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("采购单位")||
+//                                !row.getCell(14, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("辅助属性.版本号.编码")||
+//                                !row.getCell(15, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("含税单价")){
+//                            return null;
+//                        }
+//                        continue;
+//                    }
+//                }
+//
+//                //end the YMorder search
+//                row.getCell(5,Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellType(Cell.CELL_TYPE_STRING);
+//                row.getCell(7,Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellType(Cell.CELL_TYPE_STRING);
+//                row.getCell(8,Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellType(Cell.CELL_TYPE_STRING);
+//                if((row.getCell(5,Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim()).equals("")||
+//                        row.getCell(7,Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("")||
+//                        row.getCell(8,Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("")){
+//                    isHeadInfo = false;
+//                    continue;
+//                }
+//
+//                if(isHeadInfo){//接下来是数据，开始保存
+//                    Cell pid = row.getCell(7);//物料代码_left_part
+//                    String productid = this.getCellString(pid);
+//                    Cell extra = row.getCell(14);//物料代码_right_part
+//                    String type = this.getCellString(extra).split("V")[1];
+//                    productid = productid+type;
+//                    order.setProductid(productid);
+//                    Cell pname = row.getCell(8);//物料名称
+//                    order.setProductname(this.getCellString(pname));
+//                    Cell unit = row.getCell(13);//单位
+//                    order.setUnit(this.getCellString(unit));
+//                    Cell dt = row.getCell(4);//交货日期
+//                    if(dt.getCellTypeEnum() == CellType.NUMERIC){
+//                        Date temp = dt.getDateCellValue();
+//                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+//                        order.setOutputdate(sdf.format(temp));
+//                    }else{
+//                        String temp = this.getCellString(dt);
+//                        String d = temp.split(" ")[0];
+//                        order.setOutputdate(d);
+//                    }
+//                    Cell numb = row.getCell(9);//订单数
+//                    order.setNum(Integer.parseInt(this.getCellString(numb)));
+//
+//                    Cell wid = row.getCell(5);//采购流水号
+//                    order.setWaterid(this.getCellString(wid));
+//                    //别名
+//                    order.setProductname2("");
+//                    Cell oid = row.getCell(10);//作业单号
+//                    order.setOrdernum(this.getCellString(oid));
+//                    //生产要求及噱头
+//                    order.setDemand("");
+//                    Cell price = row.getCell(15);//含税单价
+//                    order.setPrice(this.getCellString(price));
+////                    System.out.println("price is:"+this.getCellString(price));
+////                    System.out.println("price(double) is:"+Double.parseDouble(this.getCellString(price)));
+//
+//                    //自动填写内径
+//                    this.updateExcelNJ(order,productid);
+//                    list.add(order);
+//                }
+//
+//            }
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return null;
+//        }
+//
+//        return list;
+//    }
+
+    @Override
+    public List<YMOrder> searchExcel(InputStream inputStream) {
+        List<YMOrder> list = new ArrayList<>();
+        Workbook workbook = null;
+        try {
+            workbook = WorkbookFactory.create(inputStream);
+            inputStream.close();
+
+            //开始遍历第一个sheet里的内容
+            Sheet sheet = workbook.getSheetAt(0);
+            int firstRowIndex = sheet.getFirstRowNum();
+            int lastRowIndex = sheet.getLastRowNum();
+//            System.out.println("firstRowIndex: " + firstRowIndex);
+//            System.out.println("lastRowIndex: " + lastRowIndex);
+            boolean isHeadInfo = false;
+            for (int rIndex = firstRowIndex; rIndex <= lastRowIndex; rIndex++) {   //遍历行
+//                System.out.println("rIndex: " + rIndex);
+                YMOrder order = new YMOrder();
+                Row row = sheet.getRow(rIndex);
+                if (!isHeadInfo && row.getCell(0) != null && row.getCell(0).getCellTypeEnum() == CellType.STRING) {
+                    String numNo = "单据编号";
+                    if ((row.getCell(0).getStringCellValue().trim()).equals(numNo)) {
+                        isHeadInfo = true;
+                        //check head info is correst (each column is desired column)
+                        if (!row.getCell(4, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("交货日期")||
+                                !row.getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("采购流水号")||
+                                !row.getCell(7, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("物料编码")||
+                                !row.getCell(8, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("物料名称")||
+                                !row.getCell(9, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("采购数量")||
+                                !row.getCell(10, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("需求单据编号")||
+                                !row.getCell(13, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("采购单位")||
+                                !row.getCell(14, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("辅助属性.版本号.编码")||
+                                !row.getCell(15, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("含税单价")){
+                            return null;
+                        }
+                        continue;
+                    }
+                }
+
+                //end the YMorder search
+                if(row.getCell(5) == null || row.getCell(7) == null|| row.getCell(8) == null){
+                    isHeadInfo = false;
+                    continue;
+                }else if(row.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("合计")){
+                    isHeadInfo = false;
+                    continue;
+                }else if(row.getCell(7, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("")||
+                        row.getCell(8, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue().trim().equals("")){
+                    isHeadInfo = false;
+                    continue;
+                }
+
+                if(isHeadInfo){//接下来是数据，开始保存
+                    Cell pid = row.getCell(7);//物料代码_left_part
+                    String productid = pid.getStringCellValue();
+                    Cell extra = row.getCell(14);//物料代码_right_part
+                    String type = extra.getStringCellValue().split("V")[1];
+                    productid = productid+type;
+                    order.setProductid(productid);
+                    Cell pname = row.getCell(8);//物料名称
+                    order.setProductname(pname.getStringCellValue());
+                    Cell unit = row.getCell(13);//单位
+                    order.setUnit(unit.getStringCellValue());
+                    Cell dt = row.getCell(4);//交货日期
+                    if(dt.getCellTypeEnum() == CellType.NUMERIC){
+                        Date temp = dt.getDateCellValue();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                        order.setOutputdate(sdf.format(temp));
+                    }else{
+                        String temp = dt.getStringCellValue();
+                        String d = temp.split(" ")[0];
+                        order.setOutputdate(d);
+                    }
+                    Cell numb = row.getCell(9);//订单数
+                    order.setNum((int)numb.getNumericCellValue());
+
+                    Cell wid = row.getCell(5);//采购流水号
+                    order.setWaterid(String.valueOf((int)wid.getNumericCellValue()));
+                    //别名
+                    order.setProductname2("");
+                    Cell oid = row.getCell(10);//作业单号
+                    order.setOrdernum(oid.getStringCellValue());
+                    //生产要求及噱头
+                    order.setDemand("");
+                    Cell price = row.getCell(15);//含税单价
+                    order.setPrice(String.valueOf(price.getNumericCellValue()));
+//                    System.out.println("price is:"+this.getCellString(price));
+//                    System.out.println("price(double) is:"+Double.parseDouble(this.getCellString(price)));
+
+                    //自动填写内径
+                    this.updateExcelNJ(order,productid);
+                    list.add(order);
+                }
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return list;
+    }
+
     private String getCellString(Cell cell){
         String val = "";
         if(cell != null){
@@ -263,6 +470,20 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
     private void searchMrgNJ(YMmrgOrder order,String productid){
+        String temp = this.replaceExcess(productid);
+        YMpaper targetPaper = paperdao.findByProductid(temp);
+        if(targetPaper!=null){
+            order.setNeijing(targetPaper.getNeijing());
+            order.setCalculate(targetPaper.getType());
+            order.setGecengban(targetPaper.getGecengban());
+        }else{
+            order.setNeijing("");
+            order.setCalculate("");
+            order.setGecengban("");
+        }
+    }
+
+    private void updateExcelNJ(YMOrder order,String productid){
         String temp = this.replaceExcess(productid);
         YMpaper targetPaper = paperdao.findByProductid(temp);
         if(targetPaper!=null){
