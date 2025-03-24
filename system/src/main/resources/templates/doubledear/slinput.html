@@ -317,13 +317,13 @@
                         ,'outputdate':'P'
                         ,'productid': 'H'
                         ,'productname': 'I'
-                        ,'backup':'AB'
-                        ,'num':'J'
+                        ,'backup':'AF'
+                        ,'num':'L'
                         ,'unit':'O'
-                        ,'neijing':'X'
-                        ,'type':'Y'
-                        ,'press':'Z'
-                        ,'position':'AA'
+                        ,'neijing':'AB'
+                        ,'type':'AC'
+                        ,'press':'AD'
+                        ,'position':'AE'
                     }
                 }, function(data) {
                     // console.log(data);
@@ -447,10 +447,10 @@
                         // console.log(temp);
                         temp.unshift({purchaseorder:"采购凭证",lineproject:"行项目",submitline:"交货计划行"
                             ,ordernum: '销售单号',line:"行项目",net:"网络号",inputdate:"日期"
-                            ,productid: "物料号", productname: "物料描述",num:"订单数量",getnum:"已收货数量"
-                            ,outputnum:"发货数量",boxnum:"箱只数",lumbernum:"托只数",unit:'单位',outputdate:"交货日期"
-                            ,submitlocation:"交货地点",lastprint:"上次打印时间",savelocation:"库存地点"
-                            ,purchasegroup:"采购组",state:"状态",workshop:"工厂",workshopname:"工厂名称"
+                            ,productid: "物料号", productname: "物料描述",curType:"下单版本",lateType:"最新版本"
+                            ,num:"订单数量",getnum:"已收货数量",outputnum:"发货数量",unit:'单位',outputdate:"交货日期"
+                            ,submitlocation:"交货地点",closeDate:"封样日期",closeSample:"过期封样",boxnum:"箱只数",lumbernum:"托只数"
+                            ,lastprint:"上次打印时间",savelocation:"库存地点",purchasegroup:"采购组",state:"状态",workshop:"工厂",workshopname:"工厂名称"
                             ,neijing:"内径",type:"计算方式",press:"变压信息",position:"图纸版本"});
                         LAY_EXCEL.exportExcel(temp, '双鹿电池采购订单Excel合并.xlsx', 'xlsx')
                     },

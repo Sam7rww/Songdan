@@ -26,16 +26,18 @@ public class SLmrgOrder {
     //物料名称
     private String productname;
 
+    //下单版本
+    private String curType;
+
+    //最新版本
+    private String lateType;
+
     //数量
     private String num;
     //已收货数量
     private String getnum;
     //发货数量
     private String outputnum;
-    //箱只数
-    private String boxnum;
-    //托只数
-    private String lumbernum;
 
     //单位
     private String unit;
@@ -45,6 +47,17 @@ public class SLmrgOrder {
 
     //交货地点
     private String submitlocation;
+
+    //封样日期
+    private String closeDate;
+    //过期封样
+    private String closeSample;
+
+    //箱只数
+    private String boxnum;
+    //托只数
+    private String lumbernum;
+
     //上次打印时间
     private String lastprint;
     //库存地点
@@ -295,5 +308,37 @@ public class SLmrgOrder {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public String getCurType() {
+        return curType;
+    }
+
+    public void setCurType(String curType) {
+        this.curType = curType;
+    }
+
+    public String getLateType() {
+        return lateType;
+    }
+
+    public void setLateType(String lateType) {
+        this.lateType = lateType;
+    }
+
+    public String getCloseDate() {
+        return closeDate;
+    }
+
+    public void setCloseDate(String closeDate) {
+        this.closeDate = closeDate;
+    }
+
+    public String getCloseSample() {
+        return closeSample;
+    }
+
+    public void setCloseSample(String closeSample) {
+        this.closeSample = closeSample;
     }
 }

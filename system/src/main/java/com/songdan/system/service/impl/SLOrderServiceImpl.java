@@ -30,7 +30,7 @@ public class SLOrderServiceImpl implements SLOrderService {
     public String saveSLOrder(String ordernum, String line, String productid, String productname, String type,
                               int num, String unit, String backup, String indate, String date, String neijing,String press) {
         String orderline = ordernum+"/"+line;
-        if(ordernum.equals("") || line.equals("")){
+        if(ordernum.isEmpty() || line.isEmpty()){
             return "不保存通用纸箱信息。";
         }
         boolean exists = slunprint.existsByOrderlineAndProductid(orderline,productid);
@@ -94,15 +94,15 @@ public class SLOrderServiceImpl implements SLOrderService {
                 slorder.setWaijing(targetPaper.getWaijing());
                 slorder.setBanpian(targetPaper.getBanpian());
                 slorder.setYaxian(targetPaper.getYaxian());
-                if(!order.getPress().equals(targetPaper.getPress())){//更新已有的图纸变压信息
+                if(!order.getPress().isEmpty() && !order.getPress().equals(targetPaper.getPress())){//更新已有的图纸变压信息
                     paper.updatepress(order.getProductid(),order.getPress());
                 }
-                if(!order.getPosition().equals(targetPaper.getPostion())){//更新已有的图纸版本信息
+                if(!order.getPosition().equals(targetPaper.getPostion())){//更新已有的图纸最新版本信息
                     paper.updateposition(order.getProductid(),order.getPosition());
                 }
             }else{//找不到图纸
                 //System.out.println("can't find paper");
-                if(order.getNeijing().equals("")){
+                if(order.getNeijing().isEmpty()){
                     return "销售凭证："+orderline+"，图纸不存在，内径不可为空！";
                 }
                 String calculate = order.getType();

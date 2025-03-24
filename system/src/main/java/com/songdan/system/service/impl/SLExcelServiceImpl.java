@@ -81,16 +81,20 @@ public class SLExcelServiceImpl implements SLExcelService {
                     order.setProductid(this.getCellString(pid));
                     Cell pname = row.getCell(8);//物料名称
                     order.setProductname(this.getCellString(pname));
-                    Cell numb = row.getCell(9);//订单数
+
+                    Cell curType = row.getCell(9);//下单版本
+                    order.setCurType(this.getCellString(curType));
+
+                    Cell newType = row.getCell(10);//最新版本
+                    order.setLateType(this.getCellString(newType));
+                    order.setPosition(this.getCellString(newType));
+
+                    Cell numb = row.getCell(11);//订单数
                     order.setNum(this.getCellString(numb));
-                    Cell getnum = row.getCell(10);//已收货数量
+                    Cell getnum = row.getCell(12);//已收货数量
                     order.setGetnum(this.getCellString(getnum));
-                    Cell outnum = row.getCell(11);////发货数量
+                    Cell outnum = row.getCell(13);////发货数量
                     order.setOutputnum(this.getCellString(outnum));
-                    Cell boxnum = row.getCell(12);//箱只数
-                    order.setBoxnum(this.getCellString(boxnum));
-                    Cell lumbernum = row.getCell(13);//托只数
-                    order.setLumbernum(this.getCellString(lumbernum));
                     Cell unit = row.getCell(14);//单位
                     order.setUnit(this.getCellString(unit));
                     Cell dt = row.getCell(15);//交货日期
@@ -103,17 +107,27 @@ public class SLExcelServiceImpl implements SLExcelService {
                     }
                     Cell sbtlocation = row.getCell(16);//交货地点
                     order.setSubmitlocation(this.getCellString(sbtlocation));
-                    Cell lstprint = row.getCell(17);//上次打印时间
+
+                    Cell closeD = row.getCell(17);//封样日期
+                    order.setCloseDate(this.getCellString(closeD));
+                    Cell closeS = row.getCell(18);//过期封样
+                    order.setCloseSample(this.getCellString(closeS));
+
+                    Cell boxnum = row.getCell(19);//箱只数
+                    order.setBoxnum(this.getCellString(boxnum));
+                    Cell lumbernum = row.getCell(20);//托只数
+                    order.setLumbernum(this.getCellString(lumbernum));
+                    Cell lstprint = row.getCell(21);//上次打印时间
                     order.setLastprint(this.getCellString(lstprint));
-                    Cell svlocation = row.getCell(18);//库存地点
+                    Cell svlocation = row.getCell(22);//库存地点
                     order.setSavelocation(this.getCellString(svlocation));
-                    Cell pcg = row.getCell(19);//采购组
+                    Cell pcg = row.getCell(23);//采购组
                     order.setPurchasegroup(this.getCellString(pcg));
-                    Cell state = row.getCell(20);//状态
+                    Cell state = row.getCell(24);//状态
                     order.setState(this.getCellString(state));
-                    Cell workshop = row.getCell(21);//工厂
+                    Cell workshop = row.getCell(25);//工厂
                     order.setWorkshop(this.getCellString(workshop));
-                    Cell wsname = row.getCell(22);//工厂名称
+                    Cell wsname = row.getCell(26);//工厂名称
                     order.setWorkshopname(this.getCellString(wsname));
 
                     //自动填写内径
@@ -171,12 +185,15 @@ public class SLExcelServiceImpl implements SLExcelService {
             order.setNeijing(targetPaper.getNeijing());
             order.setType(targetPaper.getType());
             order.setPress(targetPaper.getPress());
-            order.setPosition(targetPaper.getPostion()==null?"":targetPaper.getPostion());
+            if(order.getPosition().isEmpty()){
+                order.setPosition(targetPaper.getPostion()==null?"":targetPaper.getPostion());
+            }
+//            order.setPosition(targetPaper.getPostion()==null?"":targetPaper.getPostion());
         }else{
             order.setNeijing("");
             order.setType("");
             order.setPress("");
-            order.setPosition("");
+//            order.setPosition("");
         }
     }
 
